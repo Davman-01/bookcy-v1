@@ -74,3 +74,10 @@ body {
 .nav-links ul a:hover {
     color: #ffffff !important;
 }
+/* --- LOGO YAZI TİPİNİ SABİTLEME --- */
+/* Sitenin genel fontu değişse bile logo asla değişmez. */
+.logo-text {
+  /* Eğer Poppins yüklüyse Poppins kullan, yoksa sans-serif kullan. 
+     Buraya orijinal logo fontunun adını yazmalısın. */
+  font-family: 'Poppins', 'Montserrat', 'Inter', sans-serif !important;
+}
