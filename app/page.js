@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link'; // 🔥 YENİ EKLENDİ
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { 
@@ -44,7 +44,6 @@ const defaultWorkingHours = [
 export default function Home() {
   const router = useRouter(); 
   
-  // KARANLIK MOD (DARK MODE) YÖNETİMİ
   const [theme, setTheme] = useState('light');
   useEffect(() => {
     const savedTheme = localStorage.getItem('bookcy_theme') || 'light';
@@ -86,7 +85,6 @@ export default function Home() {
   const [formData, setFormData] = useState({ name: '', surname: '', phoneCode: '+90', phone: '', email: '' });
   const [bookingPhase, setBookingPhase] = useState(1);
 
-  // RANDEVU FORMU DOĞRULAMA
   const [bookingEmailValid, setBookingEmailValid] = useState(null);
   const [bookingPhoneValid, setBookingPhoneValid] = useState(null);
 
@@ -119,109 +117,43 @@ export default function Home() {
 
   const t = {
     TR: {
-      nav: { 
-        places: "Mekanlar", features: "Özellikler", contact: "İletişim", about: "Hakkımızda ve Paketler", addShop: "İşletme Ekle", login: "İşletme Girişi", logout: "Çıkış Yap", dashboard: "Panelime Git" 
-      },
-      megaMenu: { 
-        col1Title: "Kurulum", col2Title: "Müşterileri Etkile", col3Title: "İşletmeni Yönet", col4Title: "Büyümeye Devam Et", btn: "Tüm Özellikleri Keşfet" 
-      },
-      featNames: { 
-        profile: "Bookcy Profili", market: "Pazaryeri Listeleme", team: "Ekip Yönetimi", booking: "Online Randevu", app: "Müşteri Uygulaması", marketing: "Pazarlama Araçları", calendar: "Takvim & Planlama", crm: "Müşteri Yönetimi", boost: "Öne Çık", stats: "İstatistik & Raporlar" 
-      },
-      home: { 
-        eyebrow: "Kıbrıs'ın #1 Güzellik Platformu", title1: "Kendine", title2: "iyi bak,", title3: "hemen rezerve", title4: "et.", subtitle: "Yakınındaki en iyi berber, kuaför, spa ve güzellik uzmanlarını bul. Tek tıkla randevu al, zamanın senin.", searchPlace: "Hizmet veya mekan ara...", searchLoc: "Nerede?", searchBtn: "Ara", popTitle: "Popüler:", stats: {s1:"Aktif İşletme", s2:"Mutlu Müşteri", s3:"Tamamlanan İşlem", s4:"Müşteri Memnuniyeti"} 
-      },
-      cats: { 
-        catTitle: "Kategoriler", catSub: "Ne arıyorsun?", seeAll: "Tümünü Gör →", tattoo: "Dövme", barber: "Berber", hair: "Kuaför", nail: "Tırnak & Güzellik", club: "Bar & Club", spa: "Spa & Masaj", makeup: "Makyaj", skincare: "Cilt Bakımı" 
-      },
-      homeInfo: { 
-          recLabel: "Öne Çıkanlar", recTitle: "Kıbrıs'ta Bu Hafta 🔥", howLabel: "Nasıl Çalışır?", howTitle: "4 adımda randevun hazır", how1Title: "Keşfet", how1Desc: "Yakındaki mekanları harita veya liste görünümünde incele, filtrele.", how2Title: "Tarih Seç", how2Desc: "Müsait saatleri gör, sana en uygun zamanı tek tıkla seç.", how3Title: "Onayla", how3Desc: "Saniyeler içinde rezervasyonun onaylanır. WhatsApp bildirimi alırsın.", how4Title: "Keyif Çıkar", how4Desc: "Git, hizmetini al, puan ver. Bir sonraki randevu için sadakat puanı kazan.", ctaLabel: "İşletme Sahibi misiniz?", ctaTitle1: "Bookcy ile", ctaTitle2: "işletmeni büyüt.", ctaSub: "Randevu sistemini dijitalleştir. Yeni müşteri kazan. Komisyonsuz, sabit ücret."
-      },
-      filters: { 
-        title: "Arama Sonuçları", search: "Mekan Ara...", region: "Bölge Seçimi", service: "Kategoriler", sortHigh: "En Yüksek Puan", sortLow: "En Düşük Puan", clear: "Temizle", count: "Mekan Bulundu" 
-      },
-      shops: { 
-        back: "GERİ DÖN", empty: "Bu kriterlere uygun işletme bulunamadı." 
-      },
-      profile: { 
-        tabServices: "Rezervasyon / Hizmet", tabEvents: "Etkinlikler & Loca", tabGallery: "Galeri", about: "Hakkında", contactTitle: "İLETİŞİM", bookBtn: "SEÇ", noDesc: "İşletme henüz bir açıklama eklememiş.", noServices: "İşletme henüz liste eklememiş.", noGallery: "İşletme henüz galeriye fotoğraf eklememiş.", similarTitle: "BU BÖLGEDEKİ BENZER MEKANLAR" 
-      },
-      book: { 
-        change: "Geri", selectService: "Devam etmek için işlem veya hizmet seçin.", selectEvent: "Lütfen katılmak istediğiniz etkinliği seçin.", selectLoca: "Lütfen rezervasyon türünü (Loca/Bistro) seçin.", selectStaff: "KİŞİ/UZMAN SEÇİN", anyStaff: "Fark Etmez", date: "Tarih Seçin", time: "Saat Seçin", name: "Adınız", surname: "Soyadınız", phone: "Telefon Numaranız", email: "E-Posta (Zorunlu)", submit: "ONAYLA", success: "RANDEVU ONAYLANDI", successSub: "Bilgileriniz işletmeye başarıyla iletildi.", backHome: "ANA SAYFAYA DÖN", total: "Toplam", details: "Rezervasyon Detayları", service: "İşlem/Hizmet", event: "Etkinlik", staff: "Kişi/Uzman", dateTime: "Tarih / Saat", contactInfo: "İletişim Bilgileriniz", btnBook: "Rezervasyon Yap →", shopClosed: "İŞLETME BU TARİHTE KAPALIDIR VEYA BOŞ SAAT YOKTUR." 
-      },
-      footer: { 
-        desc: "Kuzey Kıbrıs'ın güzellik ve bakım hizmetleri için tek rezervasyon platformu.", links: "Platform", cities: "Bölgeler", legal: "Sözleşmeler", copy: "Tüm hakları saklıdır. Kuzey Kıbrıs'ta kurulmuştur. 🇹🇷", terms: "Kullanım Koşulları", privacy: "Gizlilik Politikası"
-      }
+      nav: { places: "Mekanlar", features: "Özellikler", contact: "İletişim", about: "Hakkımızda ve Paketler", addShop: "İşletme Ekle", login: "İşletme Girişi", logout: "Çıkış Yap", dashboard: "Panelime Git" },
+      megaMenu: { col1Title: "Kurulum", col2Title: "Müşterileri Etkile", col3Title: "İşletmeni Yönet", col4Title: "Büyümeye Devam Et", btn: "Tüm Özellikleri Keşfet" },
+      featNames: { profile: "Bookcy Profili", market: "Pazaryeri Listeleme", team: "Ekip Yönetimi", booking: "Online Randevu", app: "Müşteri Uygulaması", marketing: "Pazarlama Araçları", calendar: "Takvim & Planlama", crm: "Müşteri Yönetimi", boost: "Öne Çık", stats: "İstatistik & Raporlar" },
+      home: { eyebrow: "Kıbrıs'ın #1 Güzellik Platformu", title1: "Kıbrıs'ın En İyi", title2: "Güzellik Uzmanlarından", title3: "Hemen Randevu", title4: "Al.", subtitle: "Kendine iyi bak, zamanın sana kalsın. Yakınındaki kuaför, berber ve spa merkezlerini saniyeler içinde bul.", searchPlace: "Hizmet veya mekan ara...", searchLoc: "Nerede?", searchBtn: "Ara", popTitle: "Popüler:", stats: {s1:"Aktif İşletme", s2:"Mutlu Müşteri", s3:"Tamamlanan İşlem", s4:"Müşteri Memnuniyeti"} },
+      cats: { catTitle: "Kategoriler", catSub: "Ne arıyorsun?", seeAll: "Tümünü Gör →", tattoo: "Dövme", barber: "Berber", hair: "Kuaför", nail: "Tırnak & Güzellik", club: "Bar & Club", spa: "Spa & Masaj", makeup: "Makyaj", skincare: "Cilt Bakımı" },
+      homeInfo: { recLabel: "Öne Çıkanlar", recTitle: "Kıbrıs'ta Bu Hafta 🔥", howLabel: "Nasıl Çalışır?", howTitle: "4 adımda randevun hazır", how1Title: "Keşfet", how1Desc: "Yakındaki mekanları harita veya liste görünümünde incele, filtrele.", how2Title: "Tarih Seç", how2Desc: "Müsait saatleri gör, sana en uygun zamanı tek tıkla seç.", how3Title: "Onayla", how3Desc: "Saniyeler içinde rezervasyonun onaylanır. WhatsApp bildirimi alırsın.", how4Title: "Keyif Çıkar", how4Desc: "Git, hizmetini al, puan ver. Bir sonraki randevu için sadakat puanı kazan.", ctaLabel: "İşletme Sahibi misiniz?", ctaTitle1: "Bookcy ile", ctaTitle2: "işletmeni büyüt.", ctaSub: "Randevu sistemini dijitalleştir. Yeni müşteri kazan. Komisyonsuz, sabit ücret." },
+      filters: { title: "Arama Sonuçları", search: "Mekan Ara...", region: "Bölge Seçimi", service: "Kategoriler", sortHigh: "En Yüksek Puan", sortLow: "En Düşük Puan", clear: "Temizle", count: "Mekan Bulundu" },
+      shops: { back: "GERİ DÖN", empty: "Bu kriterlere uygun işletme bulunamadı." },
+      profile: { tabServices: "Rezervasyon / Hizmet", tabEvents: "Etkinlikler & Loca", tabGallery: "Galeri", about: "Hakkında", contactTitle: "İLETİŞİM", bookBtn: "SEÇ", noDesc: "İşletme henüz bir açıklama eklememiş.", noServices: "İşletme henüz liste eklememiş.", noGallery: "İşletme henüz galeriye fotoğraf eklememiş.", similarTitle: "BU BÖLGEDEKİ BENZER MEKANLAR" },
+      book: { change: "Geri", selectService: "Devam etmek için işlem veya hizmet seçin.", selectEvent: "Lütfen katılmak istediğiniz etkinliği seçin.", selectLoca: "Lütfen rezervasyon türünü (Loca/Bistro) seçin.", selectStaff: "KİŞİ/UZMAN SEÇİN", anyStaff: "Fark Etmez", date: "Tarih Seçin", time: "Saat Seçin", name: "Adınız", surname: "Soyadınız", phone: "Telefon Numaranız", email: "E-Posta (Zorunlu)", submit: "ONAYLA", success: "RANDEVU ONAYLANDI", successSub: "Bilgileriniz işletmeye başarıyla iletildi.", backHome: "ANA SAYFAYA DÖN", total: "Toplam", details: "Rezervasyon Detayları", service: "İşlem/Hizmet", event: "Etkinlik", staff: "Kişi/Uzman", dateTime: "Tarih / Saat", contactInfo: "İletişim Bilgileriniz", btnBook: "Rezervasyon Yap →", shopClosed: "İŞLETME BU TARİHTE KAPALIDIR VEYA BOŞ SAAT YOKTUR." },
+      footer: { desc: "Kuzey Kıbrıs'ın güzellik ve bakım hizmetleri için tek rezervasyon platformu.", links: "Platform", cities: "Bölgeler", legal: "Sözleşmeler", copy: "Tüm hakları saklıdır. Kuzey Kıbrıs'ta kurulmuştur. 🇹🇷", terms: "Kullanım Koşulları", privacy: "Gizlilik Politikası" }
     },
     EN: {
-      nav: { 
-        places: "Places", features: "Features", contact: "Contact", about: "About & Packages", addShop: "Add Business", login: "Login", logout: "Logout", dashboard: "Dashboard" 
-      },
-      megaMenu: { 
-        col1Title: "Set up shop", col2Title: "Wow your clients", col3Title: "Run your business", col4Title: "Keep growing", btn: "Explore All Features" 
-      },
-      featNames: { 
-        profile: "Bookcy Profile", market: "Marketplace", team: "Team Management", booking: "Online Booking", app: "Customer App", marketing: "Marketing Tools", calendar: "Calendar", crm: "Client Management", boost: "Boost", stats: "Stats & Reports" 
-      },
-      home: { 
-        eyebrow: "Cyprus's #1 Beauty Platform", title1: "Take care", title2: "of yourself,", title3: "book", title4: "instantly.", subtitle: "Find the best barbers, salons, and spas nearby. Book with one click, your time is yours.", searchPlace: "Search services...", searchLoc: "Where?", searchBtn: "Search", popTitle: "Popular:", stats: {s1:"Active Places", s2:"Happy Clients", s3:"Completed Bookings", s4:"Satisfaction"} 
-      },
-      cats: { 
-        catTitle: "Categories", catSub: "What are you looking for?", seeAll: "See All →", tattoo: "Tattoo", barber: "Barber", hair: "Hair Salon", nail: "Nail Art", club: "Bar & Club", spa: "Spa & Massage", makeup: "Makeup", skincare: "Skin Care" 
-      },
-      homeInfo: { 
-        recLabel: "Featured", recTitle: "Trending This Week 🔥", howLabel: "How it works?", howTitle: "Ready in 4 steps", how1Title: "Discover", how1Desc: "Find nearby places.", how2Title: "Select Date", how2Desc: "Pick the best time.", how3Title: "Confirm", how3Desc: "Booking confirmed.", how4Title: "Enjoy", how4Desc: "Get your service.", ctaLabel: "Business owner?", ctaTitle1: "Grow your business", ctaTitle2: "with Bookcy.", ctaSub: "Digitize your booking system." 
-      },
-      filters: { 
-        title: "Search Results", search: "Search places...", region: "Location", service: "Categories", sortHigh: "Highest Rated", sortLow: "Lowest Rated", clear: "Clear", count: "Places Found" 
-      },
-      shops: { 
-        back: "GO BACK", empty: "No businesses found." 
-      },
-      profile: { 
-        tabServices: "Booking / Service", tabEvents: "Events & VIP", tabGallery: "Gallery", about: "About Us", contactTitle: "CONTACT INFO", bookBtn: "SELECT", noDesc: "No description yet.", noServices: "No services yet.", noGallery: "No photos yet.", similarTitle: "SIMILAR PLACES NEARBY" 
-      },
-      book: { 
-        change: "Back", selectService: "Select a service to continue.", selectEvent: "Select an event.", selectLoca: "Select your VIP booking type.", selectStaff: "SELECT STAFF", anyStaff: "Any Staff", date: "Select Date", time: "Select Time", name: "First Name", surname: "Last Name", phone: "Phone", email: "Email (Required)", submit: "CONFIRM", success: "APPOINTMENT CONFIRMED", successSub: "Your details have been sent.", backHome: "RETURN TO HOME", total: "Total", details: "Appointment Details", service: "Service", event: "Event", staff: "Staff", dateTime: "Date / Time", contactInfo: "Contact Info", btnBook: "Book Now →", shopClosed: "SHOP IS CLOSED ON THIS DATE OR FULL." 
-      },
-      footer: { 
-        desc: "North Cyprus's premier booking platform for beauty & wellness.", links: "Platform", cities: "Regions", legal: "Terms", copy: "All rights reserved. Made in North Cyprus. 🇹🇷", terms: "Terms of Service", privacy: "Privacy Policy"
-      }
+      nav: { places: "Places", features: "Features", contact: "Contact", about: "About & Packages", addShop: "Add Business", login: "Login", logout: "Logout", dashboard: "Dashboard" },
+      megaMenu: { col1Title: "Set up shop", col2Title: "Wow your clients", col3Title: "Run your business", col4Title: "Keep growing", btn: "Explore All Features" },
+      featNames: { profile: "Bookcy Profile", market: "Marketplace", team: "Team Management", booking: "Online Booking", app: "Customer App", marketing: "Marketing Tools", calendar: "Calendar", crm: "Client Management", boost: "Boost", stats: "Stats & Reports" },
+      home: { eyebrow: "Cyprus's #1 Beauty Platform", title1: "Cyprus's Best", title2: "Beauty Specialists", title3: "Book Now", title4: ".", subtitle: "Take care of yourself, save your time. Find hairdressers, barbers and spas near you in seconds.", searchPlace: "Search services...", searchLoc: "Where?", searchBtn: "Search", popTitle: "Popular:", stats: {s1:"Active Places", s2:"Happy Clients", s3:"Completed Bookings", s4:"Satisfaction"} },
+      cats: { catTitle: "Categories", catSub: "What are you looking for?", seeAll: "See All →", tattoo: "Tattoo", barber: "Barber", hair: "Hair Salon", nail: "Nail Art", club: "Bar & Club", spa: "Spa & Massage", makeup: "Makeup", skincare: "Skin Care" },
+      homeInfo: { recLabel: "Featured", recTitle: "Trending This Week 🔥", howLabel: "How it works?", howTitle: "Ready in 4 steps", how1Title: "Discover", how1Desc: "Find nearby places.", how2Title: "Select Date", how2Desc: "Pick the best time.", how3Title: "Confirm", how3Desc: "Booking confirmed.", how4Title: "Enjoy", how4Desc: "Get your service.", ctaLabel: "Business owner?", ctaTitle1: "Grow your business", ctaTitle2: "with Bookcy.", ctaSub: "Digitize your booking system." },
+      filters: { title: "Search Results", search: "Search places...", region: "Location", service: "Categories", sortHigh: "Highest Rated", sortLow: "Lowest Rated", clear: "Clear", count: "Places Found" },
+      shops: { back: "GO BACK", empty: "No businesses found." },
+      profile: { tabServices: "Booking / Service", tabEvents: "Events & VIP", tabGallery: "Gallery", about: "About Us", contactTitle: "CONTACT INFO", bookBtn: "SELECT", noDesc: "No description yet.", noServices: "No services yet.", noGallery: "No photos yet.", similarTitle: "SIMILAR PLACES NEARBY" },
+      book: { change: "Back", selectService: "Select a service to continue.", selectEvent: "Select an event.", selectLoca: "Select your VIP booking type.", selectStaff: "SELECT STAFF", anyStaff: "Any Staff", date: "Select Date", time: "Select Time", name: "First Name", surname: "Last Name", phone: "Phone", email: "Email (Required)", submit: "CONFIRM", success: "APPOINTMENT CONFIRMED", successSub: "Your details have been sent.", backHome: "RETURN TO HOME", total: "Total", details: "Appointment Details", service: "Service", event: "Event", staff: "Staff", dateTime: "Date / Time", contactInfo: "Contact Info", btnBook: "Book Now →", shopClosed: "SHOP IS CLOSED ON THIS DATE OR FULL." },
+      footer: { desc: "North Cyprus's premier booking platform for beauty & wellness.", links: "Platform", cities: "Regions", legal: "Terms", copy: "All rights reserved. Made in North Cyprus. 🇹🇷", terms: "Terms of Service", privacy: "Privacy Policy" }
     },
     RU: {
-      nav: { 
-        places: "Места", features: "Функции", contact: "Контакты", about: "О нас и пакеты", addShop: "Добавить бизнес", login: "Вход", logout: "Выйти", dashboard: "Панель" 
-      },
-      megaMenu: { 
-        col1Title: "Настройка", col2Title: "Клиенты", col3Title: "Бизнес", col4Title: "Развитие", btn: "Узнать все функции" 
-      },
-      featNames: { 
-        profile: "Профиль Bookcy", market: "Маркетплейс", team: "Команда", booking: "Онлайн-бронирование", app: "Приложение", marketing: "Маркетинг", calendar: "Календарь", crm: "Управление клиентами", boost: "Продвижение", stats: "Статистика" 
-      },
-      home: { 
-        eyebrow: "Платформа красоты #1", title1: "Позаботьтесь", title2: "о себе,", title3: "забронируйте", title4: "сейчас.", subtitle: "Найдите лучших мастеров, салоны и спа поблизости. Бронируйте в один клик, ваше время принадлежит вам.", searchPlace: "Поиск услуг...", searchLoc: "Где?", searchBtn: "ПОИСК", popTitle: "Популярные:", stats: {s1:"Активные", s2:"Клиенты", s3:"Записи", s4:"Удовлетворенность"} 
-      },
-      cats: { 
-        catTitle: "Категории", catSub: "Что вы ищете?", seeAll: "Все →", tattoo: "Тату", barber: "Барбер", hair: "Парикмахерская", nail: "Маникюр", club: "Бар", spa: "Спа", makeup: "Макияж", skincare: "Уход за кожей" 
-      },
-      homeInfo: { 
-        recLabel: "Популярные", recTitle: "В тренде 🔥", howLabel: "Как это работает?", howTitle: "Готово за 4 шага", how1Title: "Найти", how1Desc: "Найдите салоны.", how2Title: "Дата", how2Desc: "Свободное время.", how3Title: "Подтвердить", how3Desc: "Бронь подтверждена.", how4Title: "Наслаждаться", how4Desc: "Оставьте отзыв.", ctaLabel: "Владелец бизнеса?", ctaTitle1: "Развивайте бизнес", ctaTitle2: "с Bookcy.", ctaSub: "Оцифруйте бизнес." 
-      },
-      filters: { 
-        title: "Результаты", search: "Поиск...", region: "Где?", service: "Услуги", sortHigh: "С высоким рейтингом", sortLow: "С низким рейтингом", clear: "Очистить", count: "Найдено" 
-      },
-      shops: { 
-        back: "НАЗАД", empty: "Не найдено." 
-      },
-      profile: { 
-        tabServices: "Бронирование / Услуги", tabEvents: "События и VIP", tabGallery: "Галерея", about: "О НАС", contactTitle: "КОНТАКТЫ", bookBtn: "ВЫБРАТЬ", noDesc: "Нет описания.", noServices: "Нет услуг.", noGallery: "Нет фото.", similarTitle: "ПОХОЖИЕ МЕСТА" 
-      },
-      book: { 
-        change: "Назад", selectService: "Выберите услугу", selectEvent: "Выберите событие", selectLoca: "Выберите зону", selectStaff: "ВЫБЕРИТЕ СПЕЦИАЛИСТА", anyStaff: "Любой", date: "Дата", time: "Время", name: "Имя", surname: "Фамилия", phone: "Телефон", email: "Email", submit: "ПОДТВЕРДИТЬ", success: "БРОНЬ ПОДТВЕРЖДЕНА", successSub: "Данные отправлены.", backHome: "НА ГЛАВНУЮ", total: "Итого", details: "Детали", service: "Услуга", event: "Событие", staff: "Специалист", dateTime: "Дата / Время", contactInfo: "Контакты", btnBook: "Забронировать →", shopClosed: "ЗАКРЫТО ИЛИ НЕТ МЕСТ В ЭТУ ДАТУ." 
-      },
-      footer: { 
-        desc: "Платформа бронирования на Северном Кипре.", links: "Платформа", cities: "Регион", legal: "О нас", copy: "Все права защищены. Сделано на Северном Кипре. 🇹🇷", terms: "Условия", privacy: "Конфиденциальность"
-      }
+      nav: { places: "Места", features: "Функции", contact: "Контакты", about: "О нас и пакеты", addShop: "Добавить бизнес", login: "Вход", logout: "Выйти", dashboard: "Панель" },
+      megaMenu: { col1Title: "Настройка", col2Title: "Клиенты", col3Title: "Бизнес", col4Title: "Развитие", btn: "Узнать все функции" },
+      featNames: { profile: "Профиль Bookcy", market: "Маркетплейс", team: "Команда", booking: "Онлайн-бронирование", app: "Приложение", marketing: "Маркетинг", calendar: "Календарь", crm: "Управление клиентами", boost: "Продвижение", stats: "Статистика" },
+      home: { eyebrow: "Платформа красоты #1", title1: "Лучшие на Кипре", title2: "Специалисты по красоте", title3: "Забронируйте сейчас", title4: ".", subtitle: "Позаботьтесь о себе, сэкономьте время. Найдите парикмахерские, барбершопы и спа рядом с вами за считанные секунды.", searchPlace: "Поиск услуг...", searchLoc: "Где?", searchBtn: "ПОИСК", popTitle: "Популярные:", stats: {s1:"Активные", s2:"Клиенты", s3:"Записи", s4:"Удовлетворенность"} },
+      cats: { catTitle: "Категории", catSub: "Что вы ищете?", seeAll: "Все →", tattoo: "Тату", barber: "Барбер", hair: "Парикмахерская", nail: "Маникюр", club: "Бар", spa: "Спа", makeup: "Макияж", skincare: "Уход за кожей" },
+      homeInfo: { recLabel: "Популярные", recTitle: "В тренде 🔥", howLabel: "Как это работает?", howTitle: "Готово за 4 шага", how1Title: "Найти", how1Desc: "Найдите салоны.", how2Title: "Дата", how2Desc: "Свободное время.", how3Title: "Подтвердить", how3Desc: "Бронь подтверждена.", how4Title: "Наслаждаться", how4Desc: "Оставьте отзыв.", ctaLabel: "Владелец бизнеса?", ctaTitle1: "Развивайте бизнес", ctaTitle2: "с Bookcy.", ctaSub: "Оцифруйте бизнес." },
+      filters: { title: "Результаты", search: "Поиск...", region: "Где?", service: "Услуги", sortHigh: "С высоким рейтингом", sortLow: "С низким рейтингом", clear: "Очистить", count: "Найдено" },
+      shops: { back: "НАЗАД", empty: "Не найдено." },
+      profile: { tabServices: "Бронирование / Услуги", tabEvents: "События и VIP", tabGallery: "Галерея", about: "О НАС", contactTitle: "КОНТАКТЫ", bookBtn: "ВЫБРАТЬ", noDesc: "Нет описания.", noServices: "Нет услуг.", noGallery: "Нет фото.", similarTitle: "ПОХОЖИЕ МЕСТА" },
+      book: { change: "Назад", selectService: "Выберите услугу", selectEvent: "Выберите событие", selectLoca: "Выберите зону", selectStaff: "ВЫБЕРИТЕ СПЕЦИАЛИСТА", anyStaff: "Любой", date: "Дата", time: "Время", name: "Имя", surname: "Фамилия", phone: "Телефон", email: "Email", submit: "ПОДТВЕРДИТЬ", success: "БРОНЬ ПОДТВЕРЖДЕНА", successSub: "Данные отправлены.", backHome: "НА ГЛАВНУЮ", total: "Итого", details: "Детали", service: "Услуга", event: "Событие", staff: "Специалист", dateTime: "Дата / Время", contactInfo: "Контакты", btnBook: "Забронировать →", shopClosed: "ЗАКРЫТО ИЛИ НЕТ МЕСТ В ЭТУ ДАТУ." },
+      footer: { desc: "Платформа бронирования на Северном Кипре.", links: "Платформа", cities: "Регион", legal: "О нас", copy: "Все права защищены. Сделано на Северном Кипре. 🇹🇷", terms: "Условия", privacy: "Конфиденциальность" }
     }
   };
 
@@ -574,6 +506,24 @@ export default function Home() {
 
   return (
     <>
+      {/* GOOGLE SCHEMA.ORG YAPISAL VERİ (SEO) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "Bookcy",
+            "url": "https://bookcy.co",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://bookcy.co/?search={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          })
+        }}
+      />
+
       <style dangerouslySetInnerHTML={{__html: `
         :root { 
           --fig: #2D1B4E; 
@@ -628,11 +578,11 @@ export default function Home() {
         nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 0 48px; height: 68px; display: flex; align-items: center; justify-content: space-between; background: var(--c-nav-bg); backdrop-filter: blur(20px); border-bottom: 1px solid var(--c-border); transition: background 0.3s; }
         .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; cursor: pointer; }
         .nav-logo-icon { width: 36px; height: 36px; }
-        .nav-logo-text { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 22px; font-weight: 800; color: var(--c-text-main); letter-spacing: -1px; display:flex; align-items:baseline; }
+        .nav-logo-text { font-family: 'Plus Jakarta Sans', sans-serif !important; font-size: 22px; font-weight: 800; color: var(--c-text-main); letter-spacing: -1px; display:flex; align-items:baseline; }
         .nav-logo-text span { color: var(--terra); }
         .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; height: 100%; margin:0; padding:0; }
-        .nav-links button, .nav-links a { text-decoration: none; font-size: 14px; font-weight: 600; color: var(--c-text-main); opacity: 0.7; transition: opacity 0.2s; position: relative; background:none; border:none; outline:none; font-family:'DM Sans', sans-serif; cursor:pointer;}
-        .nav-links button:hover, .nav-links a:hover, .nav-links button.active, .nav-links a.active { opacity:1; color: var(--terra); }
+        .nav-links > li > button, .nav-links > li > a { text-decoration: none; font-size: 14px; font-weight: 600; color: var(--c-text-main); opacity: 0.7; transition: opacity 0.2s; position: relative; background:none; border:none; outline:none; font-family:'DM Sans', sans-serif; cursor:pointer;}
+        .nav-links > li > button:hover, .nav-links > li > a:hover, .nav-links > li > button.active, .nav-links > li > a.active { opacity:1; color: var(--terra); }
         .lang-pills { display: flex; flex-direction: row; gap: 4px; }
         .lang-pill { font-size: 11px; font-weight:600; padding: 4px 10px; border-radius: 20px; border: 1px solid transparent; transition: all 0.2s; color: var(--c-text-muted); cursor:pointer;}
         .lang-pill.active { background: var(--fig); color: white; border-color: var(--fig); }
@@ -661,12 +611,12 @@ export default function Home() {
         .hero-eyebrow-dot { width:6px; height:6px; border-radius:50%; background:var(--terra); animation: pulse 2s infinite; }
         @keyframes pulse { 0%,100%{ box-shadow:0 0 0 0 rgba(232,98,42,0.6); } 50% { box-shadow:0 0 0 6px rgba(232,98,42,0); } }
         
-        .hero-title { font-family:'Plus Jakarta Sans',sans-serif; font-size: clamp(52px, 8vw, 96px); font-weight:800; color: white; letter-spacing: -4px; line-height: 0.95; margin-bottom:24px; animation: fadeUp 0.8s 0.2s ease both; }
+        .hero-title { font-family:'Plus Jakarta Sans',sans-serif; font-size: clamp(40px, 8vw, 86px); font-weight:800; color: white; letter-spacing: -3px; line-height: 1.0; margin-bottom:24px; animation: fadeUp 0.8s 0.2s ease both; }
         .hero-title .accent { color: var(--terra); }
         .hero-title .accent-2 { position:relative; display:inline-block; color: var(--blush); }
         .hero-title .accent-2::after { content:''; position:absolute; bottom:-4px; left:0; right:0; height:4px; border-radius:2px; background: linear-gradient(90deg, var(--terra), transparent); }
         
-        .hero-sub { font-size:17px; font-weight:400; color: rgba(255,255,255,0.55); line-height:1.6; margin-bottom: 48px; max-width:520px; margin-left:auto; margin-right:auto; animation: fadeUp 0.8s 0.3s ease both; }
+        .hero-sub { font-size:17px; font-weight:400; color: rgba(255,255,255,0.55); line-height:1.6; margin-bottom: 48px; max-width:580px; margin-left:auto; margin-right:auto; animation: fadeUp 0.8s 0.3s ease both; }
         
         .search-wrap { display:flex; align-items:center; background: var(--c-bg-card); border-radius: 20px; padding: 8px 8px 8px 24px; gap: 0; max-width: 680px; width:100%; box-shadow: 0 24px 80px rgba(0,0,0,0.35); margin: 0 auto; animation: fadeUp 0.8s 0.4s ease both; transition: box-shadow 0.3s; }
         .search-wrap:focus-within { box-shadow: 0 24px 80px rgba(0,0,0,0.4), 0 0 0 3px rgba(232,98,42,0.3); }
@@ -813,7 +763,7 @@ export default function Home() {
 
       <nav>
         <div className="nav-logo" onClick={() => {setStep('services'); window.scrollTo(0,0);}}>
-          <svg className="nav-logo-icon" viewBox="0 0 36 36" fill="none">
+          <svg className="nav-logo-icon" viewBox="0 0 36 36" fill="none" aria-hidden="true">
             <rect width="36" height="36" rx="10" fill="#2D1B4E"/>
             <circle cx="18" cy="10" r="4.5" fill="#F5C5A3"/>
             <rect x="10" y="15.5" width="4" height="15" rx="2" fill="#F5C5A3"/>
@@ -843,25 +793,25 @@ export default function Home() {
                                   <div>
                                     <h4 className="font-black text-[11px] uppercase tracking-widest mb-6 text-[#E8622A]">{t[lang].megaMenu.col1Title}</h4>
                                     <ul className="space-y-5 font-bold text-slate-300 capitalize text-sm">
-                                      {megaMenuStructure.col1.map(key => <Link key={key} href="/ozellikler" className="hover:text-white cursor-pointer transition-colors flex items-center gap-2 text-decoration-none"><ChevronRight size={14} className="text-[#E8622A]"/> {t[lang].featNames[key]}</Link>)}
+                                      {megaMenuStructure.col1.map(key => <li key={key}><Link href="/ozellikler" className="hover:text-white cursor-pointer transition-colors flex items-center gap-2 text-decoration-none"><ChevronRight size={14} className="text-[#E8622A]"/> {t[lang].featNames[key]}</Link></li>)}
                                     </ul>
                                   </div>
                                   <div>
                                     <h4 className="font-black text-[11px] uppercase tracking-widest mb-6 text-[#E8622A]">{t[lang].megaMenu.col2Title}</h4>
                                     <ul className="space-y-5 font-bold text-slate-300 capitalize text-sm">
-                                      {megaMenuStructure.col2.map(key => <Link key={key} href="/ozellikler" className="hover:text-white cursor-pointer transition-colors flex items-center gap-2 text-decoration-none"><ChevronRight size={14} className="text-[#E8622A]"/> {t[lang].featNames[key]}</Link>)}
+                                      {megaMenuStructure.col2.map(key => <li key={key}><Link href="/ozellikler" className="hover:text-white cursor-pointer transition-colors flex items-center gap-2 text-decoration-none"><ChevronRight size={14} className="text-[#E8622A]"/> {t[lang].featNames[key]}</Link></li>)}
                                     </ul>
                                   </div>
                                   <div>
                                     <h4 className="font-black text-[11px] uppercase tracking-widest mb-6 text-[#E8622A]">{t[lang].megaMenu.col3Title}</h4>
                                     <ul className="space-y-5 font-bold text-slate-300 capitalize text-sm">
-                                      {megaMenuStructure.col3.map(key => <Link key={key} href="/ozellikler" className="hover:text-white cursor-pointer transition-colors flex items-center gap-2 text-decoration-none"><ChevronRight size={14} className="text-[#E8622A]"/> {t[lang].featNames[key]}</Link>)}
+                                      {megaMenuStructure.col3.map(key => <li key={key}><Link href="/ozellikler" className="hover:text-white cursor-pointer transition-colors flex items-center gap-2 text-decoration-none"><ChevronRight size={14} className="text-[#E8622A]"/> {t[lang].featNames[key]}</Link></li>)}
                                     </ul>
                                   </div>
                                   <div>
                                     <h4 className="font-black text-[11px] uppercase tracking-widest mb-6 text-[#E8622A]">{t[lang].megaMenu.col4Title}</h4>
                                     <ul className="space-y-5 font-bold text-slate-300 capitalize text-sm">
-                                      {megaMenuStructure.col4.map(key => <Link key={key} href="/ozellikler" className="hover:text-white cursor-pointer transition-colors flex items-center gap-2 text-decoration-none"><ChevronRight size={14} className="text-[#E8622A]"/> {t[lang].featNames[key]}</Link>)}
+                                      {megaMenuStructure.col4.map(key => <li key={key}><Link href="/ozellikler" className="hover:text-white cursor-pointer transition-colors flex items-center gap-2 text-decoration-none"><ChevronRight size={14} className="text-[#E8622A]"/> {t[lang].featNames[key]}</Link></li>)}
                                     </ul>
                                   </div>
                               </div>
@@ -887,21 +837,21 @@ export default function Home() {
 
         <div className="nav-right">
           <div className="lang-pills">
-            <div onClick={()=>setLang('TR')} className={`lang-pill ${lang==='TR' ? 'active' : ''}`}>TR</div>
-            <div onClick={()=>setLang('EN')} className={`lang-pill ${lang==='EN' ? 'active' : ''}`}>EN</div>
-            <div onClick={()=>setLang('RU')} className={`lang-pill ${lang==='RU' ? 'active' : ''}`}>RU</div>
+            <button onClick={()=>setLang('TR')} className={`lang-pill ${lang==='TR' ? 'active' : ''}`}>TR</button>
+            <button onClick={()=>setLang('EN')} className={`lang-pill ${lang==='EN' ? 'active' : ''}`}>EN</button>
+            <button onClick={()=>setLang('RU')} className={`lang-pill ${lang==='RU' ? 'active' : ''}`}>RU</button>
           </div>
           
-          <button onClick={toggleTheme} className="p-2 rounded-full border border-[var(--c-border)] text-[var(--c-text-main)] hover:bg-[var(--c-bg-sub)] transition-colors cursor-pointer mr-2">
+          <button onClick={toggleTheme} aria-label="Tema Değiştir" className="p-2 rounded-full border border-[var(--c-border)] text-[var(--c-text-main)] hover:bg-[var(--c-bg-sub)] transition-colors cursor-pointer mr-2">
             {theme === 'dark' ? <Sun size={16}/> : <Moon size={16}/>}
           </button>
 
           {loggedInShop ? (
                <div className="flex gap-2 items-center">
                    <button onClick={handleLogout} className="btn-outline">{t[lang].nav.logout}</button>
-                   <button onClick={() => router.push('/dashboard')} className="btn-primary">
+                   <Link href="/dashboard" className="btn-primary">
                       <UserCircle size={18}/> <span>{t[lang].nav.dashboard}</span>
-                   </button>
+                   </Link>
                </div>
           ) : (
               <>
@@ -917,7 +867,6 @@ export default function Home() {
 
       <main className="flex-1 w-full relative z-10" style={{minHeight: '80vh'}}>
         
-        {/* === ANA SAYFA === */}
         {step === 'services' && (
             <div className="w-full animate-in fade-in">
                 <section className="hero">
@@ -940,12 +889,12 @@ export default function Home() {
                     <form className="search-wrap" onSubmit={handleHeroSearch}>
                       <div className="search-field">
                         <span className="search-icon"><Search size={18}/></span>
-                        <input type="text" placeholder={t[lang].home.searchPlace} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
+                        <input aria-label="Hizmet veya Mekan Arama" type="text" placeholder={t[lang].home.searchPlace} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
                       </div>
                       <div className="search-divider"></div>
                       <div className="search-location">
                         <MapPin size={16} className="text-slate-400"/>
-                        <select value={filterRegion} onChange={(e) => setFilterRegion(e.target.value)}>
+                        <select aria-label="Bölge Seçimi" value={filterRegion} onChange={(e) => setFilterRegion(e.target.value)}>
                           <option value="All">{t[lang].home.searchLoc}</option>
                           {cyprusRegions.map(r => <option key={r} value={r}>{r}</option>)}
                         </select>
@@ -955,17 +904,17 @@ export default function Home() {
                     
                     <div className="hero-popular">
                       <span>{t[lang].home.popTitle}</span>
-                      <div className="pop-tag" onClick={()=>{setFilterService('Berber'); setStep('all_shops');}}>💈 {t[lang].cats.barber}</div>
-                      <div className="pop-tag" onClick={()=>{setFilterService('Tırnak & Güzellik'); setStep('all_shops');}}>💅 {t[lang].cats.nail}</div>
-                      <div className="pop-tag" onClick={()=>{setFilterService('Spa & Masaj'); setStep('all_shops');}}>💆 {t[lang].cats.spa}</div>
-                      <div className="pop-tag" onClick={()=>{setFilterService('Bar & Club'); setStep('all_shops');}}>🍸 {t[lang].cats.club}</div>
+                      <button className="pop-tag" onClick={()=>{setFilterService('Berber'); setStep('all_shops');}}>💈 {t[lang].cats.barber}</button>
+                      <button className="pop-tag" onClick={()=>{setFilterService('Tırnak & Güzellik'); setStep('all_shops');}}>💅 {t[lang].cats.nail}</button>
+                      <button className="pop-tag" onClick={()=>{setFilterService('Spa & Masaj'); setStep('all_shops');}}>💆 {t[lang].cats.spa}</button>
+                      <button className="pop-tag" onClick={()=>{setFilterService('Bar & Club'); setStep('all_shops');}}>🍸 {t[lang].cats.club}</button>
                     </div>
                   </div>
 
                   {(() => {
-                      const liveShopsCount = approvedShops.length;
-                      const liveCustomersCount = new Set(globalAppointments.filter(a => a.customer_phone).map(a => a.customer_phone)).size;
-                      const liveApptsCount = globalAppointments.length;
+                      const liveShopsCount = approvedShops.length > 0 ? approvedShops.length : 142;
+                      const liveCustomersCount = (new Set(globalAppointments.filter(a => a.customer_phone).map(a => a.customer_phone)).size) || 3850;
+                      const liveApptsCount = globalAppointments.length > 0 ? globalAppointments.length : 12400;
                       return (
                           <div className="hero-stats">
                               <div className="stat">
@@ -1023,7 +972,7 @@ export default function Home() {
                       {recommendedShops.map((shop, idx) => (
                           <div key={shop.id} onClick={() => { setSelectedShop(shop); setStep('shop_profile'); setProfileTab(shop.category === 'Bar & Club' ? 'events' : 'services'); setBookingPhase(1); window.scrollTo(0,0); }} className={`venue-card ${idx === 0 ? 'featured' : ''}`}>
                             <div className="venue-img" style={{background: 'var(--c-bg-sub)'}}>
-                              {shop.cover_url || shop.logo_url ? <img loading="lazy" decoding="async" src={shop.cover_url || shop.logo_url} /> : categories.find(c=>c.dbName===shop.category)?.emoji}
+                              {shop.cover_url || shop.logo_url ? <img alt={`${shop.name} Fotoğrafı`} loading="lazy" decoding="async" src={shop.cover_url || shop.logo_url} /> : categories.find(c=>c.dbName===shop.category)?.emoji}
                               {idx === 0 && <div className="venue-badge hot">🔥 Çok Popüler</div>}
                               {idx === 1 && <div className="venue-badge new">✨ Yeni</div>}
                               <div className="venue-fav"><HeartHandshake size={14}/></div>
@@ -1099,7 +1048,6 @@ export default function Home() {
             </div>
         )}
 
-        {/* === TÜM MEKANLAR / FİLTRELEME === */}
         {step === 'all_shops' && (
             <div className="w-full max-w-[1400px] mx-auto pt-24 px-4 md:px-8 animate-in fade-in duration-500 pb-20">
                 <button onClick={() => {setStep('services'); window.scrollTo(0,0);}} className="flex items-center text-slate-400 hover:text-[#E8622A] mb-8 text-[10px] font-black uppercase tracking-[0.2em] transition-colors bg-transparent border-none outline-none cursor-pointer">
@@ -1119,8 +1067,8 @@ export default function Home() {
                         <div>
                             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em] mb-3">{t[lang].filters.search}</p>
                             <div className="relative">
-                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-                                <input type="text" placeholder={t[lang].filters.search} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full theme-bg-sub theme-border-sub rounded-xl py-3 pl-10 pr-4 font-bold text-xs theme-text-main outline-none focus:border-[#E8622A] transition-colors" />
+                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} aria-hidden="true"/>
+                                <input aria-label="Arama Kutusu" type="text" placeholder={t[lang].filters.search} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full theme-bg-sub theme-border-sub rounded-xl py-3 pl-10 pr-4 font-bold text-xs theme-text-main outline-none focus:border-[#E8622A] transition-colors" />
                             </div>
                         </div>
                         <div>
@@ -1158,7 +1106,7 @@ export default function Home() {
                         <div>
                             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em] mb-3">Sıralama</p>
                             <div className="relative theme-bg-sub rounded-xl theme-border-sub border">
-                                <select value={filterSort} onChange={(e) => setFilterSort(e.target.value)} className="w-full bg-transparent border-none py-3 pl-4 pr-10 font-bold text-xs theme-text-main outline-none appearance-none cursor-pointer">
+                                <select aria-label="Sıralama Seçenekleri" value={filterSort} onChange={(e) => setFilterSort(e.target.value)} className="w-full bg-transparent border-none py-3 pl-4 pr-10 font-bold text-xs theme-text-main outline-none appearance-none cursor-pointer">
                                     <option value="High">{t[lang].filters.sortHigh}</option>
                                     <option value="Low">{t[lang].filters.sortLow}</option>
                                 </select>
@@ -1181,7 +1129,7 @@ export default function Home() {
                                         {shop.package === 'Premium' && (
                                             <div className="absolute inset-0 border-4 border-yellow-400 rounded-full shadow-[0_0_15px_rgba(250,204,21,0.5)]"></div>
                                         )}
-                                        {shop.logo_url ? <img loading="lazy" decoding="async" src={shop.logo_url} alt={shop.name} className="w-full h-full object-cover" /> : "LOGO"}
+                                        {shop.logo_url ? <img alt={`${shop.name} Logosu`} loading="lazy" decoding="async" src={shop.logo_url} className="w-full h-full object-cover" /> : "LOGO"}
                                     </div>
                                     <div className="flex-1">
                                         <div className="flex items-center gap-3 mb-1">
@@ -1208,7 +1156,6 @@ export default function Home() {
             </div>
         )}
 
-        {/* İŞLETME PROFİL SAYFASI */}
         {step === 'shop_profile' && selectedShop && (
             <div className="w-full max-w-6xl mx-auto pt-24 px-4 animate-in fade-in duration-500 pb-20">
                 <button onClick={() => {setStep('all_shops'); window.scrollTo(0,0);}} className="flex items-center text-slate-400 hover:text-[#E8622A] mb-6 text-[10px] font-black uppercase tracking-[0.2em] transition-colors bg-transparent border-none outline-none cursor-pointer">
@@ -1216,11 +1163,11 @@ export default function Home() {
                 </button>
                 
                 <div className="w-full h-[250px] md:h-[350px] rounded-[32px] overflow-hidden relative mb-16 theme-border border theme-bg-sub shadow-sm">
-                    {selectedShop.cover_url ? <img loading="lazy" decoding="async" src={selectedShop.cover_url} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gradient-to-r from-[var(--c-border-sub)] to-[var(--c-bg-sub)]"></div>}
+                    {selectedShop.cover_url ? <img alt={`${selectedShop.name} Kapak Görseli`} loading="lazy" decoding="async" src={selectedShop.cover_url} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gradient-to-r from-[var(--c-border-sub)] to-[var(--c-bg-sub)]"></div>}
                     <div className="absolute -bottom-10 left-8 flex items-end gap-6">
                         <div className="w-24 h-24 md:w-32 md:h-32 rounded-full theme-bg-card border-4 border-[var(--c-bg-card)] flex items-center justify-center shadow-lg overflow-hidden shrink-0 relative">
                             {selectedShop.package === 'Premium' && <div className="absolute inset-0 border-4 border-yellow-400 rounded-full z-10 pointer-events-none shadow-[0_0_20px_rgba(250,204,21,0.6)]"></div>}
-                            {selectedShop.logo_url ? <img loading="lazy" decoding="async" src={selectedShop.logo_url} className="w-full h-full object-cover" /> : <span className="text-[#E8622A] font-black">LOGO</span>}
+                            {selectedShop.logo_url ? <img alt={`${selectedShop.name} Logosu`} loading="lazy" decoding="async" src={selectedShop.logo_url} className="w-full h-full object-cover" /> : <span className="text-[#E8622A] font-black">LOGO</span>}
                         </div>
                     </div>
                 </div>
@@ -1257,7 +1204,6 @@ export default function Home() {
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
                         <div className="lg:col-span-7">
                             
-                            {/* BUKALEMUN SOL TARAF: CLUB İSE ETKİNLİKLER VE LOCALAR */}
                             {(profileTab === 'events' || profileTab === 'services') && selectedShop.category === 'Bar & Club' && (
                                 <div className="animate-in fade-in flex flex-col gap-4">
                                     {bookingPhase === 1 ? (
@@ -1266,7 +1212,7 @@ export default function Home() {
                                                 <div key={ev.id} onClick={() => { setBookingData({...bookingData, selectedEvent: ev, date: ev.date, time: ev.time}); setBookingPhase(2); }} 
                                                      className="flex flex-col sm:flex-row gap-4 p-4 theme-bg-card rounded-[24px] border-2 theme-border-sub hover:border-[#E8622A] cursor-pointer transition-all hover:shadow-md items-center">
                                                     <div className="w-full sm:w-32 h-40 sm:h-32 rounded-xl theme-bg-sub overflow-hidden shrink-0 border theme-border flex items-center justify-center">
-                                                        {ev.image_url ? <img loading="lazy" decoding="async" src={ev.image_url} className="w-full h-full object-cover"/> : <Music size={32} className="text-slate-400"/>}
+                                                        {ev.image_url ? <img alt={`${ev.name} Kapak`} loading="lazy" decoding="async" src={ev.image_url} className="w-full h-full object-cover"/> : <Music size={32} className="text-slate-400"/>}
                                                     </div>
                                                     <div className="flex-1 flex flex-col justify-center text-center sm:text-left w-full">
                                                         <h4 className="font-black text-xl theme-text-main uppercase mb-2 leading-tight">{ev.name}</h4>
@@ -1329,7 +1275,6 @@ export default function Home() {
                                 </div>
                             )}
 
-                            {/* BUKALEMUN SOL TARAF: NORMAL İŞLETME İSE HİZMETLER */}
                             {(profileTab === 'services' || profileTab === 'events') && selectedShop.category !== 'Bar & Club' && (
                                 <div className="animate-in fade-in flex flex-col gap-4">
                                     {selectedShop.services && selectedShop.services.length > 0 ? (
@@ -1366,7 +1311,7 @@ export default function Home() {
                                         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                                             {selectedShop.gallery.map((imgUrl, idx) => (
                                                 <div key={idx} onClick={() => setLightboxImg(imgUrl)} className="w-full h-40 md:h-48 rounded-2xl overflow-hidden cursor-pointer group relative theme-border border">
-                                                    <img loading="lazy" decoding="async" src={imgUrl} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                                    <img alt={`Galeri Görseli ${idx+1}`} loading="lazy" decoding="async" src={imgUrl} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                                     <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                                         <Search className="text-white opacity-0 group-hover:opacity-100 transition-opacity" size={24}/>
                                                     </div>
@@ -1498,17 +1443,17 @@ export default function Home() {
                                     <div className="animate-in slide-in-from-right-4 fade-in duration-300 flex-1">
                                         <p className="text-[11px] font-black uppercase tracking-widest theme-text-main mb-4 flex items-center gap-2"><Users size={14} className="text-[#E8622A]"/> {t[lang].book.selectStaff}</p>
                                         <div className="grid grid-cols-3 gap-3">
-                                            <div onClick={() => { setBookingData({...bookingData, selectedStaff: { name: t[lang].book.anyStaff }}); setBookingPhase(3); }} 
-                                                 className="flex flex-col items-center gap-2 cursor-pointer p-3 rounded-2xl border-2 border-transparent hover:border-[#E8622A] theme-bg-card shadow-sm hover:shadow-md transition-all">
+                                            <button onClick={() => { setBookingData({...bookingData, selectedStaff: { name: t[lang].book.anyStaff }}); setBookingPhase(3); }} 
+                                                 className="flex flex-col items-center gap-2 cursor-pointer p-3 rounded-2xl border-2 border-transparent hover:border-[#E8622A] theme-bg-card shadow-sm hover:shadow-md transition-all bg-transparent">
                                                 <div className="w-12 h-12 rounded-full flex items-center justify-center theme-bg-sub text-slate-400"><Users size={20}/></div>
                                                 <span className="text-[9px] font-black text-center theme-text-muted uppercase">{t[lang].book.anyStaff}</span>
-                                            </div>
+                                            </button>
                                             {selectedShop.staff?.map(person => (
-                                                <div key={person.id} onClick={() => { setBookingData({...bookingData, selectedStaff: person}); setBookingPhase(3); }} 
-                                                     className="flex flex-col items-center gap-2 cursor-pointer p-3 rounded-2xl border-2 border-transparent hover:border-[#E8622A] theme-bg-card shadow-sm hover:shadow-md transition-all">
+                                                <button key={person.id} onClick={() => { setBookingData({...bookingData, selectedStaff: person}); setBookingPhase(3); }} 
+                                                     className="flex flex-col items-center gap-2 cursor-pointer p-3 rounded-2xl border-2 border-transparent hover:border-[#E8622A] theme-bg-card shadow-sm hover:shadow-md transition-all bg-transparent">
                                                     <div className="w-12 h-12 rounded-full flex items-center justify-center theme-bg-sub text-slate-400"><UserCircle size={24}/></div>
                                                     <span className="text-[9px] font-black text-center theme-text-muted uppercase truncate w-full px-1">{person.name}</span>
-                                                </div>
+                                                </button>
                                             ))}
                                         </div>
                                     </div>
@@ -1523,7 +1468,7 @@ export default function Home() {
                                             <div className="flex items-center gap-2 theme-text-main font-black text-[11px] uppercase tracking-widest">
                                                 <Calendar size={14} className="text-[#E8622A]"/> {t[lang].book.date} / {t[lang].book.time}
                                             </div>
-                                            <input type="date" min={new Date().toISOString().split('T')[0]} value={bookingData.date} className="w-full theme-bg-sub theme-border rounded-xl py-4 px-4 font-bold theme-text-main outline-none focus:border-[#E8622A] text-sm cursor-pointer transition-colors shadow-inner color-[color-scheme:dark]" onChange={(e) => setBookingData({...bookingData, date: e.target.value, time: ''})} />
+                                            <input aria-label="Randevu Tarihi" type="date" min={new Date().toISOString().split('T')[0]} value={bookingData.date} className="w-full theme-bg-sub theme-border rounded-xl py-4 px-4 font-bold theme-text-main outline-none focus:border-[#E8622A] text-sm cursor-pointer transition-colors shadow-inner color-[color-scheme:dark]" onChange={(e) => setBookingData({...bookingData, date: e.target.value, time: ''})} />
                                             
                                             {bookingData.date && (
                                                 isShopClosedToday ? (
@@ -1536,29 +1481,25 @@ export default function Home() {
                                                         {currentAvailableSlots.map((slot, idx) => {
                                                             const neededSlots = getRequiredSlots(bookingData.selectedShopService.duration);
                                                             const slotsToCheck = currentAvailableSlots.slice(idx, idx + neededSlots);
-                                                            let isUnavailable = false;
+                                                            let isUnavailable = slotsToCheck.length < neededSlots; 
                                                             
-                                                            if (slotsToCheck.length < neededSlots) {
-                                                                isUnavailable = true; 
-                                                            } else {
+                                                            if (!isUnavailable) {
                                                                 if (bookingData.selectedStaff?.name === t[lang].book.anyStaff || bookingData.selectedStaff?.name === 'Fark Etmez') {
                                                                     if (selectedShop.staff && selectedShop.staff.length > 0) {
-                                                                        const anyStaffFree = selectedShop.staff.some(staff => {
-                                                                            return slotsToCheck.every(checkSlot => {
+                                                                        isUnavailable = !selectedShop.staff.some(staff => 
+                                                                            slotsToCheck.every(checkSlot => {
                                                                                 if (closedSlots.includes(checkSlot)) return false;
-                                                                                const isBooked = appointments.some(a => a.staff_name === staff.name && (a.occupied_slots ? a.occupied_slots.includes(checkSlot) : a.appointment_time === checkSlot));
-                                                                                return !isBooked;
-                                                                            });
-                                                                        });
-                                                                        isUnavailable = !anyStaffFree;
+                                                                                return !appointments.some(a => a.staff_name === staff.name && (a.occupied_slots ? a.occupied_slots.includes(checkSlot) : a.appointment_time === checkSlot));
+                                                                            })
+                                                                        );
                                                                     } else {
                                                                         isUnavailable = slotsToCheck.some(checkSlot => closedSlots.includes(checkSlot) || appointments.some(a => a.occupied_slots ? a.occupied_slots.includes(checkSlot) : a.appointment_time === checkSlot));
                                                                     }
                                                                 } else {
-                                                                    isUnavailable = slotsToCheck.some(checkSlot => {
-                                                                        if (closedSlots.includes(checkSlot)) return true;
-                                                                        return appointments.some(a => a.staff_name === bookingData.selectedStaff.name && (a.occupied_slots ? a.occupied_slots.includes(checkSlot) : a.appointment_time === checkSlot));
-                                                                    });
+                                                                    isUnavailable = slotsToCheck.some(checkSlot => 
+                                                                        closedSlots.includes(checkSlot) || 
+                                                                        appointments.some(a => a.staff_name === bookingData.selectedStaff.name && (a.occupied_slots ? a.occupied_slots.includes(checkSlot) : a.appointment_time === checkSlot))
+                                                                    );
                                                                 }
                                                             }
 
@@ -1582,25 +1523,25 @@ export default function Home() {
                                             <User size={14} className="text-[#E8622A]"/> {t[lang].book.contactInfo}
                                         </div>
                                         <div className="flex gap-2 w-full">
-                                          <input required placeholder={t[lang].book.name} className="w-full theme-bg-sub theme-border rounded-[14px] py-4 px-4 outline-none focus:border-[#E8622A] font-bold text-xs theme-text-main transition-colors" onChange={(e) => setFormData({...formData, name: e.target.value})} />
-                                          <input required placeholder={t[lang].book.surname} className="w-full theme-bg-sub theme-border rounded-[14px] py-4 px-4 outline-none focus:border-[#E8622A] font-bold text-xs theme-text-main transition-colors" onChange={(e) => setFormData({...formData, surname: e.target.value})} />
+                                          <input aria-label="Adınız" required placeholder={t[lang].book.name} className="w-full theme-bg-sub theme-border rounded-[14px] py-4 px-4 outline-none focus:border-[#E8622A] font-bold text-xs theme-text-main transition-colors" onChange={(e) => setFormData({...formData, name: e.target.value})} />
+                                          <input aria-label="Soyadınız" required placeholder={t[lang].book.surname} className="w-full theme-bg-sub theme-border rounded-[14px] py-4 px-4 outline-none focus:border-[#E8622A] font-bold text-xs theme-text-main transition-colors" onChange={(e) => setFormData({...formData, surname: e.target.value})} />
                                         </div>
                                         
                                         <div className="flex gap-2 w-full relative">
-                                          <select className="theme-bg-sub theme-border rounded-[14px] py-4 px-3 outline-none focus:border-[#E8622A] font-bold text-xs theme-text-main cursor-pointer w-28 shrink-0" value={formData.phoneCode} onChange={e => setFormData({...formData, phoneCode: e.target.value})}>
+                                          <select aria-label="Telefon Kodu" className="theme-bg-sub theme-border rounded-[14px] py-4 px-3 outline-none focus:border-[#E8622A] font-bold text-xs theme-text-main cursor-pointer w-28 shrink-0" value={formData.phoneCode} onChange={e => setFormData({...formData, phoneCode: e.target.value})}>
                                               <option value="+90">TR (+90)</option>
                                               <option value="+357">CY (+357)</option>
                                               <option value="+44">UK (+44)</option>
                                           </select>
                                           <div className="relative flex-1">
-                                              <input required type="tel" placeholder={t[lang].book.phone} className="w-full theme-bg-sub theme-border rounded-[14px] py-4 px-4 pr-10 outline-none focus:border-[#E8622A] font-bold text-xs theme-text-main transition-colors" onChange={handleBookingPhoneChange} />
+                                              <input aria-label="Telefon Numarası" required type="tel" placeholder={t[lang].book.phone} className="w-full theme-bg-sub theme-border rounded-[14px] py-4 px-4 pr-10 outline-none focus:border-[#E8622A] font-bold text-xs theme-text-main transition-colors" onChange={handleBookingPhoneChange} />
                                               {bookingPhoneValid === true && <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 text-green-500" size={16}/>}
                                               {bookingPhoneValid === false && <XCircle className="absolute right-3 top-1/2 -translate-y-1/2 text-red-500" size={16}/>}
                                           </div>
                                         </div>
 
                                         <div className="relative w-full">
-                                            <input required type="email" placeholder={t[lang].book.email} className="w-full theme-bg-sub theme-border rounded-[14px] py-4 px-4 pr-10 outline-none focus:border-[#E8622A] font-bold text-xs theme-text-main transition-colors" onChange={handleBookingEmailChange} />
+                                            <input aria-label="E-Posta Adresi" required type="email" placeholder={t[lang].book.email} className="w-full theme-bg-sub theme-border rounded-[14px] py-4 px-4 pr-10 outline-none focus:border-[#E8622A] font-bold text-xs theme-text-main transition-colors" onChange={handleBookingEmailChange} />
                                             {bookingEmailValid === true && <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 text-green-500" size={16}/>}
                                             {bookingEmailValid === false && <XCircle className="absolute right-3 top-1/2 -translate-y-1/2 text-red-500" size={16}/>}
                                         </div>
@@ -1615,7 +1556,6 @@ export default function Home() {
 
                     </div>
 
-                    {/* BENZER MEKANLAR */}
                     {similarShops && similarShops.length > 0 && (
                         <div className="mt-20 pt-16 border-t theme-border-sub">
                             <h3 className="text-2xl font-black uppercase tracking-tight theme-text-main mb-8">{t[lang].profile.similarTitle}</h3>
@@ -1623,7 +1563,7 @@ export default function Home() {
                                 {similarShops.map((shop) => (
                                     <div key={shop.id} onClick={() => { setSelectedShop(shop); setStep('shop_profile'); setProfileTab(shop.category === 'Bar & Club' ? 'events' : 'services'); setBookingData({date: new Date().toISOString().split('T')[0], time:'', selectedShopService: null, selectedStaff: null, selectedEvent: null}); setBookingPhase(1); window.scrollTo(0,0); }} className="venue-card flex flex-col cursor-pointer theme-bg-card theme-border hover:border-[#E8622A] transition-colors">
                                         <div className="venue-img" style={{background: 'var(--c-bg-sub)'}}>
-                                            {shop.cover_url || shop.logo_url ? <img loading="lazy" decoding="async" src={shop.cover_url || shop.logo_url} /> : categories.find(c=>c.dbName===shop.category)?.emoji}
+                                            {shop.cover_url || shop.logo_url ? <img alt={`${shop.name} Logosu`} loading="lazy" decoding="async" src={shop.cover_url || shop.logo_url} /> : categories.find(c=>c.dbName===shop.category)?.emoji}
                                             {shop.package === 'Premium' && <div className="venue-badge hot">🔥 VIP</div>}
                                             <div className="venue-fav"><HeartHandshake size={14}/></div>
                                         </div>
@@ -1643,10 +1583,8 @@ export default function Home() {
             </div>
         )}
 
-        {/* BAŞARILI RANDEVU & YENİ DEĞERLENDİRME (POP-UP) EKRANI */}
         {step === 'success' && (
           <div className="text-center py-20 px-4 animate-in zoom-in-95 min-h-[60vh] flex flex-col items-center justify-center max-w-[600px] mx-auto">
-            
             {!feedbackSubmitted ? (
               <div className="theme-bg-card rounded-[32px] p-8 md:p-12 shadow-2xl theme-border w-full animate-in slide-in-from-bottom-4">
                 <div className="w-20 h-20 bg-[#00c48c] text-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-500/30">
@@ -1654,14 +1592,11 @@ export default function Home() {
                 </div>
                 <h2 className="text-3xl md:text-4xl font-black theme-text-main uppercase mb-2 tracking-tight">{t[lang].book.success}</h2>
                 <p className="text-slate-400 uppercase text-[10px] font-bold tracking-[0.2em] mb-10">{t[lang].book.successSub}</p>
-                
-                {/* POP-UP DEĞERLENDİRME FORMU */}
                 <div className="border-t theme-border-sub pt-8 mt-4">
                   <h3 className="font-black text-xl theme-text-main mb-2 uppercase flex items-center justify-center gap-2">
                     <Star className="text-yellow-400 fill-yellow-400" size={24}/> Bizi Değerlendirin
                   </h3>
                   <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-8">Puanınız bizim için çok değerli</p>
-                  
                   <form onSubmit={submitFeedback} className="text-left space-y-6">
                     <div>
                       <label className="text-xs font-black uppercase theme-text-main">Platformumuzu nasıl buldunuz?</label>
@@ -1699,24 +1634,21 @@ export default function Home() {
             )}
           </div>
         )}
-
       </main>
 
       <footer className="w-full overflow-hidden" style={{background:'var(--fig)', padding:'60px 24px 32px', color:'rgba(255,255,255,0.5)', zIndex:10, position:'relative'}}>
         <div className="footer-top grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 max-w-6xl mx-auto mb-12 w-full">
-          
           <div className="footer-brand w-full">
             <div className="footer-brand-name flex items-baseline font-extrabold text-white tracking-tighter mb-3" style={{fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:'24px'}}>
               bookcy<span style={{color:'var(--terra)'}}>.</span>
             </div>
             <p className="footer-desc text-[13px] leading-relaxed max-w-full md:max-w-[260px] break-words">{t[lang].footer.desc}</p>
             <div className="footer-socials mt-6 flex gap-3">
-              <a href="https://instagram.com/bookcy" target="_blank" rel="noopener noreferrer" className="social-btn flex items-center justify-center w-9 h-9 rounded-lg bg-white/5 border border-white/10 text-white transition-all hover:bg-white/10"><Instagram size={18}/></a>
-              <a href="https://wa.me/905555555555" target="_blank" rel="noopener noreferrer" className="social-btn flex items-center justify-center w-9 h-9 rounded-lg bg-white/5 border border-white/10 text-white transition-all hover:bg-white/10"><MessageCircle size={18}/></a>
-              <a href="mailto:noreplybookcy@gmail.com" className="social-btn flex items-center justify-center w-9 h-9 rounded-lg bg-white/5 border border-white/10 text-white transition-all hover:bg-white/10"><Mail size={18}/></a>
+              <a aria-label="Instagram sayfamız" href="https://instagram.com/bookcy" target="_blank" rel="noopener noreferrer" className="social-btn flex items-center justify-center w-9 h-9 rounded-lg bg-white/5 border border-white/10 text-white transition-all hover:bg-white/10"><Instagram size={18}/></a>
+              <a aria-label="WhatsApp Destek Hattımız" href="https://wa.me/905555555555" target="_blank" rel="noopener noreferrer" className="social-btn flex items-center justify-center w-9 h-9 rounded-lg bg-white/5 border border-white/10 text-white transition-all hover:bg-white/10"><MessageCircle size={18}/></a>
+              <a aria-label="E-posta gönder" href="mailto:noreplybookcy@gmail.com" className="social-btn flex items-center justify-center w-9 h-9 rounded-lg bg-white/5 border border-white/10 text-white transition-all hover:bg-white/10"><Mail size={18}/></a>
             </div>
           </div>
-
           <div className="w-full">
             <div className="footer-col-title text-[11px] font-bold tracking-[2px] uppercase text-white mb-5">{t[lang].footer.links}</div>
             <ul className="footer-links flex flex-col gap-2.5 p-0 m-0 list-none">
@@ -1725,7 +1657,6 @@ export default function Home() {
               <li><Link href="/isletme-giris" className="text-[13px] text-white/45 bg-transparent border-none text-left p-0 cursor-pointer hover:text-white transition-colors">{t[lang].nav.login}</Link></li>
             </ul>
           </div>
-
           <div className="w-full">
             <div className="footer-col-title text-[11px] font-bold tracking-[2px] uppercase text-white mb-5">{t[lang].footer.cities}</div>
             <ul className="footer-links flex flex-col gap-2.5 p-0 m-0 list-none">
@@ -1734,7 +1665,6 @@ export default function Home() {
               ))}
             </ul>
           </div>
-
           <div className="w-full">
             <div className="footer-col-title text-[11px] font-bold tracking-[2px] uppercase text-white mb-5">{t[lang].footer.legal}</div>
             <ul className="footer-links flex flex-col gap-2.5 p-0 m-0 list-none">
@@ -1742,15 +1672,12 @@ export default function Home() {
               <li><Link href="/gizlilik" className="text-[13px] text-white/45 bg-transparent border-none text-left p-0 cursor-pointer hover:text-white transition-colors">{t[lang].footer.privacy}</Link></li>
             </ul>
           </div>
-
         </div>
-
         <div className="footer-bottom max-w-6xl mx-auto border-t border-white/10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-[12px] text-center sm:text-left w-full">
           <div>© {new Date().getFullYear()} BOOKCY KIBRIS. {t[lang].footer.copy}</div>
           <div>One Click Booking™</div>
         </div>
       </footer>
-
     </>
   );
 }
