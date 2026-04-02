@@ -66,3 +66,11 @@ body {
 .theme-text-main { color: var(--c-text-main) !important; }
 .theme-text-muted { color: var(--c-text-muted) !important; }
 .theme-text-light { color: var(--c-text-light) !important; }
+
+/* MEGA MENÜ YAZI RENKLERİNİ KURTARMA OPERASYONU */
+.nav-links ul a {
+    color: #cbd5e1 !important; 
+}
+.nav-links ul a:hover {
+    color: #ffffff !important;
+}
