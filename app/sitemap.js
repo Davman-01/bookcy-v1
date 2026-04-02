@@ -1,14 +1,11 @@
-// Dosya Yolu: app/sitemap.js
-
 export default function sitemap() {
-  const baseUrl = 'https://www.bookcy.co'; // Canlı domain adresimiz
+  const baseUrl = 'https://www.bookcy.co';
 
   return [
-    {
-      url: `${baseUrl}`,
-      lastModified: new Date(),
-      changeFrequency: 'daily', // Google'a "Sitemiz her gün güncelleniyor, sık sık gel" diyoruz
-      priority: 1.0, // En yüksek öncelik
-    }
+    { url: baseUrl, lastModified: new Date() },
+    { url: `${baseUrl}/ozellikler`, lastModified: new Date() },
+    { url: `${baseUrl}/hakkimizda`, lastModified: new Date() },
+    { url: `${baseUrl}/iletisim`, lastModified: new Date() },
+    { url: `${baseUrl}/isletme-giris`, lastModified: new Date() },
   ];
 }
