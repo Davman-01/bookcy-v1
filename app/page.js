@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link'; // 🔥 YENİ EKLENDİ
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { 
@@ -29,12 +30,6 @@ const allTimeSlots = [
   "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30", 
   "00:00", "00:30", "01:00", "01:30", "02:00"
 ];
-
-const eventTimeSlots = Array.from({length: 48}, (_, i) => {
-  const h = Math.floor(i / 2).toString().padStart(2, '0');
-  const m = i % 2 === 0 ? '00' : '30';
-  return `${h}:${m}`;
-});
 
 const defaultWorkingHours = [
   { day: 'Pazartesi', open: '09:00', close: '19:00', isClosed: false },
@@ -76,7 +71,6 @@ export default function Home() {
   const [shops, setShops] = useState([]);
   const [lang, setLang] = useState('TR');
   const [showFeaturesMenu, setShowFeaturesMenu] = useState(false);
-  const [activeFeature, setActiveFeature] = useState(null);
   
   const approvedShops = shops.filter(shop => shop.status === 'approved');
   const [selectedShop, setSelectedShop] = useState(null);
@@ -92,7 +86,7 @@ export default function Home() {
   const [formData, setFormData] = useState({ name: '', surname: '', phoneCode: '+90', phone: '', email: '' });
   const [bookingPhase, setBookingPhase] = useState(1);
 
-  // RANDEVU FORMU DOĞRULAMA (✅ ❌)
+  // RANDEVU FORMU DOĞRULAMA
   const [bookingEmailValid, setBookingEmailValid] = useState(null);
   const [bookingPhoneValid, setBookingPhoneValid] = useState(null);
 
@@ -107,55 +101,13 @@ export default function Home() {
     setBookingPhoneValid(val === '' ? null : val.replace(/\s/g, '').length >= 7);
   };
 
-  // DEĞERLENDİRME (POP-UP) SİSTEMİ STATELERİ
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const [feedbackData, setFeedbackData] = useState({ q1: null, q2: null, q3: null, q4: null });
-
-  const [showRegister, setShowRegister] = useState(false);
   const [loggedInShop, setLoggedInShop] = useState(null);
-
-  const [showLogin, setShowLogin] = useState(false);
-  const [loginType, setLoginType] = useState('owner');
-  const [loginUsername, setLoginUsername] = useState('');
-  const [loginPassword, setLoginPassword] = useState('');
-  const [loginStaffName, setLoginStaffName] = useState('');
-  const [isLoginLoading, setIsLoginLoading] = useState(false);
-
   const [filterRegion, setFilterRegion] = useState('All');
   const [filterService, setFilterService] = useState('All');
   const [filterSort, setFilterSort] = useState('High'); 
   const [searchQuery, setSearchQuery] = useState('');
-
-  // İŞLETME KAYIT STATELERİ (Google Maps dahil)
-  const [newShop, setNewShop] = useState({ 
-    name: '', category: 'Berber', location: 'Girne', address: '', maps_link: '', 
-    phoneCode: '+90', contactPhone: '', contactInsta: '', contactEmail: '', 
-    username: '', password: '', email: '', description: '', logoFile: null, package: 'Standard' 
-  });
-  
-  const [isUploading, setIsUploading] = useState(false);
-  const [registerSuccess, setRegisterSuccess] = useState(false);
-  
-  // KAYIT FORMU DOĞRULAMA STATELERİ (✅ ❌)
-  const [emailValid, setEmailValid] = useState(null);
-  const [phoneValid, setPhoneValid] = useState(null);
-  const [adminEmailValid, setAdminEmailValid] = useState(null);
-
-  const handleEmailChange = (e) => {
-    const val = e.target.value;
-    setNewShop(prev => ({...prev, email: val}));
-    setEmailValid(val === '' ? null : /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val));
-  };
-  const handleAdminEmailChange = (e) => {
-    const val = e.target.value;
-    setNewShop(prev => ({...prev, contactEmail: val}));
-    setAdminEmailValid(val === '' ? null : /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val));
-  };
-  const handlePhoneChange = (e) => {
-    const val = e.target.value;
-    setNewShop(prev => ({...prev, contactPhone: val}));
-    setPhoneValid(val === '' ? null : val.replace(/\s/g, '').length >= 7);
-  };
 
   const [appointments, setAppointments] = useState([]);
   const [globalAppointments, setGlobalAppointments] = useState([]); 
@@ -165,873 +117,110 @@ export default function Home() {
 
   const cyprusRegions = ["Girne", "Lefkoşa", "Mağusa", "İskele", "Güzelyurt", "Lefke"];
 
-  // DİL ÇEVİRİ PAKETLERİ
   const t = {
     TR: {
       nav: { 
-        places: "Mekanlar", 
-        features: "Özellikler", 
-        contact: "İletişim", 
-        about: "Hakkımızda ve Paketler", 
-        addShop: "İşletme Ekle", 
-        login: "İşletme Girişi", 
-        logout: "Çıkış Yap", 
-        dashboard: "Panelime Git" 
+        places: "Mekanlar", features: "Özellikler", contact: "İletişim", about: "Hakkımızda ve Paketler", addShop: "İşletme Ekle", login: "İşletme Girişi", logout: "Çıkış Yap", dashboard: "Panelime Git" 
       },
       megaMenu: { 
-        col1Title: "Kurulum", 
-        col2Title: "Müşterileri Etkile", 
-        col3Title: "İşletmeni Yönet", 
-        col4Title: "Büyümeye Devam Et", 
-        btn: "Tüm Özellikleri Keşfet" 
+        col1Title: "Kurulum", col2Title: "Müşterileri Etkile", col3Title: "İşletmeni Yönet", col4Title: "Büyümeye Devam Et", btn: "Tüm Özellikleri Keşfet" 
       },
       featNames: { 
-        profile: "Bookcy Profili", 
-        market: "Pazaryeri Listeleme", 
-        team: "Ekip Yönetimi", 
-        booking: "Online Randevu", 
-        app: "Müşteri Uygulaması", 
-        marketing: "Pazarlama Araçları", 
-        calendar: "Takvim & Planlama", 
-        crm: "Müşteri Yönetimi", 
-        boost: "Öne Çık", 
-        stats: "İstatistik & Raporlar" 
-      },
-      featDesc: {
-        profile: "İşletmenizin dijital vitrinini saniyeler içinde oluşturun. Hizmetlerinizi ve çalışma saatlerinizi sergileyin.",
-        market: "Bookcy kullanan binlerce aktif müşteriye doğrudan ulaşın. Boş koltuklarınızı hızla doldurun.",
-        team: "Personelinizin çalışma saatlerini ve randevu performanslarını tek bir ekrandan kolayca yönetin.",
-        booking: "Müşterilerinizin telefon açmadan, saniyeler içinde 7/24 randevu almasını sağlayın.",
-        app: "Müşterilerinize özel mobil uygulama konforu sunun. Randevularını kolayca takip etsinler.",
-        marketing: "Doğru zamanda doğru mesajı gönderin. SMS ve E-posta kampanyalarıyla sadakat yaratın.",
-        calendar: "Karmaşık ajandaları unutun. Akıllı dijital takvim ile çakışmaları önleyin.",
-        crm: "Müşteri geçmişini ve özel notlarınızı güvenle saklayıp onlara kendilerini özel hissettirin.",
-        boost: "Bölgenizdeki aramalarda üst sıralara çıkarak rakiplerinizin önüne geçin.",
-        stats: "Hangi hizmetten ne kadar kazandığınızı anlık ve net raporlarla görün."
-      },
-      featDetails: {
-        profile: { 
-          purpose: "Bookcy Profili, işletmenizin çevrimiçi ortamdaki 7/24 açık dijital vitrinidir.", 
-          adv1: { title: "Profesyonel İmaj", desc: "Kaliteli fotoğraflar ve detaylı menü ile ilk intibanızı güçlendirin." }, 
-          adv2: { title: "Güven İnşası", desc: "Doğrulanmış müşteri yorumları sayesinde güveni hızla kazanın." }, 
-          adv3: { title: "Kolay Keşfedilebilirlik", desc: "Arama motorlarında işletmenizin daha üst sıralarda bulunmasını sağlar." } 
-        },
-        market: { 
-          purpose: "Pazaryeri Listeleme, hizmet arayan binlerce hazır müşteriyi doğrudan sizin işletmenizle buluşturur.", 
-          adv1: { title: "Yeni Müşteriler", desc: "Bölgenizde hizmet arayan binlerce aktif kullanıcıya ulaşın." }, 
-          adv2: { title: "Boşlukları Doldurun", desc: "İptal edilen randevuları pazar yerinde sergileyerek zarar etmekten kurtulun." }, 
-          adv3: { title: "Rekabet Avantajı", desc: "Rakiplerinizin önünde yer alarak marka bilinirliğinizi yükseltin." } 
-        },
-        team: { 
-          purpose: "Ekip Yönetimi, personelinizin mesailerini zahmetsizce koordine etmenizi sağlar.", 
-          adv1: { title: "Kolay Planlama", desc: "Vardiyaları ve molaları dijital olarak düzenleyerek hataları önleyin." }, 
-          adv2: { title: "Performans Takibi", desc: "Hangi personelinizin ne kadar gelir getirdiğini anlık görün." }, 
-          adv3: { title: "Bireysel Takvimler", desc: "Her çalışana özel takvim sunarak çakışmaları tamamen ortadan kaldırın." } 
-        },
-        booking: { 
-          purpose: "Online Randevu, müşterilerinizin 7/24 otonom olarak kendi randevularını oluşturmasını sağlar.", 
-          adv1: { title: "Zaman Tasarrufu", desc: "Randevu telefonlarına cevap vermek yerine işinize odaklanın." }, 
-          adv2: { title: "Sıfır Hata", desc: "İnsan kaynaklı not alma hatalarını ve randevu çakışmalarını sıfıra indirin." }, 
-          adv3: { title: "Kesintisiz Hizmet", desc: "İşletmeniz kapalıyken bile rezervasyon kabul etmeye devam edin." } 
-        },
-        app: { 
-          purpose: "Müşteri Uygulaması, işletmenizle müşterilerinizin pürüzsüz bir bağ kurmalarını sağlar.", 
-          adv1: { title: "Kusursuz Deneyim", desc: "Kullanıcı dostu bir arayüzle VIP a deneyim sunun." }, 
-          adv2: { title: "Kolay Takip", desc: "Müşterilerinizin yaklaşan randevularını kendi ekranlarından takip etmelerini sağlayın." }, 
-          adv3: { title: "Anlık İptal", desc: "Gelemeyeceği randevuyu anında iptal edebilir, saat takviminize boş yansır." } 
-        },
-        marketing: { 
-          purpose: "Pazarlama Araçları, eski müşterilerinizi geri kazanmanızı sağlayan iletişim asistanınızdır.", 
-          adv1: { title: "Hedefli Kampanyalar", desc: "Uzun süredir gelmeyen müşterilerinize özel fırsatlar sunun." }, 
-          adv2: { title: "SMS ve E-posta", desc: "Özel günlerde otomatik kutlama ve indirim mesajları gönderin." }, 
-          adv3: { title: "Ciro Artışı", desc: "Akıllı hatırlatmalarla müşteri ziyaret sıklığını ve gelirinizi artırın." } 
-        },
-        calendar: { 
-          purpose: "Akıllı dijital takvim, randevuları kusursuz bir matematikle organize eden yapıdır.", 
-          adv1: { title: "Çakışma Koruması", desc: "Aynı saate iki farklı müşterinin randevu almasını imkansız hale getirir." }, 
-          adv2: { title: "Boşluk Optimizasyonu", desc: "Takvimdeki boşlukları analiz eder ve sadece uygun kombinasyonları gösterir." }, 
-          adv3: { title: "Sürükle & Bırak", desc: "Randevu saatlerini farenizle sürükleyerek anında değiştirin." } 
-        },
-        crm: { 
-          purpose: "Müşteri Yönetimi, her müşterinizin geçmişini ve tercihlerini güvenle saklayan arşivinizdir.", 
-          adv1: { title: "Müşteri Profili", desc: "Müşterinizin en son ne zaman geldiğini ve hangi işlemi yaptırdığını görün." }, 
-          adv2: { title: "Özel Notlar", desc: "Kahve tercihinden, saç boya numarasına kadar detayları sisteme kaydedin." }, 
-          adv3: { title: "Sadakat İnşası", desc: "Müşterilerinize onları tanıdığınızı hissettirerek kırılmaz bir bağ oluşturun." } 
-        },
-        boost: { 
-          purpose: "Öne Çık, görünürlüğünüzü yapay zeka destekli olarak en üst seviyeye taşıyan pakettir.", 
-          adv1: { title: "Aramalarda Zirve", desc: "Hizmet arayan müşterilerde listelerde her zaman en üst sıralarda yer alın." }, 
-          adv2: { title: "Ana Sayfa Vitrini", desc: "Uygulamaya giren müşterilere 'Önerilenler' listesinde doğrudan gösterilin." }, 
-          adv3: { title: "Prestijli İmaj", desc: "Öne çıkan mekan rozetleriyle kalitesinizi vurgulayın." } 
-        },
-        stats: { 
-          purpose: "İstatistik & Raporlar, işletmenizin verilerle doğru kararlar almanızı sağlayan sistemdir.", 
-          adv1: { title: "Gerçek Zamanlı Ciro", desc: "Günlük, haftalık veya aylık kazançlarınızı anlık olarak takip edin." }, 
-          adv2: { title: "Hizmet Analizi", desc: "Size en fazla kar getiren hizmetlerinizi tespit ederek stratejinizi belirleyin." }, 
-          adv3: { title: "Personel Raporları", desc: "Hangi uzmanın daha çok randevu aldığını ve yüksek puanlandığını görün." } 
-        }
-      },
-      featUI: { 
-        purposeTitle: "Amacı ve Ne İşe Yarar?", 
-        benefitsTitle: "İşletmenize Sağlayacağı Avantajlar", 
-        allFeaturesTitle: "Tüm Bookcy Özellikleri", 
-        allFeaturesSub: "İşletmenizi büyütmek, zaman kazanmak ve müşteri memnuniyetini artırmak için ihtiyacınız olan her şey." 
+        profile: "Bookcy Profili", market: "Pazaryeri Listeleme", team: "Ekip Yönetimi", booking: "Online Randevu", app: "Müşteri Uygulaması", marketing: "Pazarlama Araçları", calendar: "Takvim & Planlama", crm: "Müşteri Yönetimi", boost: "Öne Çık", stats: "İstatistik & Raporlar" 
       },
       home: { 
-        eyebrow: "Kıbrıs'ın #1 Güzellik Platformu", 
-        title1: "Kendine", 
-        title2: "iyi bak,", 
-        title3: "hemen rezerve", 
-        title4: "et.", 
-        subtitle: "Yakınındaki en iyi berber, kuaför, spa ve güzellik uzmanlarını bul. Tek tıkla randevu al, zamanın senin.", 
-        searchPlace: "Hizmet veya mekan ara...", 
-        searchLoc: "Nerede?", 
-        searchBtn: "Ara", 
-        popTitle: "Popüler:", 
-        stats: {s1:"Aktif İşletme", s2:"Mutlu Müşteri", s3:"Tamamlanan İşlem", s4:"Müşteri Memnuniyeti"} 
+        eyebrow: "Kıbrıs'ın #1 Güzellik Platformu", title1: "Kendine", title2: "iyi bak,", title3: "hemen rezerve", title4: "et.", subtitle: "Yakınındaki en iyi berber, kuaför, spa ve güzellik uzmanlarını bul. Tek tıkla randevu al, zamanın senin.", searchPlace: "Hizmet veya mekan ara...", searchLoc: "Nerede?", searchBtn: "Ara", popTitle: "Popüler:", stats: {s1:"Aktif İşletme", s2:"Mutlu Müşteri", s3:"Tamamlanan İşlem", s4:"Müşteri Memnuniyeti"} 
       },
       cats: { 
-        catTitle: "Kategoriler", 
-        catSub: "Ne arıyorsun?", 
-        seeAll: "Tümünü Gör →", 
-        tattoo: "Dövme", 
-        barber: "Berber", 
-        hair: "Kuaför", 
-        nail: "Tırnak & Güzellik", 
-        club: "Bar & Club", 
-        spa: "Spa & Masaj", 
-        makeup: "Makyaj", 
-        skincare: "Cilt Bakımı" 
+        catTitle: "Kategoriler", catSub: "Ne arıyorsun?", seeAll: "Tümünü Gör →", tattoo: "Dövme", barber: "Berber", hair: "Kuaför", nail: "Tırnak & Güzellik", club: "Bar & Club", spa: "Spa & Masaj", makeup: "Makyaj", skincare: "Cilt Bakımı" 
       },
       homeInfo: { 
-          recLabel: "Öne Çıkanlar", 
-          recTitle: "Kıbrıs'ta Bu Hafta 🔥", 
-          howLabel: "Nasıl Çalışır?", 
-          howTitle: "4 adımda randevun hazır",
-          how1Title: "Keşfet", 
-          how1Desc: "Yakındaki mekanları harita veya liste görünümünde incele, filtrele.",
-          how2Title: "Tarih Seç", 
-          how2Desc: "Müsait saatleri gör, sana en uygun zamanı tek tıkla seç.",
-          how3Title: "Onayla", 
-          how3Desc: "Saniyeler içinde rezervasyonun onaylanır. WhatsApp bildirimi alırsın.",
-          how4Title: "Keyif Çıkar", 
-          how4Desc: "Git, hizmetini al, puan ver. Bir sonraki randevu için sadakat puanı kazan.",
-          ctaLabel: "İşletme Sahibi misiniz?", 
-          ctaTitle1: "Bookcy ile", 
-          ctaTitle2: "işletmeni büyüt.", 
-          ctaSub: "Randevu sistemini dijitalleştir. Yeni müşteri kazan. Komisyonsuz, sabit ücret."
+          recLabel: "Öne Çıkanlar", recTitle: "Kıbrıs'ta Bu Hafta 🔥", howLabel: "Nasıl Çalışır?", howTitle: "4 adımda randevun hazır", how1Title: "Keşfet", how1Desc: "Yakındaki mekanları harita veya liste görünümünde incele, filtrele.", how2Title: "Tarih Seç", how2Desc: "Müsait saatleri gör, sana en uygun zamanı tek tıkla seç.", how3Title: "Onayla", how3Desc: "Saniyeler içinde rezervasyonun onaylanır. WhatsApp bildirimi alırsın.", how4Title: "Keyif Çıkar", how4Desc: "Git, hizmetini al, puan ver. Bir sonraki randevu için sadakat puanı kazan.", ctaLabel: "İşletme Sahibi misiniz?", ctaTitle1: "Bookcy ile", ctaTitle2: "işletmeni büyüt.", ctaSub: "Randevu sistemini dijitalleştir. Yeni müşteri kazan. Komisyonsuz, sabit ücret."
       },
       filters: { 
-        title: "Arama Sonuçları", 
-        search: "Mekan Ara...", 
-        region: "Bölge Seçimi", 
-        service: "Kategoriler", 
-        sortHigh: "En Yüksek Puan", 
-        sortLow: "En Düşük Puan", 
-        clear: "Temizle", 
-        count: "Mekan Bulundu" 
-      },
-      reg: { 
-        title: "İŞLETME KAYIT BAŞVURUSU", 
-        subtitle: "Sadece İşletme Sahipleri İçindir", 
-        shopName: "İşletme Adı", 
-        location: "Bölge Seçin", 
-        address: "Tam Adres", 
-        maps: "Google Maps Linki", 
-        desc: "Açıklama / Hakkımızda", 
-        email: "Admin E-Posta", 
-        contactPhone: "İşletme Telefonu", 
-        contactInsta: "Instagram Linki (Örn: https://...)", 
-        contactEmail: "İletişim E-Posta", 
-        user: "Kullanıcı Adı", 
-        pass: "Şifre", 
-        pack: "Paket Seçimi", 
-        upload: "Logo Yükle", 
-        submit: "BAŞVURUYU TAMAMLA", 
-        success: "BAŞVURUNUZ ALINDI!", 
-        uploading: "YÜKLENİYOR..." 
+        title: "Arama Sonuçları", search: "Mekan Ara...", region: "Bölge Seçimi", service: "Kategoriler", sortHigh: "En Yüksek Puan", sortLow: "En Düşük Puan", clear: "Temizle", count: "Mekan Bulundu" 
       },
       shops: { 
-        back: "GERİ DÖN", 
-        empty: "Bu kriterlere uygun işletme bulunamadı." 
+        back: "GERİ DÖN", empty: "Bu kriterlere uygun işletme bulunamadı." 
       },
       profile: { 
-        tabServices: "Rezervasyon / Hizmet", 
-        tabEvents: "Etkinlikler & Loca", 
-        tabGallery: "Galeri", 
-        about: "Hakkında", 
-        contactTitle: "İLETİŞİM", 
-        bookBtn: "SEÇ", 
-        noDesc: "İşletme henüz bir açıklama eklememiş.", 
-        noServices: "İşletme henüz liste eklememiş.", 
-        noGallery: "İşletme henüz galeriye fotoğraf eklememiş.", 
-        similarTitle: "BU BÖLGEDEKİ BENZER MEKANLAR" 
+        tabServices: "Rezervasyon / Hizmet", tabEvents: "Etkinlikler & Loca", tabGallery: "Galeri", about: "Hakkında", contactTitle: "İLETİŞİM", bookBtn: "SEÇ", noDesc: "İşletme henüz bir açıklama eklememiş.", noServices: "İşletme henüz liste eklememiş.", noGallery: "İşletme henüz galeriye fotoğraf eklememiş.", similarTitle: "BU BÖLGEDEKİ BENZER MEKANLAR" 
       },
       book: { 
-        change: "Geri", 
-        selectService: "Devam etmek için işlem veya hizmet seçin.", 
-        selectEvent: "Lütfen katılmak istediğiniz etkinliği seçin.", 
-        selectLoca: "Lütfen rezervasyon türünü (Loca/Bistro) seçin.", 
-        selectStaff: "KİŞİ/UZMAN SEÇİN", 
-        anyStaff: "Fark Etmez", 
-        date: "Tarih Seçin", 
-        time: "Saat Seçin", 
-        name: "Adınız", 
-        surname: "Soyadınız", 
-        phone: "Telefon Numaranız", 
-        email: "E-Posta (Zorunlu)", 
-        submit: "ONAYLA", 
-        success: "RANDEVU ONAYLANDI", 
-        successSub: "Bilgileriniz işletmeye başarıyla iletildi.", 
-        backHome: "ANA SAYFAYA DÖN", 
-        total: "Toplam", 
-        details: "Rezervasyon Detayları", 
-        service: "İşlem/Hizmet", 
-        event: "Etkinlik", 
-        staff: "Kişi/Uzman", 
-        dateTime: "Tarih / Saat", 
-        contactInfo: "İletişim Bilgileriniz", 
-        btnBook: "Rezervasyon Yap →", 
-        shopClosed: "İŞLETME BU TARİHTE KAPALIDIR VEYA BOŞ SAAT YOKTUR." 
-      },
-      about: { 
-        title: "Sektörün Dijital Devrimi", 
-        subtitle: "İşletmenizi Büyütün, Zamanınızı Geri Kazanın.", 
-        missionDesc: "Telefon trafiğinden, ajanda karmaşasından ve unutulan randevulardan kurtulun. BOOKCY, Kıbrıs'ın pazar lideri randevu platformudur.", 
-        bizTitle: "İşletmeler İçin Karlı Çözümler", 
-        biz1: "Kesintisiz 7/24 Rezervasyon", 
-        biz1Desc: "Siz uyurken veya çalışırken sistem sizin yerinize randevu alır.", 
-        biz2: "Boş Koltuklara Son", 
-        biz2Desc: "Son dakika iptallerini minimuma indirin.", 
-        biz3: "Sıfır Komisyon", 
-        biz3Desc: "Her randevudan komisyon kesen sistemleri unutun!", 
-        biz4: "Bölgenizin Lideri Olun", 
-        biz4Desc: "Gerçek müşteri yorumları ve dijital portfolyonuzla rakiplerinizin önüne geçin.", 
-        usrTitle: "Müşteriler Neden Bookcy'i Seçiyor?", 
-        usr1: "Sırada Beklemeye Son", 
-        usr1Desc: "Saatlerce sıra beklemek yok. Kendi planınıza göre saatinizi seçin.", 
-        usr2: "Şeffaf Fiyatlandırma", 
-        usr2Desc: "Ne kadar ödeyeceğinizi net bir şekilde bilin.", 
-        usr3: "Güvenilir Uzman Yorumları", 
-        usr3Desc: "Sadece o işletmeden hizmet almış kişilerin gerçek deneyimlerini okuyun.", 
-        packTitle: "Büyüme Hedefinize Uygun Paketler", 
-        packSub: "Sürpriz kesintiler yok, gizli ücretler yok.", 
-        pkg1Name: "Standard Paket", 
-        pkg1Price: "£60", 
-        pkg1Period: "/ Ay", 
-        pkg1Feat1: "Sınırsız Randevu Alımı", 
-        pkg1Feat2: "Sosyal Medya Platform Paylaşımı", 
-        pkg1Feat3: "Kapsamlı İşletme Paneli", 
-        pkg1Feat4: "Personel Optimizasyonu", 
-        pkg1Feat5: "7/24 Destek", 
-        pkg2Name: "Premium Paket", 
-        pkg2Price: "£100", 
-        pkg2Period: "/ Ay", 
-        pkg2Feat1: "Standard Paketlerdeki Her Şey", 
-        pkg2Feat2: "Ana Sayfa Önerilenler Vitrini", 
-        pkg2Feat3: "Arama Üst Sıra", 
-        pkg2Feat4: "VIP Gold Çerçeve", 
-        pkg2Feat5: "Sosyal Medya Sponsorlu Reklam Paylaşımı", 
-        ctaTitle: "Kazancınızı Katlamaya Hazır mısınız?", 
-        ctaBtn: "İŞLETMENİZİ HEMEN EKLEYİN" 
-      },
-      contact: { 
-        title: "BİZE ULAŞIN", 
-        sub: "Platform hakkında sorularınız ve destek talepleriniz için bize 7/24 ulaşabilirsiniz.", 
-        whatsapp: "WhatsApp Destek", 
-        wpDesc: "Anında yanıt almak için WhatsApp hattımızdan bize ulaşın.", 
-        insta: "Instagram", 
-        instaDesc: "En yeni mekanları keşfetmek için takip edin.", 
-        email: "Kurumsal E-Posta", 
-        emailDesc: "Sponsorluk ve kurumsal görüşmeler için e-posta gönderebilirsiniz.", 
-        btnWp: "MESAJ AT", 
-        btnInsta: "TAKİP ET", 
-        btnEmail: "MAİL GÖNDER" 
+        change: "Geri", selectService: "Devam etmek için işlem veya hizmet seçin.", selectEvent: "Lütfen katılmak istediğiniz etkinliği seçin.", selectLoca: "Lütfen rezervasyon türünü (Loca/Bistro) seçin.", selectStaff: "KİŞİ/UZMAN SEÇİN", anyStaff: "Fark Etmez", date: "Tarih Seçin", time: "Saat Seçin", name: "Adınız", surname: "Soyadınız", phone: "Telefon Numaranız", email: "E-Posta (Zorunlu)", submit: "ONAYLA", success: "RANDEVU ONAYLANDI", successSub: "Bilgileriniz işletmeye başarıyla iletildi.", backHome: "ANA SAYFAYA DÖN", total: "Toplam", details: "Rezervasyon Detayları", service: "İşlem/Hizmet", event: "Etkinlik", staff: "Kişi/Uzman", dateTime: "Tarih / Saat", contactInfo: "İletişim Bilgileriniz", btnBook: "Rezervasyon Yap →", shopClosed: "İŞLETME BU TARİHTE KAPALIDIR VEYA BOŞ SAAT YOKTUR." 
       },
       footer: { 
-        desc: "Kuzey Kıbrıs'ın güzellik ve bakım hizmetleri için tek rezervasyon platformu.", 
-        links: "Platform", 
-        cities: "Bölgeler", 
-        legal: "Sözleşmeler", 
-        copy: "Tüm hakları saklıdır. Kuzey Kıbrıs'ta kurulmuştur. 🇹🇷" 
+        desc: "Kuzey Kıbrıs'ın güzellik ve bakım hizmetleri için tek rezervasyon platformu.", links: "Platform", cities: "Bölgeler", legal: "Sözleşmeler", copy: "Tüm hakları saklıdır. Kuzey Kıbrıs'ta kurulmuştur. 🇹🇷", terms: "Kullanım Koşulları", privacy: "Gizlilik Politikası"
       }
     },
     EN: {
       nav: { 
-        places: "Places", 
-        features: "Features", 
-        contact: "Contact", 
-        about: "About & Packages", 
-        addShop: "Add Business", 
-        login: "Login", 
-        logout: "Logout", 
-        dashboard: "Dashboard" 
+        places: "Places", features: "Features", contact: "Contact", about: "About & Packages", addShop: "Add Business", login: "Login", logout: "Logout", dashboard: "Dashboard" 
       },
       megaMenu: { 
-        col1Title: "Set up shop", 
-        col2Title: "Wow your clients", 
-        col3Title: "Run your business", 
-        col4Title: "Keep growing", 
-        btn: "Explore All Features" 
+        col1Title: "Set up shop", col2Title: "Wow your clients", col3Title: "Run your business", col4Title: "Keep growing", btn: "Explore All Features" 
       },
       featNames: { 
-        profile: "Bookcy Profile", 
-        market: "Marketplace", 
-        team: "Team Management", 
-        booking: "Online Booking", 
-        app: "Customer App", 
-        marketing: "Marketing Tools", 
-        calendar: "Calendar", 
-        crm: "Client Management", 
-        boost: "Boost", 
-        stats: "Stats & Reports" 
-      },
-      featDesc: { 
-        profile: "Create your digital storefront.", 
-        market: "Reach active customers.", 
-        team: "Manage staff hours.", 
-        booking: "Let clients book 24/7.", 
-        app: "Mobile app for clients.", 
-        marketing: "Send SMS/Email campaigns.", 
-        calendar: "Smart digital calendar.", 
-        crm: "Store client history.", 
-        boost: "Rank higher in searches.", 
-        stats: "Track your revenue." 
-      },
-      featDetails: {
-        profile: { 
-          purpose: "Your 24/7 open digital storefront.", 
-          adv1: { title: "Professional Image", desc: "Quality photos and detailed menu." }, 
-          adv2: { title: "Build Trust", desc: "Gain trust through reviews." }, 
-          adv3: { title: "Discoverability", desc: "Found on search engines." } 
-        },
-        market: { 
-          purpose: "Connects customers directly with your business.", 
-          adv1: { title: "Thousands of Clients", desc: "Reach active users." }, 
-          adv2: { title: "Fill Empty Seats", desc: "Display canceled appointments." }, 
-          adv3: { title: "Competitive Edge", desc: "Stay ahead of competitors." } 
-        },
-        team: { 
-          purpose: "Coordinate your staff's shifts and performance.", 
-          adv1: { title: "Easy Scheduling", desc: "Digitally arrange shifts." }, 
-          adv2: { title: "Performance", desc: "See staff revenue." }, 
-          adv3: { title: "Calendars", desc: "Eliminate conflicts." } 
-        },
-        booking: { 
-          purpose: "Allows clients to book autonomously 24/7.", 
-          adv1: { title: "Save Time", desc: "Focus on your work." }, 
-          adv2: { title: "Zero Errors", desc: "Eliminate double bookings." }, 
-          adv3: { title: "24/7 Service", desc: "Accept bookings anytime." } 
-        },
-        app: { 
-          purpose: "Ensures a seamless connection with your business.", 
-          adv1: { title: "Flawless Experience", desc: "Provide a VIP experience." }, 
-          adv2: { title: "Easy Tracking", desc: "Clients view appointments." }, 
-          adv3: { title: "Updates", desc: "Clients cancel easily." } 
-        },
-        marketing: { 
-          purpose: "Your automated assistant to build loyalty.", 
-          adv1: { title: "Targeted Campaigns", desc: "Offer special deals." }, 
-          adv2: { title: "SMS & Email", desc: "Automated greetings." }, 
-          adv3: { title: "Revenue Boost", desc: "Increase client frequency." } 
-        },
-        calendar: { 
-          purpose: "Perfectly organizes staff hours and appointments.", 
-          adv1: { title: "Conflict Protection", desc: "No double-booking." }, 
-          adv2: { title: "Optimization", desc: "Shows optimal times." }, 
-          adv3: { title: "Drag & Drop", desc: "Modify times easily." } 
-        },
-        crm: { 
-          purpose: "Safely stores all history and preferences.", 
-          adv1: { title: "Detailed Profiles", desc: "See past visits." }, 
-          adv2: { title: "Private Notes", desc: "Save important details." }, 
-          adv3: { title: "Build Loyalty", desc: "Make clients feel special." } 
-        },
-        boost: { 
-          purpose: "Maximizes your visibility using AI.", 
-          adv1: { title: "Top Search Ranks", desc: "Appear at the top." }, 
-          adv2: { title: "Homepage", desc: "Get featured directly." }, 
-          adv3: { title: "Image", desc: "Exclusive badges." } 
-        },
-        stats: { 
-          purpose: "Helps you make data-driven decisions.", 
-          adv1: { title: "Real-Time Revenue", desc: "Track earnings." }, 
-          adv2: { title: "Service Analysis", desc: "Identify profitable services." }, 
-          adv3: { title: "Staff Reports", desc: "See top specialists." } 
-        }
-      },
-      featUI: { 
-        purposeTitle: "Purpose & What It Does", 
-        benefitsTitle: "Benefits For Your Business", 
-        allFeaturesTitle: "All Features", 
-        allFeaturesSub: "Everything you need to grow your business." 
+        profile: "Bookcy Profile", market: "Marketplace", team: "Team Management", booking: "Online Booking", app: "Customer App", marketing: "Marketing Tools", calendar: "Calendar", crm: "Client Management", boost: "Boost", stats: "Stats & Reports" 
       },
       home: { 
-        eyebrow: "Cyprus's #1 Beauty Platform", 
-        title1: "Take care", 
-        title2: "of yourself,", 
-        title3: "book", 
-        title4: "instantly.", 
-        subtitle: "Find the best barbers, salons, and spas nearby. Book with one click, your time is yours.", 
-        searchPlace: "Search services...", 
-        searchLoc: "Where?", 
-        searchBtn: "Search", 
-        popTitle: "Popular:", 
-        stats: {s1:"Active Places", s2:"Happy Clients", s3:"Completed Bookings", s4:"Satisfaction"} 
+        eyebrow: "Cyprus's #1 Beauty Platform", title1: "Take care", title2: "of yourself,", title3: "book", title4: "instantly.", subtitle: "Find the best barbers, salons, and spas nearby. Book with one click, your time is yours.", searchPlace: "Search services...", searchLoc: "Where?", searchBtn: "Search", popTitle: "Popular:", stats: {s1:"Active Places", s2:"Happy Clients", s3:"Completed Bookings", s4:"Satisfaction"} 
       },
       cats: { 
-        catTitle: "Categories", 
-        catSub: "What are you looking for?", 
-        seeAll: "See All →", 
-        tattoo: "Tattoo", 
-        barber: "Barber", 
-        hair: "Hair Salon", 
-        nail: "Nail Art", 
-        club: "Bar & Club", 
-        spa: "Spa & Massage", 
-        makeup: "Makeup", 
-        skincare: "Skin Care" 
+        catTitle: "Categories", catSub: "What are you looking for?", seeAll: "See All →", tattoo: "Tattoo", barber: "Barber", hair: "Hair Salon", nail: "Nail Art", club: "Bar & Club", spa: "Spa & Massage", makeup: "Makeup", skincare: "Skin Care" 
       },
       homeInfo: { 
-        recLabel: "Featured", 
-        recTitle: "Trending This Week 🔥", 
-        howLabel: "How it works?", 
-        howTitle: "Ready in 4 steps", 
-        how1Title: "Discover", 
-        how1Desc: "Find nearby places.", 
-        how2Title: "Select Date", 
-        how2Desc: "Pick the best time.", 
-        how3Title: "Confirm", 
-        how3Desc: "Booking confirmed.", 
-        how4Title: "Enjoy", 
-        how4Desc: "Get your service.", 
-        ctaLabel: "Business owner?", 
-        ctaTitle1: "Grow your business", 
-        ctaTitle2: "with Bookcy.", 
-        ctaSub: "Digitize your booking system." 
+        recLabel: "Featured", recTitle: "Trending This Week 🔥", howLabel: "How it works?", howTitle: "Ready in 4 steps", how1Title: "Discover", how1Desc: "Find nearby places.", how2Title: "Select Date", how2Desc: "Pick the best time.", how3Title: "Confirm", how3Desc: "Booking confirmed.", how4Title: "Enjoy", how4Desc: "Get your service.", ctaLabel: "Business owner?", ctaTitle1: "Grow your business", ctaTitle2: "with Bookcy.", ctaSub: "Digitize your booking system." 
       },
       filters: { 
-        title: "Search Results", 
-        search: "Search places...", 
-        region: "Location", 
-        service: "Categories", 
-        sortHigh: "Highest Rated", 
-        sortLow: "Lowest Rated", 
-        clear: "Clear", 
-        count: "Places Found" 
-      },
-      reg: { 
-        title: "BUSINESS REGISTRATION", 
-        subtitle: "For Business Owners Only", 
-        shopName: "Business Name", 
-        location: "Select Region", 
-        address: "Full Address", 
-        maps: "Google Maps Link", 
-        desc: "Description", 
-        email: "Admin Email", 
-        contactPhone: "Business Phone", 
-        contactInsta: "Instagram Link", 
-        contactEmail: "Contact Email", 
-        user: "Username", 
-        pass: "Password", 
-        pack: "Select Package", 
-        upload: "Upload Logo", 
-        submit: "COMPLETE APPLICATION", 
-        success: "APPLICATION RECEIVED!", 
-        uploading: "UPLOADING..." 
+        title: "Search Results", search: "Search places...", region: "Location", service: "Categories", sortHigh: "Highest Rated", sortLow: "Lowest Rated", clear: "Clear", count: "Places Found" 
       },
       shops: { 
-        back: "GO BACK", 
-        empty: "No businesses found." 
+        back: "GO BACK", empty: "No businesses found." 
       },
       profile: { 
-        tabServices: "Booking / Service", 
-        tabEvents: "Events & VIP", 
-        tabGallery: "Gallery", 
-        about: "About Us", 
-        contactTitle: "CONTACT INFO", 
-        bookBtn: "SELECT", 
-        noDesc: "No description yet.", 
-        noServices: "No services yet.", 
-        noGallery: "No photos yet.", 
-        similarTitle: "SIMILAR PLACES NEARBY" 
+        tabServices: "Booking / Service", tabEvents: "Events & VIP", tabGallery: "Gallery", about: "About Us", contactTitle: "CONTACT INFO", bookBtn: "SELECT", noDesc: "No description yet.", noServices: "No services yet.", noGallery: "No photos yet.", similarTitle: "SIMILAR PLACES NEARBY" 
       },
       book: { 
-        change: "Back", 
-        selectService: "Select a service to continue.", 
-        selectEvent: "Select an event.", 
-        selectLoca: "Select your VIP booking type.", 
-        selectStaff: "SELECT STAFF", 
-        anyStaff: "Any Staff", 
-        date: "Select Date", 
-        time: "Select Time", 
-        name: "First Name", 
-        surname: "Last Name", 
-        phone: "Phone", 
-        email: "Email (Required)", 
-        submit: "CONFIRM", 
-        success: "APPOINTMENT CONFIRMED", 
-        successSub: "Your details have been sent.", 
-        backHome: "RETURN TO HOME", 
-        total: "Total", 
-        details: "Appointment Details", 
-        service: "Service", 
-        event: "Event", 
-        staff: "Staff", 
-        dateTime: "Date / Time", 
-        contactInfo: "Contact Info", 
-        btnBook: "Book Now →", 
-        shopClosed: "SHOP IS CLOSED ON THIS DATE OR FULL." 
-      },
-      about: { 
-        title: "Digital Revolution", 
-        subtitle: "Grow Your Business.", 
-        missionDesc: "Get rid of phone traffic. BOOKCY is Cyprus's market-leading booking platform.", 
-        bizTitle: "Solutions for Businesses", 
-        biz1: "24/7 Booking", 
-        biz1Desc: "Accept bookings while you sleep.", 
-        biz2: "No Empty Chairs", 
-        biz2Desc: "Minimize cancellations.", 
-        biz3: "Zero Commissions", 
-        biz3Desc: "Pay only a fixed fee.", 
-        biz4: "Be the Leader", 
-        biz4Desc: "Stand out from competitors.", 
-        usrTitle: "Why Customers Choose Bookcy?", 
-        usr1: "No More Waiting", 
-        usr1Desc: "Choose a time that fits.", 
-        usr2: "Transparent Pricing", 
-        usr2Desc: "Know what you will pay.", 
-        usr3: "Reliable Reviews", 
-        usr3Desc: "Read verified reviews.", 
-        packTitle: "Packages", 
-        packSub: "No hidden fees.", 
-        pkg1Name: "Standard Package", 
-        pkg1Price: "£60", 
-        pkg1Period: "/ Month", 
-        pkg1Feat1: "Unlimited Bookings", 
-        pkg1Feat2: "Social Media Sharing", 
-        pkg1Feat3: "Dashboard", 
-        pkg1Feat4: "Staff Optimization", 
-        pkg1Feat5: "24/7 Support", 
-        pkg2Name: "Premium Package", 
-        pkg2Price: "£100", 
-        pkg2Period: "/ Month", 
-        pkg2Feat1: "Everything in Standard", 
-        pkg2Feat2: "Homepage 'Recommended'", 
-        pkg2Feat3: "Top Ranks in Search", 
-        pkg2Feat4: "VIP Gold Border", 
-        pkg2Feat5: "Sponsored Ad Sharing", 
-        ctaTitle: "Ready to Multiply Your Income?", 
-        ctaBtn: "ADD YOUR BUSINESS" 
-      },
-      contact: { 
-        title: "CONTACT US", 
-        sub: "We are here 24/7.", 
-        whatsapp: "WhatsApp", 
-        wpDesc: "Contact us via WhatsApp.", 
-        insta: "Instagram", 
-        instaDesc: "Follow us.", 
-        email: "Corporate Email", 
-        emailDesc: "Email us for inquiries.", 
-        btnWp: "MESSAGE", 
-        btnInsta: "FOLLOW", 
-        btnEmail: "EMAIL" 
+        change: "Back", selectService: "Select a service to continue.", selectEvent: "Select an event.", selectLoca: "Select your VIP booking type.", selectStaff: "SELECT STAFF", anyStaff: "Any Staff", date: "Select Date", time: "Select Time", name: "First Name", surname: "Last Name", phone: "Phone", email: "Email (Required)", submit: "CONFIRM", success: "APPOINTMENT CONFIRMED", successSub: "Your details have been sent.", backHome: "RETURN TO HOME", total: "Total", details: "Appointment Details", service: "Service", event: "Event", staff: "Staff", dateTime: "Date / Time", contactInfo: "Contact Info", btnBook: "Book Now →", shopClosed: "SHOP IS CLOSED ON THIS DATE OR FULL." 
       },
       footer: { 
-        desc: "North Cyprus's premier booking platform for beauty & wellness.", 
-        links: "Platform", 
-        cities: "Regions", 
-        legal: "Terms", 
-        copy: "All rights reserved. Made in North Cyprus. 🇹🇷" 
+        desc: "North Cyprus's premier booking platform for beauty & wellness.", links: "Platform", cities: "Regions", legal: "Terms", copy: "All rights reserved. Made in North Cyprus. 🇹🇷", terms: "Terms of Service", privacy: "Privacy Policy"
       }
     },
     RU: {
       nav: { 
-        places: "Места", 
-        features: "Функции", 
-        contact: "Контакты", 
-        about: "О нас и пакеты", 
-        addShop: "Добавить бизнес", 
-        login: "Вход", 
-        logout: "Выйти", 
-        dashboard: "Панель" 
+        places: "Места", features: "Функции", contact: "Контакты", about: "О нас и пакеты", addShop: "Добавить бизнес", login: "Вход", logout: "Выйти", dashboard: "Панель" 
       },
       megaMenu: { 
-        col1Title: "Настройка", 
-        col2Title: "Клиенты", 
-        col3Title: "Бизнес", 
-        col4Title: "Развитие", 
-        btn: "Узнать все функции" 
+        col1Title: "Настройка", col2Title: "Клиенты", col3Title: "Бизнес", col4Title: "Развитие", btn: "Узнать все функции" 
       },
       featNames: { 
-        profile: "Профиль Bookcy", 
-        market: "Маркетплейс", 
-        team: "Команда", 
-        booking: "Онлайн-бронирование", 
-        app: "Приложение", 
-        marketing: "Маркетинг", 
-        calendar: "Календарь", 
-        crm: "Управление клиентами", 
-        boost: "Продвижение", 
-        stats: "Статистика" 
-      },
-      featDesc: { 
-        profile: "Создайте витрину за секунды.", 
-        market: "Охватите тысячи клиентов.", 
-        team: "Управляйте персоналом.", 
-        booking: "Бронирование 24/7.", 
-        app: "Мобильное приложение.", 
-        marketing: "SMS и Email кампании.", 
-        calendar: "Умный календарь.", 
-        crm: "Управление клиентами.", 
-        boost: "Выше в поиске.", 
-        stats: "Следите за доходами." 
-      },
-      featDetails: {
-        profile: { 
-          purpose: "Ваша цифровая витрина.", 
-          adv1: { title: "Имидж", desc: "Улучшите первое впечатление." }, 
-          adv2: { title: "Доверие", desc: "Отзывы клиентов." }, 
-          adv3: { title: "Поиск", desc: "Легкий поиск." } 
-        },
-        market: { 
-          purpose: "Связывает клиентов с вашим бизнесом.", 
-          adv1: { title: "Клиенты", desc: "Активные пользователи." }, 
-          adv2: { title: "Пустые места", desc: "Отмененные записи." }, 
-          adv3: { title: "Конкуренция", desc: "Опережайте конкурентов." } 
-        },
-        team: { 
-          purpose: "Управление командой.", 
-          adv1: { title: "Планирование", desc: "Избегайте ошибок." }, 
-          adv2: { title: "Оценка", desc: "Отслеживайте доходы." }, 
-          adv3: { title: "Календари", desc: "Исключите конфликты." } 
-        },
-        booking: { 
-          purpose: "Онлайн-бронирование 24/7.", 
-          adv1: { title: "Экономия времени", desc: "Сосредоточьтесь на работе." }, 
-          adv2: { title: "Ноль ошибок", desc: "Без человеческого фактора." }, 
-          adv3: { title: "Сервис 24/7", desc: "Принимайте записи всегда." } 
-        },
-        app: { 
-          purpose: "Приложение для клиентов.", 
-          adv1: { title: "Опыт", desc: "Современный интерфейс." }, 
-          adv2: { title: "Отслеживание", desc: "Прошлые визиты." }, 
-          adv3: { title: "Обновления", desc: "Отмена записей." } 
-        },
-        marketing: { 
-          purpose: "Маркетинг.", 
-          adv1: { title: "Кампании", desc: "Скидки." }, 
-          adv2: { title: "SMS", desc: "Поздравления." }, 
-          adv3: { title: "Рост", desc: "Напоминания." } 
-        },
-        calendar: { 
-          purpose: "Календарь организует работу.", 
-          adv1: { title: "Защита", desc: "Без двойного бронирования." }, 
-          adv2: { title: "Оптимизация", desc: "Идеальное время." }, 
-          adv3: { title: "Легкость", desc: "Перетаскивание." } 
-        },
-        crm: { 
-          purpose: "Управление клиентами.", 
-          adv1: { title: "Профили", desc: "Последние визиты." }, 
-          adv2: { title: "Заметки", desc: "Предпочтения." }, 
-          adv3: { title: "Лояльность", desc: "Каждый клиент особенный." } 
-        },
-        boost: { 
-          purpose: "Продвижение с помощью ИИ.", 
-          adv1: { title: "Топ", desc: "Всегда вверху." }, 
-          adv2: { title: "На главной", desc: "'Рекомендуемые'." }, 
-          adv3: { title: "Имидж", desc: "Значки профиля." } 
-        },
-        stats: { 
-          purpose: "Статистика.", 
-          adv1: { title: "Доход", desc: "Заработок." }, 
-          adv2: { title: "Услуги", desc: "Прибыльные процедуры." }, 
-          adv3: { title: "Отчеты", desc: "Кто получает больше записей." } 
-        }
-      },
-      featUI: { 
-        purposeTitle: "Цель", 
-        benefitsTitle: "Преимущества", 
-        allFeaturesTitle: "Все функции", 
-        allFeaturesSub: "Всё для роста бизнеса." 
+        profile: "Профиль Bookcy", market: "Маркетплейс", team: "Команда", booking: "Онлайн-бронирование", app: "Приложение", marketing: "Маркетинг", calendar: "Календарь", crm: "Управление клиентами", boost: "Продвижение", stats: "Статистика" 
       },
       home: { 
-        eyebrow: "Платформа красоты #1", 
-        title1: "Позаботьтесь", 
-        title2: "о себе,", 
-        title3: "забронируйте", 
-        title4: "сейчас.", 
-        subtitle: "Найдите лучших мастеров, салоны и спа поблизости. Бронируйте в один клик, ваше время принадлежит вам.", 
-        searchPlace: "Поиск услуг...", 
-        searchLoc: "Где?", 
-        searchBtn: "ПОИСК", 
-        popTitle: "Популярные:", 
-        stats: {s1:"Активные", s2:"Клиенты", s3:"Записи", s4:"Удовлетворенность"} 
+        eyebrow: "Платформа красоты #1", title1: "Позаботьтесь", title2: "о себе,", title3: "забронируйте", title4: "сейчас.", subtitle: "Найдите лучших мастеров, салоны и спа поблизости. Бронируйте в один клик, ваше время принадлежит вам.", searchPlace: "Поиск услуг...", searchLoc: "Где?", searchBtn: "ПОИСК", popTitle: "Популярные:", stats: {s1:"Активные", s2:"Клиенты", s3:"Записи", s4:"Удовлетворенность"} 
       },
       cats: { 
-        catTitle: "Категории", 
-        catSub: "Что вы ищете?", 
-        seeAll: "Все →", 
-        tattoo: "Тату", 
-        barber: "Барбер", 
-        hair: "Парикмахерская", 
-        nail: "Маникюр", 
-        club: "Бар", 
-        spa: "Спа", 
-        makeup: "Макияж", 
-        skincare: "Уход за кожей" 
+        catTitle: "Категории", catSub: "Что вы ищете?", seeAll: "Все →", tattoo: "Тату", barber: "Барбер", hair: "Парикмахерская", nail: "Маникюр", club: "Бар", spa: "Спа", makeup: "Макияж", skincare: "Уход за кожей" 
       },
       homeInfo: { 
-        recLabel: "Популярные", 
-        recTitle: "В тренде 🔥", 
-        howLabel: "Как это работает?", 
-        howTitle: "Готово за 4 шага", 
-        how1Title: "Найти", 
-        how1Desc: "Найдите салоны.", 
-        how2Title: "Дата", 
-        how2Desc: "Свободное время.", 
-        how3Title: "Подтвердить", 
-        how3Desc: "Бронь подтверждена.", 
-        how4Title: "Наслаждаться", 
-        how4Desc: "Оставьте отзыв.", 
-        ctaLabel: "Владелец бизнеса?", 
-        ctaTitle1: "Развивайте бизнес", 
-        ctaTitle2: "с Bookcy.", 
-        ctaSub: "Оцифруйте бизнес." 
+        recLabel: "Популярные", recTitle: "В тренде 🔥", howLabel: "Как это работает?", howTitle: "Готово за 4 шага", how1Title: "Найти", how1Desc: "Найдите салоны.", how2Title: "Дата", how2Desc: "Свободное время.", how3Title: "Подтвердить", how3Desc: "Бронь подтверждена.", how4Title: "Наслаждаться", how4Desc: "Оставьте отзыв.", ctaLabel: "Владелец бизнеса?", ctaTitle1: "Развивайте бизнес", ctaTitle2: "с Bookcy.", ctaSub: "Оцифруйте бизнес." 
       },
       filters: { 
-        title: "Результаты", 
-        search: "Поиск...", 
-        region: "Где?", 
-        service: "Услуги", 
-        sortHigh: "С высоким рейтингом", 
-        sortLow: "С низким рейтингом", 
-        clear: "Очистить", 
-        count: "Найдено" 
-      },
-      reg: { 
-        title: "РЕГИСТРАЦИЯ", 
-        subtitle: "Для бизнеса", 
-        shopName: "Название", 
-        location: "Регион", 
-        address: "Адрес", 
-        maps: "Ссылка на Google Maps", 
-        desc: "Описание", 
-        email: "Email", 
-        contactPhone: "Телефон", 
-        contactInsta: "Ссылка на Instagram", 
-        contactEmail: "Контактный Email", 
-        user: "Имя пользователя", 
-        pass: "Пароль", 
-        pack: "Пакет", 
-        upload: "Логотип", 
-        submit: "ЗАВЕРШИТЬ", 
-        success: "ЗАЯВКА ПОЛУЧЕНА!", 
-        uploading: "ЗАГРУЗКА..." 
+        title: "Результаты", search: "Поиск...", region: "Где?", service: "Услуги", sortHigh: "С высоким рейтингом", sortLow: "С низким рейтингом", clear: "Очистить", count: "Найдено" 
       },
       shops: { 
-        back: "НАЗАД", 
-        empty: "Не найдено." 
+        back: "НАЗАД", empty: "Не найдено." 
       },
       profile: { 
-        tabServices: "Бронирование / Услуги", 
-        tabEvents: "События и VIP", 
-        tabGallery: "Галерея", 
-        about: "О НАС", 
-        contactTitle: "КОНТАКТЫ", 
-        bookBtn: "ВЫБРАТЬ", 
-        noDesc: "Нет описания.", 
-        noServices: "Нет услуг.", 
-        noGallery: "Нет фото.", 
-        similarTitle: "ПОХОЖИЕ МЕСТА" 
+        tabServices: "Бронирование / Услуги", tabEvents: "События и VIP", tabGallery: "Галерея", about: "О НАС", contactTitle: "КОНТАКТЫ", bookBtn: "ВЫБРАТЬ", noDesc: "Нет описания.", noServices: "Нет услуг.", noGallery: "Нет фото.", similarTitle: "ПОХОЖИЕ МЕСТА" 
       },
       book: { 
-        change: "Назад", 
-        selectService: "Выберите услугу", 
-        selectEvent: "Выберите событие", 
-        selectLoca: "Выберите зону", 
-        selectStaff: "ВЫБЕРИТЕ СПЕЦИАЛИСТА", 
-        anyStaff: "Любой", 
-        date: "Дата", 
-        time: "Время", 
-        name: "Имя", 
-        surname: "Фамилия", 
-        phone: "Телефон", 
-        email: "Email", 
-        submit: "ПОДТВЕРДИТЬ", 
-        success: "БРОНЬ ПОДТВЕРЖДЕНА", 
-        successSub: "Данные отправлены.", 
-        backHome: "НА ГЛАВНУЮ", 
-        total: "Итого", 
-        details: "Детали", 
-        service: "Услуга", 
-        event: "Событие", 
-        staff: "Специалист", 
-        dateTime: "Дата / Время", 
-        contactInfo: "Контакты", 
-        btnBook: "Забронировать →", 
-        shopClosed: "ЗАКРЫТО ИЛИ НЕТ МЕСТ В ЭТУ ДАТУ." 
-      },
-      about: { 
-        title: "Революция", 
-        subtitle: "Развивайте бизнес.", 
-        missionDesc: "BOOKCY — платформа Кипра.", 
-        bizTitle: "Решения", 
-        biz1: "Бронь 24/7", 
-        biz1Desc: "Принимайте заказы.", 
-        biz2: "Нет отменам", 
-        biz2Desc: "Сведите к минимуму отмены.", 
-        biz3: "Без комиссий", 
-        biz3Desc: "Фиксированная плата.", 
-        biz4: "Лидерство", 
-        biz4Desc: "Выделяйтесь.", 
-        usrTitle: "Почему Bookcy?", 
-        usr1: "Без очередей", 
-        usr1Desc: "Удобное время.", 
-        usr2: "Прозрачные цены", 
-        usr2Desc: "Точная цена.", 
-        usr3: "Отзывы", 
-        usr3Desc: "Читайте реальные отзывы.", 
-        packTitle: "Пакеты", 
-        packSub: "Никаких скрытых платежей.", 
-        pkg1Name: "Стандартный Пакет", 
-        pkg1Price: "£60", 
-        pkg1Period: "/ Месяц", 
-        pkg1Feat1: "Безлимит", 
-        pkg1Feat2: "Соцсети", 
-        pkg1Feat3: "Панель", 
-        pkg1Feat4: "Персонал", 
-        pkg1Feat5: "Поддержка", 
-        pkg2Name: "Премиум Пакет", 
-        pkg2Price: "£100", 
-        pkg2Period: "/ Месяц", 
-        pkg2Feat1: "Всё включено", 
-        pkg2Feat2: "Топ на главной", 
-        pkg2Feat3: "Высший рейтинг", 
-        pkg2Feat4: "VIP Рамка", 
-        pkg2Feat5: "Реклама", 
-        ctaTitle: "Готовы расти?", 
-        ctaBtn: "ДОБАВИТЬ БИЗНЕС" 
-      },
-      contact: { 
-        title: "КОНТАКТЫ", 
-        sub: "Мы здесь 24/7.", 
-        whatsapp: "WhatsApp", 
-        wpDesc: "Свяжитесь.", 
-        insta: "Instagram", 
-        instaDesc: "Подписывайтесь.", 
-        email: "Эл. почта", 
-        emailDesc: "Напишите нам.", 
-        btnWp: "НАПИСАТЬ", 
-        btnInsta: "ПОДПИСАТЬСЯ", 
-        btnEmail: "ОТПРАВИТЬ" 
+        change: "Назад", selectService: "Выберите услугу", selectEvent: "Выберите событие", selectLoca: "Выберите зону", selectStaff: "ВЫБЕРИТЕ СПЕЦИАЛИСТА", anyStaff: "Любой", date: "Дата", time: "Время", name: "Имя", surname: "Фамилия", phone: "Телефон", email: "Email", submit: "ПОДТВЕРДИТЬ", success: "БРОНЬ ПОДТВЕРЖДЕНА", successSub: "Данные отправлены.", backHome: "НА ГЛАВНУЮ", total: "Итого", details: "Детали", service: "Услуга", event: "Событие", staff: "Специалист", dateTime: "Дата / Время", contactInfo: "Контакты", btnBook: "Забронировать →", shopClosed: "ЗАКРЫТО ИЛИ НЕТ МЕСТ В ЭТУ ДАТУ." 
       },
       footer: { 
-        desc: "Платформа бронирования на Северном Кипре.", 
-        links: "Платформа", 
-        cities: "Регион", 
-        legal: "О нас", 
-        copy: "Все права защищены. Сделано на Северном Кипре. 🇹🇷" 
+        desc: "Платформа бронирования на Северном Кипре.", links: "Платформа", cities: "Регион", legal: "О нас", copy: "Все права защищены. Сделано на Северном Кипре. 🇹🇷", terms: "Условия", privacy: "Конфиденциальность"
       }
     }
   };
@@ -1043,37 +232,6 @@ export default function Home() {
       col4: ['boost', 'stats']
   };
 
-  const featureIcons = {
-      profile: <Briefcase size={40} className="theme-text-main mb-4"/>,
-      market: <Store size={40} className="theme-text-main mb-4"/>,
-      team: <Users size={40} className="theme-text-main mb-4"/>,
-      booking: <MousePointerClick size={40} className="theme-text-main mb-4"/>,
-      app: <Smartphone size={40} className="theme-text-main mb-4"/>,
-      marketing: <Target size={40} className="theme-text-main mb-4"/>,
-      calendar: <CalendarCheck size={40} className="theme-text-main mb-4"/>,
-      crm: <HeartHandshake size={40} className="theme-text-main mb-4"/>,
-      boost: <TrendingUp size={40} className="theme-text-main mb-4"/>,
-      stats: <PieChart size={40} className="theme-text-main mb-4"/>,
-  };
-
-  const featureIconsSmall = {
-      profile: <Briefcase size={20}/>, 
-      market: <Store size={20}/>, 
-      team: <Users size={20}/>, 
-      booking: <MousePointerClick size={20}/>, 
-      app: <Smartphone size={20}/>, 
-      marketing: <Target size={20}/>, 
-      calendar: <CalendarCheck size={20}/>, 
-      crm: <HeartHandshake size={20}/>, 
-      boost: <TrendingUp size={20}/>, 
-      stats: <PieChart size={20}/>,
-  };
-
-  const packages = [
-    { name: "Standard", price: `£60 ${lang==='TR'?'/ Ay':lang==='EN'?'/ Month':'/ Месяц'}` }, 
-    { name: "Premium", price: `£100 ${lang==='TR'?'/ Ay':lang==='EN'?'/ Month':'/ Месяц'}` }
-  ];
-  
   const categories = [ 
       { key: "barber", dbName: "Berber", bg: "linear-gradient(135deg,#1a1a2e,#2d1b4e)", emoji: "💈" }, 
       { key: "hair", dbName: "Kuaför", bg: "linear-gradient(135deg,#f5c5a3,#e8622a)", emoji: "✂️" }, 
@@ -1154,49 +312,6 @@ export default function Home() {
      if (data) setClosedSlots(data.map(item => item.slot));
   }
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setIsLoginLoading(true);
-    const inputUser = loginUsername.trim().toLowerCase();
-    const inputPass = loginPassword.trim();
-    const shop = shops.find(s => s.admin_username?.toLowerCase() === inputUser);
-    
-    if (!shop) { 
-      alert("Hatalı İşletme Kullanıcı Adı!"); 
-      setIsLoginLoading(false); 
-      return; 
-    }
-    if (shop.status !== 'approved' && shop.status) { 
-      alert("Hesabınız henüz onaylanmamış! Lütfen dekontunuzu iletip onay bekleyiniz."); 
-      setIsLoginLoading(false); 
-      return; 
-    }
-    
-    if (loginType === 'owner') {
-      if (shop.admin_password !== inputPass) { 
-        alert("Hatalı Şifre!"); 
-        setIsLoginLoading(false); 
-        return; 
-      }
-      localStorage.setItem('bookcy_biz_session', JSON.stringify({ role: 'owner', shopData: shop }));
-      setShowLogin(false); 
-      setIsLoginLoading(false); 
-      router.push('/dashboard');
-    } else {
-      const staffList = shop.staff || [];
-      const validStaff = staffList.find(s => s.name.toLowerCase() === loginStaffName.trim().toLowerCase() && s.password === inputPass);
-      if (!validStaff) { 
-        alert("Hatalı Personel Adı veya Şifre!"); 
-        setIsLoginLoading(false); 
-        return; 
-      }
-      localStorage.setItem('bookcy_biz_session', JSON.stringify({ role: 'staff', staffName: validStaff.name, shopData: shop }));
-      setShowLogin(false); 
-      setIsLoginLoading(false); 
-      router.push('/dashboard');
-    }
-  };
-
   const handleLogout = () => { 
     localStorage.removeItem('bookcy_biz_session'); 
     setLoggedInShop(null); 
@@ -1207,89 +322,6 @@ export default function Home() {
     setStep('all_shops'); 
     window.scrollTo(0,0); 
   };
-
-  const goToFeature = (featureKey) => { 
-    setActiveFeature(featureKey); 
-    setStep('feature_detail'); 
-    setShowFeaturesMenu(false); 
-    window.scrollTo(0,0); 
-  };
-
-  async function handleRegisterSubmit(e) {
-    e.preventDefault();
-    if (emailValid === false || phoneValid === false || adminEmailValid === false) {
-      return alert("Lütfen iletişim bilgilerinizi doğru formatta giriniz.");
-    }
-    
-    setIsUploading(true);
-    let uploadedLogoUrl = null;
-    
-    if (newShop.logoFile) {
-      const fileName = `${Math.random()}.${newShop.logoFile.name.split('.').pop()}`;
-      const { error: uploadError } = await supabase.storage.from('logos').upload(fileName, newShop.logoFile);
-      if (!uploadError) {
-        uploadedLogoUrl = supabase.storage.from('logos').getPublicUrl(fileName).data.publicUrl;
-      }
-    }
-    
-    const fullPhone = newShop.phoneCode + " " + newShop.contactPhone;
-
-    const { error } = await supabase.from('shops').insert([
-      { 
-        name: newShop.name, 
-        category: newShop.category, 
-        location: newShop.location, 
-        address: newShop.address, 
-        maps_link: newShop.maps_link, 
-        admin_email: newShop.email, 
-        admin_username: newShop.username, 
-        admin_password: newShop.password, 
-        description: newShop.description, 
-        logo_url: uploadedLogoUrl, 
-        package: newShop.package, 
-        status: 'pending', 
-        contact_phone: fullPhone, 
-        contact_insta: newShop.contactInsta, 
-        contact_email: newShop.contactEmail, 
-        services: [], 
-        staff: [], 
-        gallery: [], 
-        closed_dates: [], 
-        events: [] 
-      }
-    ]);
-    
-    setIsUploading(false);
-    
-    if (!error) {
-        setRegisterSuccess(true);
-        const regEmailHtml = `
-          <div style="font-family: 'DM Sans', Arial, sans-serif; max-width: 600px; margin: 0 auto; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; background: #ffffff;">
-            <div style="background: #2D1B4E; padding: 32px 20px; text-align: center;">
-              <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 900;">BOOKCY<span style="color: #E8622A;">.</span></h1>
-            </div>
-            <div style="padding: 40px 32px;">
-              <h2 style="color: #2D1B4E; margin-top: 0; font-size: 22px;">Merhaba ${newShop.name},</h2>
-              <p style="color: #64748b; font-size: 16px; line-height: 1.6;">Bizi tercih ettiğiniz için teşekkür ederiz. İşletme profilinizin onaylanıp yayına alınabilmesi için lütfen ödeme dekontunuzu WhatsApp destek hattımız üzerinden bize iletiniz.</p>
-            </div>
-          </div>
-        `; 
-        try { 
-          await fetch('/api/email', { 
-            method: 'POST', 
-            headers: { 'Content-Type': 'application/json' }, 
-            body: JSON.stringify({ 
-              to: newShop.email, 
-              subject: 'BOOKCY - Başvurunuz Alındı!', 
-              html: regEmailHtml, 
-              text: 'Başvurunuz alındı. İşlemler sürüyor. Dekontunuzu WhatsApp üzerinden iletmeyi unutmayınız.' 
-            }) 
-          }); 
-        } catch(err) {}
-    } else { 
-      alert("Hata oluştu. Veritabanı sütunlarını kontrol ediniz."); 
-    }
-  }
 
   async function handleBooking(e) {
     e.preventDefault();
@@ -1424,7 +456,6 @@ export default function Home() {
     }
   }
 
-  // BAŞTAKİ "async" KELİMESİ ÇOK KRİTİK! 👇
   async function submitFeedback(e) {
     e.preventDefault();
     if(feedbackData.q1===null || feedbackData.q2===null || feedbackData.q3===null || feedbackData.q4===null) {
@@ -1432,10 +463,8 @@ export default function Home() {
     }
     
     setFeedbackSubmitted(true);
-    // Number() ekleyerek Supabase'in kızdığı metin formatını zorla sayı formatına çeviriyoruz.
     const avg = Number(((feedbackData.q1 + feedbackData.q2 + feedbackData.q3 + feedbackData.q4) / 4).toFixed(1));
 
-    // VERİTABANINA KAYIT VE HATA YAKALAMA
     const { error } = await supabase.from('platform_feedback').insert([{
         q1: feedbackData.q1,
         q2: feedbackData.q2,
@@ -1444,7 +473,6 @@ export default function Home() {
         average_score: avg
     }]);
 
-    // Eğer veritabanı kayıt etmezse ekrana hata mesajı fırlatacak
     if (error) {
       alert("Supabase Kayıt Hatası: " + error.message);
       console.error(error);
@@ -1547,7 +575,6 @@ export default function Home() {
   return (
     <>
       <style dangerouslySetInnerHTML={{__html: `
-        
         :root { 
           --fig: #2D1B4E; 
           --terra: #E8622A; 
@@ -1588,7 +615,6 @@ export default function Home() {
             transition: background-color 0.3s, color 0.3s;
         }
         
-        /* Tema Siniflari */
         .theme-bg-main { background-color: var(--c-bg-main); }
         .theme-bg-card { background-color: var(--c-bg-card); }
         .theme-bg-sub { background-color: var(--c-bg-sub); }
@@ -1605,16 +631,16 @@ export default function Home() {
         .nav-logo-text { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 22px; font-weight: 800; color: var(--c-text-main); letter-spacing: -1px; display:flex; align-items:baseline; }
         .nav-logo-text span { color: var(--terra); }
         .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; height: 100%; margin:0; padding:0; }
-        .nav-links button { text-decoration: none; font-size: 14px; font-weight: 600; color: var(--c-text-main); opacity: 0.7; transition: opacity 0.2s; position: relative; background:none; border:none; outline:none; font-family:'DM Sans', sans-serif; cursor:pointer;}
-        .nav-links button:hover, .nav-links button.active { opacity:1; color: var(--terra); }
+        .nav-links button, .nav-links a { text-decoration: none; font-size: 14px; font-weight: 600; color: var(--c-text-main); opacity: 0.7; transition: opacity 0.2s; position: relative; background:none; border:none; outline:none; font-family:'DM Sans', sans-serif; cursor:pointer;}
+        .nav-links button:hover, .nav-links a:hover, .nav-links button.active, .nav-links a.active { opacity:1; color: var(--terra); }
         .lang-pills { display: flex; flex-direction: row; gap: 4px; }
         .lang-pill { font-size: 11px; font-weight:600; padding: 4px 10px; border-radius: 20px; border: 1px solid transparent; transition: all 0.2s; color: var(--c-text-muted); cursor:pointer;}
         .lang-pill.active { background: var(--fig); color: white; border-color: var(--fig); }
         .lang-pill:hover:not(.active) { border-color: var(--c-border); color: var(--c-text-main); }
         .nav-right { display: flex; flex-direction: row; align-items: center; gap: 16px; flex-shrink: 0; white-space: nowrap; }
-        .btn-outline { font-family:'DM Sans',sans-serif; font-size: 13px; font-weight: 600; padding: 9px 20px; border-radius: 50px; border: 1.5px solid var(--c-text-main); background: transparent; color: var(--c-text-main); transition: all 0.25s; cursor:pointer;}
+        .btn-outline { font-family:'DM Sans',sans-serif; font-size: 13px; font-weight: 600; padding: 9px 20px; border-radius: 50px; border: 1.5px solid var(--c-text-main); background: transparent; color: var(--c-text-main); transition: all 0.25s; cursor:pointer; text-decoration:none;}
         .btn-outline:hover { background:var(--c-text-main); color:var(--c-bg-card); }
-        .btn-primary { font-family:'DM Sans',sans-serif; font-size: 13px; font-weight: 700; padding: 10px 22px; border-radius: 50px; border: none; background: var(--terra); color: white; transition: all 0.25s; display:flex; align-items:center; gap:7px; cursor:pointer;}
+        .btn-primary { font-family:'DM Sans',sans-serif; font-size: 13px; font-weight: 700; padding: 10px 22px; border-radius: 50px; border: none; background: var(--terra); color: white; transition: all 0.25s; display:flex; align-items:center; gap:7px; cursor:pointer; text-decoration:none;}
         .btn-primary:hover { background: #d4561f; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(232,98,42,0.35); }
         
         .hero { position: relative; min-height: 100vh; background: var(--fig); overflow: hidden; display: flex; flex-direction:column; align-items: center; justify-content: center; padding-top: 120px; padding-bottom: 120px; }
@@ -1786,7 +812,7 @@ export default function Home() {
       `}} />
 
       <nav>
-        <div className="nav-logo" onClick={() => {setStep('services'); setShowLogin(false); setShowRegister(false); window.scrollTo(0,0);}}>
+        <div className="nav-logo" onClick={() => {setStep('services'); window.scrollTo(0,0);}}>
           <svg className="nav-logo-icon" viewBox="0 0 36 36" fill="none">
             <rect width="36" height="36" rx="10" fill="#2D1B4E"/>
             <circle cx="18" cy="10" r="4.5" fill="#F5C5A3"/>
@@ -1801,15 +827,15 @@ export default function Home() {
 
         <ul className="nav-links">
           <li>
-            <button onClick={() => {setStep('all_shops'); setShowLogin(false); setShowRegister(false); window.scrollTo(0,0);}} className={['all_shops', 'shops', 'shop_profile', 'booking'].includes(step) ? 'active' : ''}>
+            <button onClick={() => {setStep('all_shops'); window.scrollTo(0,0);}} className={['all_shops', 'shops', 'shop_profile', 'booking'].includes(step) ? 'active' : ''}>
               {t[lang].nav.places}
             </button>
           </li>
           <li style={{height:'100%', display:'flex', alignItems:'center'}}>
               <div className="relative h-full flex items-center group" onMouseEnter={() => setShowFeaturesMenu(true)} onMouseLeave={() => setShowFeaturesMenu(false)}>
-                  <button onClick={() => {setStep('all_features'); setShowFeaturesMenu(false); window.scrollTo(0,0);}} className={`flex items-center gap-1 transition-colors h-full ${['features', 'feature_detail', 'all_features'].includes(step) || showFeaturesMenu ? 'active' : ''}`}>
+                  <Link href="/ozellikler" className={`flex items-center gap-1 transition-colors h-full`}>
                       {t[lang].nav.features} <ChevronDown size={14} className={`transition-transform duration-200 ${showFeaturesMenu ? 'rotate-180' : ''}`} />
-                  </button>
+                  </Link>
                   {showFeaturesMenu && (
                       <div className="absolute top-[68px] left-1/2 -translate-x-1/2 w-screen bg-[#1b0f30] text-white shadow-2xl border-t border-slate-800 cursor-default animate-in slide-in-from-top-2 duration-200">
                           <div className="max-w-[1000px] mx-auto py-12 px-8">
@@ -1817,30 +843,30 @@ export default function Home() {
                                   <div>
                                     <h4 className="font-black text-[11px] uppercase tracking-widest mb-6 text-[#E8622A]">{t[lang].megaMenu.col1Title}</h4>
                                     <ul className="space-y-5 font-bold text-slate-300 capitalize text-sm">
-                                      {megaMenuStructure.col1.map(key => <li key={key} onClick={() => goToFeature(key)} className="hover:text-white cursor-pointer transition-colors flex items-center gap-2"><ChevronRight size={14} className="text-[#E8622A]"/> {t[lang].featNames[key]}</li>)}
+                                      {megaMenuStructure.col1.map(key => <Link key={key} href="/ozellikler" className="hover:text-white cursor-pointer transition-colors flex items-center gap-2 text-decoration-none"><ChevronRight size={14} className="text-[#E8622A]"/> {t[lang].featNames[key]}</Link>)}
                                     </ul>
                                   </div>
                                   <div>
                                     <h4 className="font-black text-[11px] uppercase tracking-widest mb-6 text-[#E8622A]">{t[lang].megaMenu.col2Title}</h4>
                                     <ul className="space-y-5 font-bold text-slate-300 capitalize text-sm">
-                                      {megaMenuStructure.col2.map(key => <li key={key} onClick={() => goToFeature(key)} className="hover:text-white cursor-pointer transition-colors flex items-center gap-2"><ChevronRight size={14} className="text-[#E8622A]"/> {t[lang].featNames[key]}</li>)}
+                                      {megaMenuStructure.col2.map(key => <Link key={key} href="/ozellikler" className="hover:text-white cursor-pointer transition-colors flex items-center gap-2 text-decoration-none"><ChevronRight size={14} className="text-[#E8622A]"/> {t[lang].featNames[key]}</Link>)}
                                     </ul>
                                   </div>
                                   <div>
                                     <h4 className="font-black text-[11px] uppercase tracking-widest mb-6 text-[#E8622A]">{t[lang].megaMenu.col3Title}</h4>
                                     <ul className="space-y-5 font-bold text-slate-300 capitalize text-sm">
-                                      {megaMenuStructure.col3.map(key => <li key={key} onClick={() => goToFeature(key)} className="hover:text-white cursor-pointer transition-colors flex items-center gap-2"><ChevronRight size={14} className="text-[#E8622A]"/> {t[lang].featNames[key]}</li>)}
+                                      {megaMenuStructure.col3.map(key => <Link key={key} href="/ozellikler" className="hover:text-white cursor-pointer transition-colors flex items-center gap-2 text-decoration-none"><ChevronRight size={14} className="text-[#E8622A]"/> {t[lang].featNames[key]}</Link>)}
                                     </ul>
                                   </div>
                                   <div>
                                     <h4 className="font-black text-[11px] uppercase tracking-widest mb-6 text-[#E8622A]">{t[lang].megaMenu.col4Title}</h4>
                                     <ul className="space-y-5 font-bold text-slate-300 capitalize text-sm">
-                                      {megaMenuStructure.col4.map(key => <li key={key} onClick={() => goToFeature(key)} className="hover:text-white cursor-pointer transition-colors flex items-center gap-2"><ChevronRight size={14} className="text-[#E8622A]"/> {t[lang].featNames[key]}</li>)}
+                                      {megaMenuStructure.col4.map(key => <Link key={key} href="/ozellikler" className="hover:text-white cursor-pointer transition-colors flex items-center gap-2 text-decoration-none"><ChevronRight size={14} className="text-[#E8622A]"/> {t[lang].featNames[key]}</Link>)}
                                     </ul>
                                   </div>
                               </div>
                               <div className="flex justify-center border-t border-slate-800 pt-8">
-                                <button onClick={() => {setStep('all_features'); setShowFeaturesMenu(false); window.scrollTo(0,0);}} className="border border-slate-700 bg-[#1b0f30] text-white px-8 py-3 rounded-lg font-bold hover:bg-slate-800 hover:text-[#E8622A] transition-colors">{t[lang].megaMenu.btn}</button>
+                                <Link href="/ozellikler" className="border border-slate-700 bg-[#1b0f30] text-white px-8 py-3 rounded-lg font-bold hover:bg-slate-800 hover:text-[#E8622A] transition-colors text-decoration-none">{t[lang].megaMenu.btn}</Link>
                               </div>
                           </div>
                       </div>
@@ -1848,14 +874,14 @@ export default function Home() {
               </div>
           </li>
           <li>
-            <button onClick={() => {setStep('about'); setShowLogin(false); setShowRegister(false); window.scrollTo(0,0);}} className={step === 'about' ? 'active' : ''}>
+            <Link href="/hakkimizda">
               {t[lang].nav.about}
-            </button>
+            </Link>
           </li>
           <li>
-            <button onClick={() => {setStep('contact'); setShowLogin(false); setShowRegister(false); window.scrollTo(0,0);}} className={step === 'contact' ? 'active' : ''}>
+            <Link href="/iletisim">
               {t[lang].nav.contact}
-            </button>
+            </Link>
           </li>
         </ul>
 
@@ -1879,158 +905,15 @@ export default function Home() {
                </div>
           ) : (
               <>
-                  <button onClick={() => setShowRegister(true)} className="btn-outline">{t[lang].nav.addShop}</button>
-                  <button onClick={() => setShowLogin(true)} className="btn-primary">
+                  <Link href="/isletme-giris" className="btn-outline">{t[lang].nav.addShop}</Link>
+                  <Link href="/isletme-giris" className="btn-primary">
                       <UserCircle size={18}/>
                       <span>{t[lang].nav.login}</span>
-                  </button>
+                  </Link>
               </>
           )}
         </div>
       </nav>
-
-      {/* İŞLETME KAYIT MODALI */}
-      {showRegister && (
-          <div className="fixed inset-0 w-screen h-screen bg-[#2D1B4E]/90 backdrop-blur-md z-[9999] flex items-center justify-center p-4 overflow-y-auto pt-20">
-            <div className="theme-bg-card theme-border w-full max-w-[800px] rounded-[32px] p-8 md:p-10 relative shadow-2xl my-auto animate-in zoom-in-95 duration-300">
-              <button onClick={() => {setShowRegister(false); setRegisterSuccess(false);}} className="absolute top-6 right-6 md:right-8 text-slate-400 hover:text-[#2D1B4E] p-2 font-bold bg-transparent border-none cursor-pointer"><X size={24}/></button>
-              
-              {registerSuccess ? (
-                  <div className="text-center py-20">
-                      <CheckCircle2 size={64} className="mx-auto text-[#00c48c] mb-6" />
-                      <h2 className="text-2xl md:text-3xl font-black text-[#E8622A] uppercase italic mb-4">{t[lang].reg.success}</h2>
-                      <div className="theme-bg-sub p-6 rounded-2xl theme-border inline-block text-left mt-4 theme-text-main w-full max-w-sm">
-                          <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-4">Banka Bilgileri / Bank Details:</p>
-                          <p className="font-bold text-sm">Banka: <span className="font-normal">İş Bankası</span></p>
-                          <p className="font-bold text-sm">Alıcı: <span className="font-normal">BOOKCY LTD.</span></p>
-                          <p className="font-bold text-sm">IBAN: <span className="text-[#E8622A]">TR99 0006 4000 0012 3456 7890 12</span></p>
-                          
-                          <p className="text-sm font-bold theme-text-muted mt-6 mb-4 text-center">Bizi tercih ettiğiniz için teşekkür ederiz. İşletme profilinizin onaylanıp yayına alınabilmesi için lütfen ödeme dekontunuzu WhatsApp destek hattımız üzerinden bize iletiniz.</p>
-                          <a href="https://wa.me/905555555555?text=Merhaba,%20Bookcy%20işletme%20kaydımı%20yaptım.%20Dekontumu%20iletiyorum." target="_blank" rel="noreferrer" className="w-full bg-[#25D366] text-white font-black py-4 rounded-xl uppercase tracking-widest hover:bg-green-600 transition-colors shadow-lg shadow-green-500/30 flex justify-center items-center gap-2 text-decoration-none text-xs border-none cursor-pointer">
-                              <MessageCircle size={18}/> DEKONTU WHATSAPP'TAN İLET
-                          </a>
-                      </div>
-                  </div>
-              ) : (
-                  <>
-                      <div className="flex flex-col mb-8 text-center">
-                          <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tight italic theme-text-main">{t[lang].reg.title}</h2>
-                          <p className="text-[10px] text-[#E8622A] font-bold uppercase tracking-[0.2em] mt-2 flex items-center justify-center gap-2"><Lock size={12}/> {t[lang].reg.subtitle}</p>
-                      </div>
-                      <form onSubmit={handleRegisterSubmit} className="flex flex-col gap-5">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                              <input required placeholder={t[lang].reg.shopName} className="theme-bg-sub theme-border rounded-2xl py-4 px-6 text-xs font-bold focus:border-[#E8622A] outline-none theme-text-main" value={newShop.name} onChange={e => setNewShop({...newShop, name: e.target.value})} />
-                              <select className="theme-bg-sub theme-border rounded-2xl py-4 px-6 text-xs font-bold theme-text-main outline-none focus:border-[#E8622A] cursor-pointer" value={newShop.category} onChange={e => setNewShop({...newShop, category: e.target.value})}>
-                                  {categories.map(c => <option key={c.dbName} value={c.dbName}>{t[lang].cats[c.key]}</option>)}
-                              </select>
-                          </div>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                              <select required className="theme-bg-sub theme-border rounded-2xl py-4 px-6 text-xs font-bold theme-text-main outline-none focus:border-[#E8622A] cursor-pointer uppercase" value={newShop.location} onChange={e => setNewShop({...newShop, location: e.target.value})}>
-                                  {cyprusRegions.map(region => <option key={region} value={region}>{region}</option>)}
-                              </select>
-                              <input required placeholder={t[lang].reg.address} className="theme-bg-sub theme-border rounded-2xl py-4 px-6 text-xs font-bold focus:border-[#E8622A] outline-none uppercase theme-text-main" value={newShop.address} onChange={e => setNewShop({...newShop, address: e.target.value})} />
-                          </div>
-                          
-                          <div className="theme-border-sub pt-5 border-t">
-                              <input type="url" placeholder={t[lang].reg.maps} className="w-full theme-bg-sub theme-border rounded-2xl py-4 px-6 text-xs font-bold focus:border-[#E8622A] outline-none theme-text-main" value={newShop.maps_link} onChange={e => setNewShop({...newShop, maps_link: e.target.value})} />
-                          </div>
-
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 theme-border-sub pt-5 border-t">
-                              <div className="flex gap-2 w-full relative">
-                                <select className="theme-bg-sub theme-border rounded-2xl py-4 px-3 outline-none focus:border-[#E8622A] font-bold text-xs theme-text-main cursor-pointer w-20 shrink-0" value={newShop.phoneCode} onChange={e => setNewShop({...newShop, phoneCode: e.target.value})}>
-                                    <option value="+90">TR</option>
-                                    <option value="+357">CY</option>
-                                    <option value="+44">UK</option>
-                                </select>
-                                <div className="relative flex-1">
-                                  <input required type="tel" placeholder={t[lang].reg.contactPhone} className="w-full theme-bg-sub theme-border rounded-2xl py-4 px-4 pr-10 outline-none focus:border-[#E8622A] font-bold text-xs theme-text-main" value={newShop.contactPhone} onChange={handlePhoneChange} />
-                                  {phoneValid === true && <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 text-green-500" size={16}/>}
-                                  {phoneValid === false && <XCircle className="absolute right-3 top-1/2 -translate-y-1/2 text-red-500" size={16}/>}
-                                </div>
-                              </div>
-                              <input placeholder={t[lang].reg.contactInsta} className="theme-bg-sub theme-border rounded-2xl py-4 px-6 text-xs font-bold focus:border-[#E8622A] outline-none theme-text-main" value={newShop.contactInsta} onChange={e => setNewShop({...newShop, contactInsta: e.target.value})} />
-                              <div className="relative">
-                                <input type="email" placeholder={t[lang].reg.contactEmail} className="w-full theme-bg-sub theme-border rounded-2xl py-4 px-6 pr-10 text-xs font-bold focus:border-[#E8622A] outline-none theme-text-main" value={newShop.contactEmail} onChange={handleAdminEmailChange} />
-                                {adminEmailValid === true && <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 text-green-500" size={16}/>}
-                                {adminEmailValid === false && <XCircle className="absolute right-3 top-1/2 -translate-y-1/2 text-red-500" size={16}/>}
-                              </div>
-                          </div>
-                          
-                          <div className="theme-border-sub pt-5 border-t relative">
-                              <input required type="email" placeholder={t[lang].reg.email} className="w-full theme-bg-sub theme-border rounded-2xl py-4 px-6 pr-10 text-xs font-bold focus:border-[#E8622A] outline-none theme-text-main" value={newShop.email} onChange={handleEmailChange} />
-                              {emailValid === true && <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 text-green-500" size={16}/>}
-                              {emailValid === false && <XCircle className="absolute right-3 top-1/2 -translate-y-1/2 text-red-500" size={16}/>}
-                          </div>
-                          
-                          <textarea placeholder={t[lang].reg.desc} rows="2" className="theme-bg-sub theme-border rounded-2xl py-4 px-6 text-xs font-bold focus:border-[#E8622A] outline-none resize-none theme-text-main" value={newShop.description} onChange={e => setNewShop({...newShop, description: e.target.value})}></textarea>
-                          
-                          <div className="theme-bg-sub theme-border border-dashed rounded-2xl p-4 relative group hover:border-[#E8622A] transition-all">
-                              {newShop.logoFile ? (
-                                  <span className="text-[10px] font-bold text-[#00c48c] flex items-center justify-center gap-2"><CheckCircle2 size={16}/> {newShop.logoFile.name}</span>
-                              ) : (
-                                  <div className="flex flex-col items-center justify-center text-center cursor-pointer">
-                                      <Upload size={20} className="text-slate-400 mb-2 group-hover:text-[#E8622A]" />
-                                      <span className="text-[10px] font-bold text-slate-500 uppercase">{t[lang].reg.upload}</span>
-                                  </div>
-                              )}
-                              <input type="file" accept=".png, .jpg, .jpeg" className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onChange={e => setNewShop({...newShop, logoFile: e.target.files[0]})} />
-                          </div>
-                          
-                          <div className="theme-border-sub pt-4 border-t">
-                              <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-3">{t[lang].reg.pack}</p>
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                  {packages.map(p => (
-                                      <div key={p.name} onClick={() => setNewShop({...newShop, package: p.name})} className={`cursor-pointer p-5 rounded-2xl border transition-all ${newShop.package === p.name ? 'theme-bg-accent/10 border-[#E8622A]' : 'theme-bg-card theme-border hover:border-[#E8622A]'}`}>
-                                          <div className="flex justify-between items-center mb-2">
-                                            <h4 className={`text-sm font-black uppercase ${newShop.package === p.name ? 'text-[#E8622A]' : 'theme-text-main'}`}>{p.name}</h4>
-                                            {newShop.package === p.name && <CheckCircle2 size={16} className="text-[#E8622A]"/>}
-                                          </div>
-                                          <p className="text-xs font-bold text-slate-500">{p.price}</p>
-                                      </div>
-                                  ))}
-                              </div>
-                          </div>
-                          
-                          <div className="grid grid-cols-2 gap-4 mt-2 theme-border-sub pt-4 border-t">
-                              <input required placeholder={t[lang].reg.user} className="theme-bg-sub theme-border rounded-2xl py-4 px-6 text-xs font-bold focus:border-[#E8622A] outline-none theme-text-main" value={newShop.username} onChange={e => setNewShop({...newShop, username: e.target.value})} />
-                              <input required placeholder={t[lang].reg.pass} className="theme-bg-sub theme-border rounded-2xl py-4 px-6 text-xs font-bold focus:border-[#E8622A] outline-none theme-text-main" value={newShop.password} onChange={e => setNewShop({...newShop, password: e.target.value})} />
-                          </div>
-                          
-                          <button type="submit" disabled={isUploading || emailValid === false || phoneValid === false || adminEmailValid === false} className="w-full btn-primary justify-center py-5 rounded-2xl mt-2 uppercase text-xs tracking-[0.2em] shadow-lg border-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
-                            {isUploading ? t[lang].reg.uploading : t[lang].reg.submit}
-                          </button>
-                      </form>
-                  </>
-              )}
-            </div>
-        </div>
-      )}
-
-      {/* GİRİŞ MODALI */}
-      {showLogin && (
-        <div className="fixed inset-0 bg-[#2D1B4E]/80 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
-          <div className="theme-bg-card w-full max-w-[480px] rounded-[32px] p-8 md:p-12 relative animate-in zoom-in-95 duration-300 shadow-2xl theme-border">
-            <button onClick={() => setShowLogin(false)} className="absolute top-6 right-6 text-slate-400 hover:text-[#E8622A] bg-transparent border-none cursor-pointer">
-              <X size={28}/>
-            </button>
-            <div className="text-center mb-8">
-              <div className="w-16 h-16 bg-[#E8622A]/10 text-[#E8622A] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner"><Store size={32} /></div>
-              <h1 className="text-2xl md:text-3xl font-black theme-text-main uppercase tracking-tight mb-2">GİRİŞ YAP</h1>
-              <p className="text-slate-400 font-bold text-xs uppercase tracking-widest">BOOKCY İŞ ORTAĞI PANELİ</p>
-            </div>
-            <div className="flex theme-bg-sub p-1 rounded-xl mb-8 theme-border-sub border">
-              <button onClick={() => setLoginType('owner')} className={`flex-1 py-3 text-xs font-black uppercase tracking-widest rounded-lg transition-all border-none cursor-pointer flex justify-center items-center gap-2 ${loginType === 'owner' ? 'theme-bg-card text-[#E8622A] shadow-sm' : 'bg-transparent text-slate-400 hover:text-slate-600'}`}><User size={14}/> YÖNETİCİ</button>
-              <button onClick={() => setLoginType('staff')} className={`flex-1 py-3 text-xs font-black uppercase tracking-widest rounded-lg transition-all border-none cursor-pointer flex justify-center items-center gap-2 ${loginType === 'staff' ? 'theme-bg-card text-[#E8622A] shadow-sm' : 'bg-transparent text-slate-400 hover:text-slate-600'}`}><Users size={14}/> PERSONEL</button>
-            </div>
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div className="relative"><Store className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" size={20}/><input type="text" required placeholder="İşletme Kullanıcı Adı" className="w-full theme-bg-sub theme-border rounded-2xl py-4 pl-14 pr-6 font-bold text-sm outline-none focus:border-[#E8622A] theme-text-main placeholder:text-slate-400" value={loginUsername} onChange={(e) => setLoginUsername(e.target.value)} /></div>
-              {loginType === 'staff' && (<div className="relative animate-in fade-in zoom-in-95 duration-300"><User className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" size={20}/><input type="text" required placeholder="Personel İsim Soyisim" className="w-full theme-bg-sub theme-border rounded-2xl py-4 pl-14 pr-6 font-bold text-sm outline-none focus:border-[#E8622A] theme-text-main placeholder:text-slate-400" value={loginStaffName} onChange={(e) => setLoginStaffName(e.target.value)} /></div>)}
-              <div className="relative"><Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" size={20}/><input type="password" required placeholder="Şifre" className="w-full theme-bg-sub theme-border rounded-2xl py-4 pl-14 pr-6 font-bold text-sm outline-none focus:border-[#E8622A] theme-text-main placeholder:text-slate-400" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} /></div>
-              <button type="submit" disabled={isLoginLoading} className="w-full bg-[#2D1B4E] hover:bg-[#1a0f2e] text-white py-5 rounded-2xl font-black uppercase tracking-widest text-xs flex justify-center items-center gap-2 transition-all shadow-lg mt-6 disabled:opacity-70 border-none cursor-pointer">{isLoginLoading ? 'Giriş Yapılıyor...' : 'PANELE GİT'} <ArrowRight size={18}/></button>
-            </form>
-          </div>
-        </div>
-      )}
 
       <main className="flex-1 w-full relative z-10" style={{minHeight: '80vh'}}>
         
@@ -2196,15 +1079,20 @@ export default function Home() {
                     <div className="cta-sub">{t[lang].homeInfo.ctaSub}</div>
                   </div>
                   <div className="cta-actions">
-                    <button className="app-badge" onClick={()=>{setShowRegister(true); window.scrollTo(0,0);}}>
-                      <div className="app-badge-icon">💼</div>
-                      <div className="app-badge-text"><div className="small">Hemen Katıl</div><div className="big">İşletme Ekle</div></div>
-                   <Link href="/hakkimizda">
-  <div className="app-badge-text">
-    <div className="small">İncele</div>
-    <div className="big">Özellikler & Paketler</div>
-  </div>
-</Link>
+                    <Link href="/isletme-giris" className="app-badge">
+                        <div className="app-badge-icon">💼</div>
+                        <div className="app-badge-text">
+                            <div className="small">Hemen Katıl</div>
+                            <div className="big">İşletme Ekle</div>
+                        </div>
+                    </Link>
+
+                    <Link href="/hakkimizda" className="app-badge">
+                        <div className="app-badge-text">
+                            <div className="small">İncele</div>
+                            <div className="big">Özellikler & Paketler</div>
+                        </div>
+                    </Link>
                   </div>
                 </div>
               </section>
@@ -2812,108 +1700,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* DİNAMİK ÖZELLİK DETAY SAYFASI */}
-        {step === 'feature_detail' && activeFeature && (
-            <div className="w-full theme-bg-main animate-in fade-in">
-                <div className="bg-[#2D1B4E] pt-32 pb-40 px-8 text-center relative overflow-hidden border-b border-slate-800">
-                    <div className="absolute top-0 left-0 w-96 h-96 bg-[#E8622A]/20 rounded-full blur-[100px] pointer-events-none"></div>
-                    <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#F5C5A3]/20 rounded-full blur-[100px] pointer-events-none"></div>
-                    <div className="flex justify-center mb-8 relative z-10">{featureIcons[activeFeature]}</div>
-                    <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white mb-6 relative z-10">{t[lang].featNames[activeFeature]}</h1>
-                </div>
-
-                <div className="max-w-[1200px] mx-auto px-8 py-24 -mt-20 relative z-20">
-                    <div className="theme-bg-card p-10 md:p-16 rounded-[40px] shadow-2xl theme-border border">
-                        <div className="text-center max-w-3xl mx-auto mb-16 border-b theme-border-sub pb-12">
-                            <h2 className="text-xl font-black text-[#E8622A] uppercase tracking-widest mb-4">{t[lang].featUI.purposeTitle}</h2>
-                            <p className="text-xl md:text-2xl theme-text-main font-medium leading-relaxed">{t[lang].featDetails[activeFeature].purpose}</p>
-                        </div>
-                        <h2 className="text-2xl md:text-3xl font-black theme-text-main mb-12 text-center">{t[lang].featUI.benefitsTitle}</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            <div className="theme-bg-sub p-8 rounded-[24px] border theme-border-sub hover:border-[#E8622A] transition-colors group">
-                                <div className="w-12 h-12 theme-bg-card text-[#E8622A] rounded-full flex items-center justify-center mb-6 shadow-sm group-hover:bg-[#E8622A] group-hover:text-white transition-colors"><ShieldCheck size={20}/></div>
-                                <h3 className="font-black text-lg theme-text-main mb-3 leading-tight">{t[lang].featDetails[activeFeature].adv1.title}</h3>
-                                <p className="text-sm theme-text-muted font-medium leading-relaxed">{t[lang].featDetails[activeFeature].adv1.desc}</p>
-                            </div>
-                            <div className="theme-bg-sub p-8 rounded-[24px] border theme-border-sub hover:border-[#E8622A] transition-colors group">
-                                <div className="w-12 h-12 theme-bg-card text-[#E8622A] rounded-full flex items-center justify-center mb-6 shadow-sm group-hover:bg-[#E8622A] group-hover:text-white transition-colors"><Target size={20}/></div>
-                                <h3 className="font-black text-lg theme-text-main mb-3 leading-tight">{t[lang].featDetails[activeFeature].adv2.title}</h3>
-                                <p className="text-sm theme-text-muted font-medium leading-relaxed">{t[lang].featDetails[activeFeature].adv2.desc}</p>
-                            </div>
-                            <div className="theme-bg-sub p-8 rounded-[24px] border theme-border-sub hover:border-[#E8622A] transition-colors group">
-                                <div className="w-12 h-12 theme-bg-card text-[#E8622A] rounded-full flex items-center justify-center mb-6 shadow-sm group-hover:bg-[#E8622A] group-hover:text-white transition-colors"><TrendingUp size={20}/></div>
-                                <h3 className="font-black text-lg theme-text-main mb-3 leading-tight">{t[lang].featDetails[activeFeature].adv3.title}</h3>
-                                <p className="text-sm theme-text-muted font-medium leading-relaxed">{t[lang].featDetails[activeFeature].adv3.desc}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="theme-bg-sub py-24 text-center border-t theme-border-sub">
-                    <h2 className="text-3xl md:text-5xl font-black uppercase theme-text-main mb-8 tracking-tight">{t[lang].about.ctaTitle}</h2>
-                    <button onClick={() => {setShowRegister(true); window.scrollTo(0,0);}} className="btn-primary mx-auto px-12 py-5 uppercase tracking-widest text-sm shadow-[0_0_40px_rgba(232,98,42,0.5)] border-none cursor-pointer">{t[lang].about.ctaBtn}</button>
-                </div>
-            </div>
-        )}
-
-        {/* TÜM ÖZELLİKLER LİSTESİ */}
-        {step === 'all_features' && (
-            <div className="w-full theme-bg-main animate-in fade-in">
-                <div className="bg-[#2D1B4E] pt-32 pb-24 px-8 text-center relative overflow-hidden border-b border-slate-800">
-                    <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white mb-6 relative z-10">{t[lang].featUI.allFeaturesTitle}</h1>
-                    <p className="text-lg md:text-xl font-medium text-slate-300 max-w-3xl mx-auto leading-relaxed relative z-10">{t[lang].featUI.allFeaturesSub}</p>
-                </div>
-
-                <div className="max-w-[1400px] mx-auto px-8 py-24">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {Object.keys(t[lang].featNames).map((key) => (
-                            <div key={key} onClick={() => goToFeature(key)} className="theme-bg-sub p-8 rounded-[32px] border theme-border-sub hover:border-[#E8622A] hover:shadow-xl transition-all cursor-pointer group flex flex-col items-start">
-                                <div className="w-16 h-16 theme-bg-card rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform">{featureIconsSmall[key]}</div>
-                                <h3 className="text-2xl font-black theme-text-main mb-3 group-hover:text-[#E8622A] transition-colors">{t[lang].featNames[key]}</h3>
-                                <p className="theme-text-muted font-medium leading-relaxed">{t[lang].featDesc[key]}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        )}
-
-        {/* İLETİŞİM SAYFASI */}
-        {step === 'contact' && (
-            <div className="w-full theme-bg-main animate-in fade-in overflow-hidden">
-                <div className="bg-[#2D1B4E] pt-24 pb-32 px-4 md:px-8 text-center relative overflow-hidden border-b border-slate-800">
-                    <div className="absolute top-0 left-0 w-64 md:w-96 h-64 md:h-96 bg-[#E8622A]/20 rounded-full blur-[100px] pointer-events-none"></div>
-                    <div className="absolute bottom-0 right-0 w-64 md:w-96 h-64 md:h-96 bg-[#00c48c]/20 rounded-full blur-[100px] pointer-events-none"></div>
-                    <span className="bg-[#E8622A]/10 text-[#E8622A] px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-6 inline-block border border-[#E8622A]/20">7/24 Destek</span>
-                    <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white mb-6 relative z-10">{t[lang].contact.title}</h1>
-                    <p className="text-lg md:text-2xl font-medium text-slate-300 max-w-3xl mx-auto leading-relaxed relative z-10">{t[lang].contact.sub}</p>
-                </div>
-
-                <div className="max-w-[1200px] mx-auto px-4 md:px-8 py-16 md:py-24 -mt-10 md:-mt-20 relative z-20">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                        <div className="theme-bg-card p-8 md:p-10 rounded-[32px] shadow-xl border theme-border-sub flex flex-col items-center text-center group hover:-translate-y-2 transition-transform">
-                            <div className="w-16 h-16 md:w-20 md:h-20 bg-green-500/10 text-green-500 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><MessageCircle size={32}/></div>
-                            <h3 className="text-xl md:text-2xl font-black theme-text-main mb-3">{t[lang].contact.whatsapp}</h3>
-                            <p className="text-sm md:text-base theme-text-muted font-medium mb-8 leading-relaxed flex-1">{t[lang].contact.wpDesc}</p>
-                            <a href="https://wa.me/905555555555" target="_blank" rel="noopener noreferrer" className="w-full bg-[#25D366] text-white font-black py-4 rounded-xl uppercase tracking-widest hover:bg-green-600 transition-colors shadow-lg shadow-green-500/30 flex justify-center items-center gap-2 text-decoration-none text-xs md:text-sm"><MessageCircle size={18}/> {t[lang].contact.btnWp}</a>
-                        </div>
-                        <div className="theme-bg-card p-8 md:p-10 rounded-[32px] shadow-xl border theme-border-sub flex flex-col items-center text-center group hover:-translate-y-2 transition-transform">
-                            <div className="w-16 h-16 md:w-20 md:h-20 bg-pink-500/10 text-pink-500 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><Instagram size={32}/></div>
-                            <h3 className="text-xl md:text-2xl font-black theme-text-main mb-3">{t[lang].contact.insta}</h3>
-                            <p className="text-sm md:text-base theme-text-muted font-medium mb-8 leading-relaxed flex-1">{t[lang].contact.instaDesc}</p>
-                            <a href="https://instagram.com/bookcy" target="_blank" rel="noopener noreferrer" className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-[#E8622A] text-white font-black py-4 rounded-xl uppercase tracking-widest hover:opacity-90 transition-opacity shadow-lg shadow-pink-500/30 flex justify-center items-center gap-2 text-decoration-none text-xs md:text-sm"><Instagram size={18}/> {t[lang].contact.btnInsta}</a>
-                        </div>
-                        <div className="theme-bg-card p-8 md:p-10 rounded-[32px] shadow-xl border theme-border-sub flex flex-col items-center text-center group hover:-translate-y-2 transition-transform">
-                            <div className="w-16 h-16 md:w-20 md:h-20 bg-blue-500/10 text-blue-500 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><Mail size={32}/></div>
-                            <h3 className="text-xl md:text-2xl font-black theme-text-main mb-3">{t[lang].contact.email}</h3>
-                            <p className="text-sm md:text-base theme-text-muted font-medium mb-8 leading-relaxed flex-1">{t[lang].contact.emailDesc}</p>
-                            <a href="mailto:noreplybookcy@gmail.com" className="w-full bg-[#2D1B4E] text-white font-black py-4 rounded-xl uppercase tracking-widest hover:bg-[#1a0f2e] transition-colors shadow-lg shadow-[#2D1B4E]/30 flex justify-center items-center gap-2 text-decoration-none text-xs md:text-sm"><Mail size={18}/> {t[lang].contact.btnEmail}</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )}
-
       </main>
 
       <footer className="w-full overflow-hidden" style={{background:'var(--fig)', padding:'60px 24px 32px', color:'rgba(255,255,255,0.5)', zIndex:10, position:'relative'}}>
@@ -2935,8 +1721,8 @@ export default function Home() {
             <div className="footer-col-title text-[11px] font-bold tracking-[2px] uppercase text-white mb-5">{t[lang].footer.links}</div>
             <ul className="footer-links flex flex-col gap-2.5 p-0 m-0 list-none">
               <li><button onClick={() => {setStep('services'); window.scrollTo(0,0);}} className="text-[13px] text-white/45 bg-transparent border-none text-left p-0 cursor-pointer hover:text-white transition-colors">{t[lang].nav.places}</button></li>
-              <li><button onClick={() => {setShowRegister(true); window.scrollTo(0,0);}} className="text-[13px] text-white font-bold bg-transparent border-none text-left p-0 cursor-pointer hover:text-[var(--terra)] transition-colors">{t[lang].nav.addShop}</button></li>
-              <li><button onClick={() => {setShowLogin(true); window.scrollTo(0,0);}} className="text-[13px] text-white/45 bg-transparent border-none text-left p-0 cursor-pointer hover:text-white transition-colors">{t[lang].nav.login}</button></li>
+              <li><Link href="/isletme-giris" className="text-[13px] text-white font-bold bg-transparent border-none text-left p-0 cursor-pointer hover:text-[var(--terra)] transition-colors">{t[lang].nav.addShop}</Link></li>
+              <li><Link href="/isletme-giris" className="text-[13px] text-white/45 bg-transparent border-none text-left p-0 cursor-pointer hover:text-white transition-colors">{t[lang].nav.login}</Link></li>
             </ul>
           </div>
 
@@ -2952,8 +1738,8 @@ export default function Home() {
           <div className="w-full">
             <div className="footer-col-title text-[11px] font-bold tracking-[2px] uppercase text-white mb-5">{t[lang].footer.legal}</div>
             <ul className="footer-links flex flex-col gap-2.5 p-0 m-0 list-none">
-              <li><button className="text-[13px] text-white/45 bg-transparent border-none text-left p-0 cursor-pointer hover:text-white transition-colors">{t[lang].footer.terms}</button></li>
-              <li><button className="text-[13px] text-white/45 bg-transparent border-none text-left p-0 cursor-pointer hover:text-white transition-colors">{t[lang].footer.privacy}</button></li>
+              <li><Link href="/sartlar" className="text-[13px] text-white/45 bg-transparent border-none text-left p-0 cursor-pointer hover:text-white transition-colors">{t[lang].footer.terms}</Link></li>
+              <li><Link href="/gizlilik" className="text-[13px] text-white/45 bg-transparent border-none text-left p-0 cursor-pointer hover:text-white transition-colors">{t[lang].footer.privacy}</Link></li>
             </ul>
           </div>
 
