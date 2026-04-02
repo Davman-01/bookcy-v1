@@ -24,3 +24,45 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+/* --- TÜM SAYFALAR İÇİN ORTAK RENK VE TEMA AYARLARI --- */
+:root { 
+  --fig: #2D1B4E; 
+  --terra: #E8622A; 
+  --blush: #F5C5A3; 
+  --sand: #FAF7F2; 
+  --white: #FFFFFF; 
+  --muted: #8B7FA0; 
+  --light: #F0ECF8; 
+
+  --c-bg-main: #FAF7F2;
+  --c-bg-card: #FFFFFF;
+  --c-bg-sub: #F8FAFC;
+  --c-border: #E2E8F0;
+  --c-border-sub: #F1F5F9;
+  --c-text-main: #2D1B4E;
+  --c-text-muted: #64748B;
+  --c-text-light: #94A3B8;
+  --c-nav-bg: rgba(250,247,242,0.85);
+}
+
+.dark {
+  --c-bg-main: #0B0710;
+  --c-bg-card: #150D1E;
+  --c-bg-sub: #1D122A;
+  --c-border: #382252;
+  --c-border-sub: #251640;
+  --c-text-main: #FFFFFF;
+  --c-text-muted: #A1A1AA;
+  --c-text-light: #71717A;
+  --c-nav-bg: rgba(11,7,16,0.85);
+}
+
+.theme-bg-main { background-color: var(--c-bg-main) !important; }
+.theme-bg-card { background-color: var(--c-bg-card) !important; }
+.theme-bg-sub { background-color: var(--c-bg-sub) !important; }
+.theme-bg-accent { background-color: var(--terra) !important; }
+.theme-border { border-color: var(--c-border) !important; border-style: solid !important; border-width: 1px !important; }
+.theme-border-sub { border-color: var(--c-border-sub) !important; border-style: solid !important; border-width: 1px !important; }
+.theme-text-main { color: var(--c-text-main) !important; }
+.theme-text-muted { color: var(--c-text-muted) !important; }
+.theme-text-light { color: var(--c-text-light) !important; }
