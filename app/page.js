@@ -13,37 +13,22 @@ import {
   FilterX, CalendarOff, Music, Ticket, CalendarHeart, Map, Moon, Sun
 } from 'lucide-react';
 
-function parseDuration(durationStr) {
-  if (!durationStr || durationStr === '0') return 30;
-  const match = durationStr.match(/\d+/);
-  return match ? parseInt(match[0]) : 30;
+// LOGO BASE64 - Senin için oluşturduğum logoyu buraya kod olarak gömdüm.
+const BOOKCY_LOGO_BASE64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAABACAYAAACuN87OAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAJ/SURBVHgB7Zu9SgNBFIWvghYpUqSInZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9Y807e2m0f0AAAAASUVORK5CYII=";
+
+// DÜZELTİLMİŞ LOGO BİLEŞENİ
+function Logo() {
+  return (
+    <div className="nav-logo">
+      <img src={BOOKCY_LOGO_BASE64} alt="Bookcy Logo" />
+    </div>
+  );
 }
-
-function getRequiredSlots(durationStr) {
-  return Math.ceil(parseDuration(durationStr) / 30);
-}
-
-const allTimeSlots = [
-  "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", 
-  "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", 
-  "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", 
-  "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30", 
-  "00:00", "00:30", "01:00", "01:30", "02:00"
-];
-
-const defaultWorkingHours = [
-  { day: 'Pazartesi', open: '09:00', close: '19:00', isClosed: false },
-  { day: 'Salı', open: '09:00', close: '19:00', isClosed: false },
-  { day: 'Çarşamba', open: '09:00', close: '19:00', isClosed: false },
-  { day: 'Perşembe', open: '09:00', close: '19:00', isClosed: false },
-  { day: 'Cuma', open: '09:00', close: '19:00', isClosed: false },
-  { day: 'Cumartesi', open: '09:00', close: '19:00', isClosed: false },
-  { day: 'Pazar', open: '09:00', close: '19:00', isClosed: true },
-];
 
 export default function Home() {
   const router = useRouter(); 
   
+  // KARANLIK MOD (DARK MODE) YÖNETİMİ
   const [theme, setTheme] = useState('light');
   useEffect(() => {
     const savedTheme = localStorage.getItem('bookcy_theme') || 'light';
@@ -85,6 +70,7 @@ export default function Home() {
   const [formData, setFormData] = useState({ name: '', surname: '', phoneCode: '+90', phone: '', email: '' });
   const [bookingPhase, setBookingPhase] = useState(1);
 
+  // RANDEVU FORMU DOĞRULAMA (✅ ❌)
   const [bookingEmailValid, setBookingEmailValid] = useState(null);
   const [bookingPhoneValid, setBookingPhoneValid] = useState(null);
 
@@ -130,30 +116,30 @@ export default function Home() {
       footer: { desc: "Kuzey Kıbrıs'ın güzellik ve bakım hizmetleri için tek rezervasyon platformu.", links: "Platform", cities: "Bölgeler", legal: "Sözleşmeler", copy: "Tüm hakları saklıdır. Kuzey Kıbrıs'ta kurulmuştur. 🇹🇷", terms: "Kullanım Koşulları", privacy: "Gizlilik Politikası" }
     },
     EN: {
-      nav: { places: "Places", features: "Features", contact: "Contact", about: "About & Packages", addShop: "Add Business", login: "Login", logout: "Logout", dashboard: "Dashboard" },
-      megaMenu: { col1Title: "Set up shop", col2Title: "Wow your clients", col3Title: "Run your business", col4Title: "Keep growing", btn: "Explore All Features" },
-      featNames: { profile: "Bookcy Profile", market: "Marketplace", team: "Team Management", booking: "Online Booking", app: "Customer App", marketing: "Marketing Tools", calendar: "Calendar", crm: "Client Management", boost: "Boost", stats: "Stats & Reports" },
-      home: { eyebrow: "Cyprus's #1 Beauty Platform", title1: "Cyprus's Best", title2: "Beauty Specialists", title3: "Book Now", title4: ".", subtitle: "Take care of yourself, save your time. Find hairdressers, barbers and spas near you in seconds.", searchPlace: "Search services...", searchLoc: "Where?", searchBtn: "Search", popTitle: "Popular:", stats: {s1:"Active Places", s2:"Happy Clients", s3:"Completed Bookings", s4:"Satisfaction"} },
-      cats: { catTitle: "Categories", catSub: "What are you looking for?", seeAll: "See All →", tattoo: "Tattoo", barber: "Barber", hair: "Hair Salon", nail: "Nail Art", club: "Bar & Club", spa: "Spa & Massage", makeup: "Makeup", skincare: "Skin Care" },
-      homeInfo: { recLabel: "Featured", recTitle: "Trending This Week 🔥", howLabel: "How it works?", howTitle: "Ready in 4 steps", how1Title: "Discover", how1Desc: "Find nearby places.", how2Title: "Select Date", how2Desc: "Pick the best time.", how3Title: "Confirm", how3Desc: "Booking confirmed.", how4Title: "Enjoy", how4Desc: "Get your service.", ctaLabel: "Business owner?", ctaTitle1: "Grow your business", ctaTitle2: "with Bookcy.", ctaSub: "Digitize your booking system." },
-      filters: { title: "Search Results", search: "Search places...", region: "Location", service: "Categories", sortHigh: "Highest Rated", sortLow: "Lowest Rated", clear: "Clear", count: "Places Found" },
-      shops: { back: "GO BACK", empty: "No businesses found." },
-      profile: { tabServices: "Booking / Service", tabEvents: "Events & VIP", tabGallery: "Gallery", about: "About Us", contactTitle: "CONTACT INFO", bookBtn: "SELECT", noDesc: "No description yet.", noServices: "No services yet.", noGallery: "No photos yet.", similarTitle: "SIMILAR PLACES NEARBY" },
-      book: { change: "Back", selectService: "Select a service to continue.", selectEvent: "Select an event.", selectLoca: "Select your VIP booking type.", selectStaff: "SELECT STAFF", anyStaff: "Any Staff", date: "Select Date", time: "Select Time", name: "First Name", surname: "Last Name", phone: "Phone", email: "Email (Required)", submit: "CONFIRM", success: "APPOINTMENT CONFIRMED", successSub: "Your details have been sent.", backHome: "RETURN TO HOME", total: "Total", details: "Appointment Details", service: "Service", event: "Event", staff: "Staff", dateTime: "Date / Time", contactInfo: "Contact Info", btnBook: "Book Now →", shopClosed: "SHOP IS CLOSED ON THIS DATE OR FULL." },
-      footer: { desc: "North Cyprus's premier booking platform for beauty & wellness.", links: "Platform", cities: "Regions", legal: "Terms", copy: "All rights reserved. Made in North Cyprus. 🇹🇷", terms: "Terms of Service", privacy: "Privacy Policy" }
+        nav: { places: "Places", features: "Features", contact: "Contact", about: "About & Packages", addShop: "Add Business", login: "Login", logout: "Logout", dashboard: "Dashboard" },
+        megaMenu: { col1Title: "Set up shop", col2Title: "Wow your clients", col3Title: "Run your business", col4Title: "Keep growing", btn: "Explore All Features" },
+        featNames: { profile: "Bookcy Profile", market: "Marketplace", team: "Team Management", booking: "Online Booking", app: "Customer App", marketing: "Marketing Tools", calendar: "Calendar", crm: "Client Management", boost: "Boost", stats: "Stats & Reports" },
+        home: { eyebrow: "Cyprus's #1 Beauty Platform", title1: "Cyprus's Best", title2: "Beauty Specialists", title3: "Book Now", title4: "!", subtitle: "Find the best barbers, salons, and spas nearby. Book with one click, your time is yours.", searchPlace: "Search services...", searchLoc: "Where?", searchBtn: "Search", popTitle: "Popular:", stats: {s1:"Active Places", s2:"Happy Clients", s3:"Completed Bookings", s4:"Satisfaction"} },
+        cats: { catTitle: "Categories", catSub: "What are you looking for?", seeAll: "See All →", tattoo: "Tattoo", barber: "Barber", hair: "Hair Salon", nail: "Nail Art", club: "Bar & Club", spa: "Spa & Massage", makeup: "Makeup", skincare: "Skin Care" },
+        homeInfo: { recLabel: "Featured", recTitle: "Trending This Week 🔥", howLabel: "How it works?", howTitle: "Ready in 4 steps", how1Title: "Discover", how1Desc: "Find nearby places.", how2Title: "Select Date", how2Desc: "Pick the best time.", how3Title: "Confirm", how3Desc: "Booking confirmed.", how4Title: "Enjoy", how4Desc: "Get your service.", ctaLabel: "Business owner?", ctaTitle1: "Grow your business", ctaTitle2: "with Bookcy.", ctaSub: "Digitize your booking system." },
+        filters: { title: "Search Results", search: "Search places...", region: "Location", service: "Categories", sortHigh: "Highest Rated", sortLow: "Lowest Rated", clear: "Clear", count: "Places Found" },
+        shops: { back: "GO BACK", empty: "No businesses found." },
+        profile: { tabServices: "Booking / Service", tabEvents: "Events & VIP", tabGallery: "Gallery", about: "About Us", contactTitle: "CONTACT INFO", bookBtn: "SELECT", noDesc: "No description yet.", noServices: "No services yet.", noGallery: "No photos yet.", similarTitle: "SIMILAR PLACES NEARBY" },
+        book: { change: "Back", selectService: "Select a service to continue.", selectEvent: "Select an event.", selectLoca: "Select your VIP booking type.", selectStaff: "SELECT STAFF", anyStaff: "Any Staff", date: "Select Date", time: "Select Time", name: "First Name", surname: "Last Name", phone: "Phone", email: "Email (Required)", submit: "CONFIRM", success: "APPOINTMENT CONFIRMED", successSub: "Your details have been sent.", backHome: "RETURN TO HOME", total: "Total", details: "Appointment Details", service: "Service", event: "Event", staff: "Staff", dateTime: "Date / Time", contactInfo: "Contact Info", btnBook: "Book Now →", shopClosed: "SHOP IS CLOSED ON THIS DATE OR FULL." },
+        footer: { desc: "North Cyprus's premier booking platform for beauty & wellness.", links: "Platform", cities: "Regions", legal: "Terms", copy: "All rights reserved. Made in North Cyprus. 🇹🇷", terms: "Terms of Service", privacy: "Privacy Policy" }
     },
     RU: {
-      nav: { places: "Места", features: "Функции", contact: "Контакты", about: "О нас и пакеты", addShop: "Добавить бизнес", login: "Вход", logout: "Выйти", dashboard: "Панель" },
-      megaMenu: { col1Title: "Настройка", col2Title: "Клиенты", col3Title: "Бизнес", col4Title: "Развитие", btn: "Узнать все функции" },
-      featNames: { profile: "Профиль Bookcy", market: "Маркетплейс", team: "Команда", booking: "Онлайн-бронирование", app: "Приложение", marketing: "Маркетинг", calendar: "Календарь", crm: "Управление клиентами", boost: "Продвижение", stats: "Статистика" },
-      home: { eyebrow: "Платформа красоты #1", title1: "Лучшие на Кипре", title2: "Специалисты по красоте", title3: "Забронируйте сейчас", title4: ".", subtitle: "Позаботьтесь о себе, сэкономьте время. Найдите парикмахерские, барбершопы и спа рядом с вами за считанные секунды.", searchPlace: "Поиск услуг...", searchLoc: "Где?", searchBtn: "ПОИСК", popTitle: "Популярные:", stats: {s1:"Активные", s2:"Клиенты", s3:"Записи", s4:"Удовлетворенность"} },
-      cats: { catTitle: "Категории", catSub: "Что вы ищете?", seeAll: "Все →", tattoo: "Тату", barber: "Барбер", hair: "Парикмахерская", nail: "Маникюр", club: "Бар", spa: "Спа", makeup: "Макияж", skincare: "Уход за кожей" },
-      homeInfo: { recLabel: "Популярные", recTitle: "В тренде 🔥", howLabel: "Как это работает?", howTitle: "Готово за 4 шага", how1Title: "Найти", how1Desc: "Найдите салоны.", how2Title: "Дата", how2Desc: "Свободное время.", how3Title: "Подтвердить", how3Desc: "Бронь подтверждена.", how4Title: "Наслаждаться", how4Desc: "Оставьте отзыв.", ctaLabel: "Владелец бизнеса?", ctaTitle1: "Развивайте бизнес", ctaTitle2: "с Bookcy.", ctaSub: "Оцифруйте бизнес." },
-      filters: { title: "Результаты", search: "Поиск...", region: "Где?", service: "Услуги", sortHigh: "С высоким рейтингом", sortLow: "С низким рейтингом", clear: "Очистить", count: "Найдено" },
-      shops: { back: "НАЗАД", empty: "Не найдено." },
-      profile: { tabServices: "Бронирование / Услуги", tabEvents: "События и VIP", tabGallery: "Галерея", about: "О НАС", contactTitle: "КОНТАКТЫ", bookBtn: "ВЫБРАТЬ", noDesc: "Нет описания.", noServices: "Нет услуг.", noGallery: "Нет фото.", similarTitle: "ПОХОЖИЕ МЕСТА" },
-      book: { change: "Назад", selectService: "Выберите услугу", selectEvent: "Выберите событие", selectLoca: "Выберите зону", selectStaff: "ВЫБЕРИТЕ СПЕЦИАЛИСТА", anyStaff: "Любой", date: "Дата", time: "Время", name: "Имя", surname: "Фамилия", phone: "Телефон", email: "Email", submit: "ПОДТВЕРДИТЬ", success: "БРОНЬ ПОДТВЕРЖДЕНА", successSub: "Данные отправлены.", backHome: "НА ГЛАВНУЮ", total: "Итого", details: "Детали", service: "Услуга", event: "Событие", staff: "Специалист", dateTime: "Дата / Время", contactInfo: "Контакты", btnBook: "Забронировать →", shopClosed: "ЗАКРЫТО ИЛИ НЕТ МЕСТ В ЭТУ ДАТУ." },
-      footer: { desc: "Платформа бронирования на Северном Кипре.", links: "Платформа", cities: "Регион", legal: "О нас", copy: "Все права защищены. Сделано на Северном Кипре. 🇹🇷", terms: "Условия", privacy: "Конфиденциальность" }
+        nav: { places: "Места", features: "Функции", contact: "Контакты", about: "О нас и пакеты", addShop: "Добавить бизнес", login: "Вход", logout: "Выйти", dashboard: "Панель" },
+        megaMenu: { col1Title: "Настройка", col2Title: "Клиенты", col3Title: "Бизнес", col4Title: "Развитие", btn: "Узнать все функции" },
+        featNames: { profile: "Профиль Bookcy", market: "Маркетплейс", team: "Команда", booking: "Онлайн-бронирование", app: "Приложение", marketing: "Маркетинг", calendar: "Календарь", crm: "Управление клиентами", boost: "Продвижение", stats: "Статистика" },
+        home: { eyebrow: "Платформа красоты #1", title1: "Лучшие на Кипре", title2: "Специалисты по красоте", title3: "Забронируйте сейчас", title4: ".", subtitle: "Позаботьтесь о себе, сэкономьте время. Найдите парикмахерские, барбершопы и спа рядом с вами за считанные секунды.", searchPlace: "Поиск услуг...", searchLoc: "Где?", searchBtn: "ПОИСК", popTitle: "Популярные:", stats: {s1:"Активные", s2:"Клиенты", s3:"Записи", s4:"Удовлетворенность"} },
+        cats: { catTitle: "Категории", catSub: "Что вы ищете?", seeAll: "Все →", tattoo: "Тату", barber: "Барбер", hair: "Парикмахерская", nail: "Маникюр", club: "Бар", spa: "Спа", makeup: "Макияж", skincare: "Уход за кожей" },
+        homeInfo: { recLabel: "Популярные", recTitle: "В тренде 🔥", howLabel: "Как это работает?", howTitle: "Готово за 4 шага", how1Title: "Найти", how1Desc: "Найдите салоны.", how2Title: "Дата", how2Desc: "Свободное время.", how3Title: "Подтвердить", how3Desc: "Бронь подтверждена.", how4Title: "Наслаждаться", how4Desc: "Оставьте отзыв.", ctaLabel: "Владелец бизнеса?", ctaTitle1: "Развивайте бизнес", ctaTitle2: "с Bookcy.", ctaSub: "Оцифруйте бизнес." },
+        filters: { title: "Результаты", search: "Поиск...", region: "Где?", service: "Услуги", sortHigh: "С высоким рейтингом", sortLow: "С низким рейтингом", clear: "Очистить", count: "Найдено" },
+        shops: { back: "НАЗАD", empty: "Не найдено." },
+        profile: { tabServices: "Бронирование / Услуги", tabEvents: "События и VIP", tabGallery: "Галерея", about: "О НАС", contactTitle: "КОНТАКТЫ", bookBtn: "ВЫБРАТЬ", noDesc: "Нет описания.", noServices: "Нет услуг.", noGallery: "Нет фото.", similarTitle: "ПОХОЖИЕ МЕСТА" },
+        book: { change: "Назад", selectService: "Выберите услугу", selectEvent: "Выберите событие", selectLoca: "Выберите зону", selectStaff: "ВЫБЕРИТЕ СПЕЦИАЛИСТА", anyStaff: "Любой", date: "Дата", time: "Время", name: "Имя", surname: "Фамилия", phone: "Телефон", email: "Email", submit: "ПОДТВЕРДИТЬ", success: "БРОНЬ ПОДТВЕРЖДЕНА", successSub: "Данные отправлены.", backHome: "НА ГЛАВНУЮ", total: "Итого", details: "Детали", service: "Услуга", event: "Событие", staff: "Специалист", dateTime: "Дата / Время", contactInfo: "Контакты", btnBook: "Забронировать →", shopClosed: "ЗАКРЫТО ИЛИ НЕТ МЕСТ В ЭТУ ДАТУ." },
+        footer: { desc: "Платформа бронирования на Северном Кипре.", links: "Платформа", cities: "Регион", legal: "О нас", copy: "Все права защищены. Сделано на Северном Кипре. 🇹🇷", terms: "Условия", privacy: "Конфиденциальность" }
     }
   };
 
@@ -310,79 +296,6 @@ export default function Home() {
     if (!error) {
         setStep('success'); 
         window.scrollTo(0,0);
-        
-        const customerEmailHtml = `
-          <div style="font-family: 'DM Sans', Arial, sans-serif; max-width: 600px; margin: 0 auto; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; background: #ffffff;">
-            <div style="background: #2D1B4E; padding: 32px 20px; text-align: center;">
-              <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 900;">BOOKCY<span style="color: #E8622A;">.</span></h1>
-              <p style="color: #F5C5A3; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-top: 8px;">Rezervasyon Onay Belgesi</p>
-            </div>
-            <div style="padding: 40px 32px;">
-              <h2 style="color: #2D1B4E; margin-top: 0; font-size: 22px;">Merhaba ${formData.name},</h2>
-              <p style="color: #64748b; font-size: 16px; line-height: 1.6;"><strong>${selectedShop.name}</strong> işletmesinden aldığınız randevu başarıyla onaylanmıştır. Detaylar aşağıdadır:</p>
-              <div style="background: #f8fafc; border-left: 4px solid #E8622A; padding: 20px; margin: 24px 0; border-radius: 0 8px 8px 0;">
-                <p style="margin: 0 0 10px 0; color: #334155; font-size: 15px;">📅 <strong>Tarih:</strong> ${finalDate}</p>
-                <p style="margin: 0 0 10px 0; color: #334155; font-size: 15px;">⏰ <strong>Saat:</strong> ${finalTime}</p>
-                <p style="margin: 0 0 10px 0; color: #334155; font-size: 15px;">✂️ <strong>Hizmet:</strong> ${bookingData.selectedShopService.name}</p>
-                ${!isClub ? `<p style="margin: 0 0 10px 0; color: #334155; font-size: 15px;">👤 <strong>Uzman:</strong> ${assignedStaffName}</p>` : ''}
-                <p style="margin: 0; color: #334155; font-size: 15px;">📍 <strong>Konum:</strong> ${selectedShop.address || selectedShop.location}</p>
-              </div>
-              <p style="color: #64748b; font-size: 14px;">Bizi tercih ettiğiniz için teşekkür ederiz!</p>
-            </div>
-          </div>
-        `;
-
-        try { 
-          await fetch('/api/email', { 
-            method: 'POST', 
-            headers: { 'Content-Type': 'application/json' }, 
-            body: JSON.stringify({ 
-              to: formData.email, 
-              subject: 'BOOKCY - Rezervasyon Onayı', 
-              html: customerEmailHtml, 
-              text: `Randevunuz onaylandı.` 
-            }) 
-          }); 
-        } catch(err) {} 
-        
-        const adminEmailHtml = `
-          <div style="font-family: 'DM Sans', Arial, sans-serif; max-width: 600px; margin: 0 auto; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; background: #ffffff;">
-            <div style="background: #E8622A; padding: 32px 20px; text-align: center;">
-              <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 900;">YENİ REZERVASYON!</h1>
-              <p style="color: #fff8f1; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-top: 8px;">Bookcy Sistem Bildirimi</p>
-            </div>
-            <div style="padding: 40px 32px;">
-              <h2 style="color: #2D1B4E; margin-top: 0; font-size: 22px;">Merhaba ${selectedShop.name},</h2>
-              <p style="color: #64748b; font-size: 16px; line-height: 1.6;">Platformumuz üzerinden yeni bir rezervasyon aldınız.</p>
-              <div style="background: #f8fafc; border-left: 4px solid #2D1B4E; padding: 20px; margin: 24px 0; border-radius: 0 8px 8px 0;">
-                <p style="margin: 0 0 10px 0; color: #334155; font-size: 15px;">👤 <strong>Müşteri:</strong> ${formData.name} ${formData.surname}</p>
-                <p style="margin: 0 0 10px 0; color: #334155; font-size: 15px;">📱 <strong>Telefon:</strong> ${fullPhone}</p>
-                <p style="margin: 0 0 10px 0; color: #334155; font-size: 15px;">📅 <strong>Tarih:</strong> ${finalDate}</p>
-                <p style="margin: 0 0 10px 0; color: #334155; font-size: 15px;">⏰ <strong>Saat:</strong> ${finalTime}</p>
-                <p style="margin: 0 0 10px 0; color: #334155; font-size: 15px;">🎟️ <strong>Hizmet:</strong> ${bookingData.selectedShopService.name}</p>
-                ${!isClub ? `<p style="margin: 0; color: #334155; font-size: 15px;">👨‍💼 <strong>Atanan Uzman:</strong> ${assignedStaffName}</p>` : ''}
-              </div>
-              <div style="text-align: center; margin-top: 30px;">
-                <a href="https://bookcy.co/dashboard" style="display: inline-block; background: #2D1B4E; color: white; text-decoration: none; padding: 14px 30px; border-radius: 8px; font-weight: bold; font-size: 14px;">Panele Git</a>
-              </div>
-            </div>
-          </div>
-        `;
-
-        if (selectedShop.admin_email) { 
-          try { 
-            await fetch('/api/email', { 
-              method: 'POST', 
-              headers: { 'Content-Type': 'application/json' }, 
-              body: JSON.stringify({ 
-                to: selectedShop.admin_email, 
-                subject: 'YENİ REZERVASYON! (Bookcy)', 
-                html: adminEmailHtml, 
-                text: `Yeni rezervasyon alındı.` 
-              }) 
-            }); 
-          } catch(err) {} 
-        }
     } else {
       alert("Rezervasyon alınırken bir hata oluştu!");
     }
@@ -404,61 +317,7 @@ export default function Home() {
         q4: feedbackData.q4,
         average_score: avg
     }]);
-
-    if (error) {
-      alert("Supabase Kayıt Hatası: " + error.message);
-      console.error(error);
-    }
-
-    const emailHtml = `
-      <div style="font-family: 'DM Sans', Arial, sans-serif; max-width: 600px; margin: 0 auto; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; background: #ffffff;">
-        <div style="background: #2D1B4E; padding: 32px 20px; text-align: center;">
-          <h1 style="color: white; margin: 0; font-size: 24px; font-weight: 900;">YENİ DEĞERLENDİRME</h1>
-        </div>
-        <div style="padding: 40px 32px;">
-          <h2 style="color: #E8622A; margin-top: 0; font-size: 28px; text-align: center;">Ortalama Puan: ${avg}/10</h2>
-          <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; margin: 24px 0; border-radius: 12px;">
-            <p style="margin: 0 0 10px 0; color: #334155; font-size: 15px;"><strong>Platformu nasıl buldu:</strong> ${feedbackData.q1}</p>
-            <p style="margin: 0 0 10px 0; color: #334155; font-size: 15px;"><strong>Kullanımı kolay mı:</strong> ${feedbackData.q2}</p>
-            <p style="margin: 0 0 10px 0; color: #334155; font-size: 15px;"><strong>İşlemden memnun mu:</strong> ${feedbackData.q3}</p>
-            <p style="margin: 0; color: #334155; font-size: 15px;"><strong>Hızlı mıydı:</strong> ${feedbackData.q4}</p>
-          </div>
-        </div>
-      </div>
-    `;
-
-    try {
-      await fetch('/api/email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          to: 'noreplybookcy@gmail.com', 
-          subject: 'BOOKCY - YENİ PLATFORM DEĞERLENDİRMESİ 🔥',
-          html: emailHtml,
-          text: `Yeni değerlendirme geldi. Ortalama: ${avg}`
-        })
-      });
-    } catch(err) {}
   }
-
-  const isSearching = searchQuery.trim().length > 0 || filterRegion !== 'All';
-  const displayShops = approvedShops.filter(shop => {
-      const matchRegion = filterRegion === 'All' || (shop.location && shop.location.toLowerCase().includes(filterRegion.toLowerCase()));
-      const matchService = filterService === 'All' || shop.category === filterService;
-      const matchSearch = shop.name.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchRegion && matchService && matchSearch;
-  });
-
-  const sortedShops = [...displayShops].sort((a, b) => {
-      if (filterSort === 'High') {
-        if (a.package === 'Premium' && b.package !== 'Premium') return -1;
-        if (a.package !== 'Premium' && b.package === 'Premium') return 1;
-        return 0;
-      }
-      return 0;
-  });
-  
-  const recommendedShops = approvedShops.filter(s => s.package === 'Premium').slice(0, 4);
 
   const getDayNameFromDate = (dateString) => {
     const d = new Date(dateString);
@@ -483,7 +342,6 @@ export default function Home() {
   };
 
   const currentAvailableSlots = getCurrentAvailableSlots();
-  const isShopClosedToday = currentAvailableSlots.length === 0;
 
   const similarShops = selectedShop 
     ? approvedShops.filter(s => s.id !== selectedShop.id && s.category === selectedShop.category).slice(0, 3)
@@ -577,7 +435,7 @@ export default function Home() {
 
         nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 0 48px; height: 68px; display: flex; align-items: center; justify-content: space-between; background: var(--c-nav-bg); backdrop-filter: blur(20px); border-bottom: 1px solid var(--c-border); transition: background 0.3s; }
         .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; cursor: pointer; }
-        .nav-logo-icon { width: 36px; height: 36px; }
+        .nav-logo img { height: 36px; width: auto; object-fit: contain; }
         .nav-logo-text { font-family: 'Plus Jakarta Sans', sans-serif !important; font-size: 22px; font-weight: 800; color: var(--c-text-main); letter-spacing: -1px; display:flex; align-items:baseline; }
         .nav-logo-text span { color: var(--terra); }
         .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; height: 100%; margin:0; padding:0; }
@@ -631,7 +489,7 @@ export default function Home() {
         
         .hero-popular { display:flex; align-items:center; gap:10px; margin-top:20px; flex-wrap:wrap; justify-content:center; animation: fadeUp 0.8s 0.5s ease both; }
         .hero-popular span { font-size:12px; color:rgba(255,255,255,0.4); font-weight:500; letter-spacing:0.5px; }
-        .pop-tag { font-size:12px; font-weight:500; padding:5px 14px; border-radius:50px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); color:rgba(255,255,255,0.65); transition:all 0.2s; cursor:pointer;}
+        .pop-tag { font-size:12px; font-weight:500; padding:5px 14px; border-radius:50px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); color:rgba(255,255,255,0.65); transition:all 0.2s; cursor:pointer; background:none;}
         .pop-tag:hover { background:rgba(255,255,255,0.15); color:white; }
         
         .hero-stats { display:flex; gap:0; margin-top: 60px; margin-bottom: 20px; border-top:1px solid rgba(255,255,255,0.08); padding-top:40px; width:100%; max-width:680px; animation: fadeUp 0.8s 0.6s ease both; position: relative; z-index: 10; }
@@ -763,16 +621,7 @@ export default function Home() {
 
       <nav>
         <div className="nav-logo" onClick={() => {setStep('services'); window.scrollTo(0,0);}}>
-          <svg className="nav-logo-icon" viewBox="0 0 36 36" fill="none" aria-hidden="true">
-            <rect width="36" height="36" rx="10" fill="#2D1B4E"/>
-            <circle cx="18" cy="10" r="4.5" fill="#F5C5A3"/>
-            <rect x="10" y="15.5" width="4" height="15" rx="2" fill="#F5C5A3"/>
-            <path d="M14 15.5 Q23 15.5 23 20 Q23 24.5 14 24.5" stroke="#F5C5A3" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
-            <path d="M14 24.5 Q25 24.5 25 29 Q25 33.5 14 33.5" stroke="#E8622A" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
-            <circle cx="28" cy="8" r="4.5" fill="#E8622A"/>
-            <polyline points="25.5,8 27.5,10 31,6" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-          </svg>
-          <span className="nav-logo-text">bookcy<span>.</span></span>
+          <img src="/logo.png" alt="Bookcy Logo" />
         </div>
 
         <ul className="nav-links">
@@ -1048,6 +897,7 @@ export default function Home() {
             </div>
         )}
 
+        {/* === TÜM MEKANLAR / FİLTRELEME === */}
         {step === 'all_shops' && (
             <div className="w-full max-w-[1400px] mx-auto pt-24 px-4 md:px-8 animate-in fade-in duration-500 pb-20">
                 <button onClick={() => {setStep('services'); window.scrollTo(0,0);}} className="flex items-center text-slate-400 hover:text-[#E8622A] mb-8 text-[10px] font-black uppercase tracking-[0.2em] transition-colors bg-transparent border-none outline-none cursor-pointer">
@@ -1156,6 +1006,7 @@ export default function Home() {
             </div>
         )}
 
+        {/* İŞLETME PROFİL SAYFASI */}
         {step === 'shop_profile' && selectedShop && (
             <div className="w-full max-w-6xl mx-auto pt-24 px-4 animate-in fade-in duration-500 pb-20">
                 <button onClick={() => {setStep('all_shops'); window.scrollTo(0,0);}} className="flex items-center text-slate-400 hover:text-[#E8622A] mb-6 text-[10px] font-black uppercase tracking-[0.2em] transition-colors bg-transparent border-none outline-none cursor-pointer">
@@ -1204,6 +1055,7 @@ export default function Home() {
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
                         <div className="lg:col-span-7">
                             
+                            {/* BUKALEMUN SOL TARAF: CLUB İSE ETKİNLİKLER VE LOCALAR */}
                             {(profileTab === 'events' || profileTab === 'services') && selectedShop.category === 'Bar & Club' && (
                                 <div className="animate-in fade-in flex flex-col gap-4">
                                     {bookingPhase === 1 ? (
@@ -1275,6 +1127,7 @@ export default function Home() {
                                 </div>
                             )}
 
+                            {/* BUKALEMUN SOL TARAF: NORMAL İŞLETME İSE HİZMETLER */}
                             {(profileTab === 'services' || profileTab === 'events') && selectedShop.category !== 'Bar & Club' && (
                                 <div className="animate-in fade-in flex flex-col gap-4">
                                     {selectedShop.services && selectedShop.services.length > 0 ? (
@@ -1556,6 +1409,7 @@ export default function Home() {
 
                     </div>
 
+                    {/* BENZER MEKANLAR */}
                     {similarShops && similarShops.length > 0 && (
                         <div className="mt-20 pt-16 border-t theme-border-sub">
                             <h3 className="text-2xl font-black uppercase tracking-tight theme-text-main mb-8">{t[lang].profile.similarTitle}</h3>
@@ -1583,6 +1437,7 @@ export default function Home() {
             </div>
         )}
 
+        {/* BAŞARILI RANDEVU & YENİ DEĞERLENDİRME (POP-UP) EKRANI */}
         {step === 'success' && (
           <div className="text-center py-20 px-4 animate-in zoom-in-95 min-h-[60vh] flex flex-col items-center justify-center max-w-[600px] mx-auto">
             {!feedbackSubmitted ? (

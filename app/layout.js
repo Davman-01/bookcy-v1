@@ -1,19 +1,31 @@
 import './globals.css';
-import CookieBanner from '@/components/CookieBanner'; // Birazdan bu dosyayı oluşturacağız
+import CookieBanner from '@/components/CookieBanner';
 
 export const metadata = {
-  metadataBase: new URL('https://bookcy.co'),
+  metadataBase: new URL('https://www.bookcy.co'),
   title: 'Bookcy | Kıbrıs Online Güzellik ve Randevu Platformu',
-  description: 'Kıbrıs\'taki en iyi kuaför, berber, spa ve güzellik merkezlerini keşfedin. Sıra beklemeden, komisyonsuz ve 7/24 kesintisiz online randevu alın.',
-  keywords: 'kıbrıs kuaför, girne berber, lefkoşa güzellik merkezi, kıbrıs randevu, spa, bookcy',
+  description: 'Kuzey Kıbrıs\'ın en iyi kuaför, berber, spa ve güzellik merkezlerini keşfedin. Sıra beklemeden, komisyonsuz ve 7/24 kesintisiz online randevu alın.',
+  keywords: 'kıbrıs kuaför, girne berber, lefkoşa güzellik merkezi, kıbrıs randevu, spa, bookcy, kktc randevu',
+  
+  // Favicon ve İkon Ayarları
+  icons: {
+    icon: [
+      { url: '/icon.png', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+  },
+
+  // Sosyal Medya Paylaşım (Open Graph)
   openGraph: {
     title: 'Bookcy | Kıbrıs Online Güzellik ve Randevu Platformu',
-    description: 'Kıbrıs\'taki en iyi berber, kuaför, spa ve güzellik merkezlerini keşfedin. 7/24 online randevu alın.',
-    url: 'https://bookcy.co',
+    description: 'En iyi uzmanları keşfedin, 7/24 online randevunuzu saniyeler içinde oluşturun.',
+    url: 'https://www.bookcy.co',
     siteName: 'Bookcy',
     images: [
       {
-        url: '/og-image.jpg', // Public klasörüne og-image.jpg adında bir resim koymalısın
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Bookcy Kıbrıs Güzellik Platformu',
@@ -27,9 +39,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="tr">
+      <head>
+        {/* Apple cihazlarda logonun fontunun bozulmaması için zorlayıcı stil */}
+        <style dangerouslySetInnerHTML={{ __html: `
+          .nav-logo-text { font-family: 'Plus Jakarta Sans', sans-serif !important; }
+        `}} />
+      </head>
       <body>
         {children}
-        {/* Tüm sayfalarda görünecek Çerez (Cookie) Banner'ı */}
         <CookieBanner />
       </body>
     </html>
