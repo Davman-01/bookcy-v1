@@ -2199,11 +2199,12 @@ export default function Home() {
                     <button className="app-badge" onClick={()=>{setShowRegister(true); window.scrollTo(0,0);}}>
                       <div className="app-badge-icon">💼</div>
                       <div className="app-badge-text"><div className="small">Hemen Katıl</div><div className="big">İşletme Ekle</div></div>
-                    </button>
-                    <button className="app-badge" onClick={()=>{setStep('about'); window.scrollTo(0,0);}}>
-                      <div className="app-badge-icon">🚀</div>
-                      <div className="app-badge-text"><div className="small">İncele</div><div className="big">Özellikler & Paketler</div></div>
-                    </button>
+                   <Link href="/hakkimizda">
+  <div className="app-badge-text">
+    <div className="small">İncele</div>
+    <div className="big">Özellikler & Paketler</div>
+  </div>
+</Link>
                   </div>
                 </div>
               </section>
