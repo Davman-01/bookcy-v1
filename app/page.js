@@ -13,8 +13,6 @@ import {
   FilterX, CalendarOff, Music, Ticket, CalendarHeart, Map, Moon, Sun
 } from 'lucide-react';
 
-const BOOKCY_LOGO_BASE64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAABACAYAAACuN87OAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAJ/SURBVHgB7Zu9SgNBFIWvghYpUqSInZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9jZ+Qp2dr6AnZ0vYOfnC9Y807e2m0f0AAAAASUVORK5CYII=";
-// DÜZELTİLMİŞ LOGO BİLEŞENİ
 function Logo() {
   return (
     <div className="nav-logo">
@@ -22,7 +20,230 @@ function Logo() {
     </div>
   );
 }
+// --- VERCEL HATASINI ÇÖZEN VE EKSİK OLAN LİSTELER ---
+const allTimeSlots = [
+  "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", 
+  "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", 
+  "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", 
+  "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30", 
+  "00:00", "00:30", "01:00", "01:30", "02:00"
+];
 
+const defaultWorkingHours = [
+  { day: 'Pazartesi', open: '09:00', close: '19:00', isClosed: false },
+  { day: 'Salı', open: '09:00', close: '19:00', isClosed: false },
+  { day: 'Çarşamba', open: '09:00', close: '19:00', isClosed: false },
+  { day: 'Perşembe', open: '09:00', close: '19:00', isClosed: false },
+  { day: 'Cuma', open: '09:00', close: '19:00', isClosed: false },
+  { day: 'Cumartesi', open: '09:00', close: '19:00', isClosed: false },
+  { day: 'Pazar', open: '09:00', close: '19:00', isClosed: true },
+];
+
+function parseDuration(durationStr) {
+  if (!durationStr || durationStr === '0') return 30;
+  const match = durationStr.match(/\d+/);
+  return match ? parseInt(match[0]) : 30;
+}
+
+function getRequiredSlots(durationStr) {
+  return Math.ceil(parseDuration(durationStr) / 30);
+}
+
+const megaMenuStructure = {
+  col1: ['profile', 'market', 'team'],
+  col2: ['booking', 'app'],
+  col3: ['marketing', 'calendar', 'crm'],
+  col4: ['boost', 'stats']
+};
+
+export default function Home() {
+  const router = useRouter(); 
+  const [theme, setTheme] = useState('light');
+  const [step, setStep] = useState('services'); 
+  const [shops, setShops] = useState([]);
+  const [lang, setLang] = useState('TR');
+  const [showFeaturesMenu, setShowFeaturesMenu] = useState(false);
+  const approvedShops = shops.filter(shop => shop.status === 'approved');
+  const [selectedShop, setSelectedShop] = useState(null);
+  const [bookingData, setBookingData] = useState({ date: new Date().toISOString().split('T')[0], time: '', selectedShopService: null, selectedStaff: null, selectedEvent: null });
+  const [formData, setFormData] = useState({ name: '', surname: '', phoneCode: '+90', phone: '', email: '' });
+  const [bookingPhase, setBookingPhase] = useState(1);
+  const [bookingEmailValid, setBookingEmailValid] = useState(null);
+  const [bookingPhoneValid, setBookingPhoneValid] = useState(null);
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+  const [feedbackData, setFeedbackData] = useState({ q1: null, q2: null, q3: null, q4: null });
+  const [loggedInShop, setLoggedInShop] = useState(null);
+  const [filterRegion, setFilterRegion] = useState('All');
+  const [filterService, setFilterService] = useState('All');
+  const [filterSort, setFilterSort] = useState('High'); 
+  const [searchQuery, setSearchQuery] = useState('');
+  const [appointments, setAppointments] = useState([]);
+  const [globalAppointments, setGlobalAppointments] = useState([]); 
+  const [closedSlots, setClosedSlots] = useState([]);
+  const [profileTab, setProfileTab] = useState('services'); 
+  const [lightboxImg, setLightboxImg] = useState(null);
+
+  const cyprusRegions = ["Girne", "Lefkoşa", "Mağusa", "İskele", "Güzelyurt", "Lefke"];
+
+  const t = {
+    TR: {
+      nav: { places: "Mekanlar", features: "Özellikler", contact: "İletişim", about: "Hakkımızda", addShop: "İşletme Ekle", login: "Giriş", logout: "Çıkış", dashboard: "Panel" },
+      home: { eyebrow: "Kıbrıs'ın #1 Güzellik Platformu", title1: "Kıbrıs'ın En İyi", title2: "Güzellik Uzmanlarından", title3: "Hemen Randevu", title4: "Al.", subtitle: "Kendine iyi bak, zamanın sana kalsın. Yakınındaki işletmeleri saniyeler içinde bul.", searchPlace: "Hizmet ara...", searchLoc: "Nerede?", searchBtn: "Ara", popTitle: "Popüler:", stats: {s1:"İşletme", s2:"Müşteri", s3:"İşlem", s4:"Memnuniyet"} },
+      cats: { catTitle: "Kategoriler", catSub: "Ne arıyorsun?", seeAll: "Tümü", barber: "Berber", hair: "Kuaför", nail: "Tırnak", club: "Bar", spa: "Spa" },
+      book: { details: "Rezervasyon Detayları", submit: "Onayla", btnBook: "Randevu Al →", shopClosed: "KAPALI" },
+      shops: { back: "Geri", empty: "Mekan bulunamadı." },
+      footer: { desc: "Kıbrıs'ın Randevu Platformu", copy: "Tüm hakları saklıdır.", terms: "Şartlar", privacy: "Gizlilik" }
+    }
+  };
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('bookcy_theme') || 'light';
+    setTheme(savedTheme);
+    fetchShops(); fetchGlobalAppointments();
+    const session = localStorage.getItem('bookcy_biz_session');
+    if(session) setLoggedInShop(JSON.parse(session));
+  }, []);
+
+  useEffect(() => {
+    if (theme === 'dark') { document.body.classList.add('dark'); document.body.style.backgroundColor = '#0B0710'; } 
+    else { document.body.classList.remove('dark'); document.body.style.backgroundColor = '#FAF7F2'; }
+  }, [theme]);
+
+  async function fetchShops() { const { data } = await supabase.from('shops').select('*'); if (data) setShops(data); }
+  async function fetchGlobalAppointments() { const { data } = await supabase.from('appointments').select('customer_phone'); if (data) setGlobalAppointments(data); }
+  async function fetchAppointments(shopId, date = null) { let query = supabase.from('appointments').select('*').eq('shop_id', shopId); if (date) query = query.eq('appointment_date', date); const { data } = await query; if (data) setAppointments(data); }
+  async function fetchClosedSlots(shopId, date = null) { let query = supabase.from('closed_slots').select('*').eq('shop_id', shopId); if (date) query = query.eq('date', date); const { data } = await query; if (data) setClosedSlots(data.map(item => item.slot)); }
+
+  useEffect(() => { if (selectedShop && bookingData.date) { fetchAppointments(selectedShop.id, bookingData.date); fetchClosedSlots(selectedShop.id, bookingData.date); } }, [selectedShop, bookingData.date]);
+
+  const toggleTheme = () => { const newTheme = theme === 'light' ? 'dark' : 'light'; setTheme(newTheme); localStorage.setItem('bookcy_theme', newTheme); };
+  const handleHeroSearch = (e) => { e.preventDefault(); setStep('all_shops'); window.scrollTo(0,0); };
+  const handleLogout = () => { localStorage.removeItem('bookcy_biz_session'); setLoggedInShop(null); };
+
+  const getDayNameFromDate = (dateString) => {
+    const d = new Date(dateString);
+    return ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'][d.getDay()];
+  };
+
+  const getCurrentAvailableSlots = () => {
+    if (!selectedShop || !bookingData.date) return allTimeSlots;
+    const dayName = getDayNameFromDate(bookingData.date);
+    const workingHours = Array.isArray(selectedShop.working_hours) ? selectedShop.working_hours : defaultWorkingHours;
+    const todayHours = workingHours.find(h => h.day === dayName);
+    if (todayHours && todayHours.isClosed) return [];
+    return todayHours ? allTimeSlots.filter(slot => slot >= todayHours.open && slot < todayHours.close) : allTimeSlots;
+  };
+
+  const sortedShops = approvedShops.filter(shop => {
+    const matchRegion = filterRegion === 'All' || (shop.location && shop.location.includes(filterRegion));
+    const matchSearch = shop.name.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchRegion && matchSearch;
+  });
+
+  const categories = [ 
+    { key: "barber", dbName: "Berber", bg: "linear-gradient(135deg,#1a1a2e,#2d1b4e)", emoji: "💈" }, 
+    { key: "hair", dbName: "Kuaför", bg: "linear-gradient(135deg,#f5c5a3,#e8622a)", emoji: "✂️" }, 
+    { key: "nail", dbName: "Tırnak & Güzellik", bg: "linear-gradient(135deg,#ffd6e7,#ff88b2)", emoji: "💅" }, 
+    { key: "spa", dbName: "Spa & Masaj", bg: "linear-gradient(135deg,#d4f5e9,#00c48c)", emoji: "💆" }, 
+    { key: "club", dbName: "Bar & Club", bg: "linear-gradient(135deg,#1a0a0a,#3d1515)", emoji: "🍸" } 
+  ];
+
+  return (
+    <>
+      <style dangerouslySetInnerHTML={{__html: `
+        :root { --fig: #2D1B4E; --terra: #E8622A; --c-bg-main: #FAF7F2; --c-bg-card: #FFFFFF; --c-text-main: #2D1B4E; --c-nav-bg: rgba(250,247,242,0.85); }
+        .dark { --c-bg-main: #0B0710; --c-bg-card: #150D1E; --c-text-main: #FFFFFF; --c-nav-bg: rgba(11,7,16,0.85); }
+        body { background: var(--c-bg-main); color: var(--c-text-main); font-family: 'DM Sans', sans-serif; margin:0; }
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 0 48px; height: 68px; display: flex; align-items: center; justify-content: space-between; background: var(--c-nav-bg); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .nav-logo { cursor: pointer; display: flex; align-items: center; }
+        .nav-logo img { height: 38px; width: auto; object-fit: contain; }
+        .nav-links { display: flex; align-items: center; gap: 30px; list-style: none; }
+        .nav-links button, .nav-links a { background: none; border: none; font-weight: 700; color: var(--c-text-main); cursor: pointer; text-decoration: none; font-size: 14px; }
+        .hero { background: var(--fig); min-height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; padding: 100px 20px; }
+        .hero-title { font-size: clamp(38px, 8vw, 82px); font-weight: 900; line-height: 1; margin-bottom: 20px; }
+        .hero-title .accent { color: var(--terra); }
+        .search-wrap { background: white; padding: 10px; border-radius: 20px; display: flex; align-items: center; width: 100%; max-width: 600px; margin-top: 30px; }
+        .search-wrap input { flex: 1; border: none; padding: 15px; outline: none; font-weight: 700; color: #333; }
+        .search-btn { background: var(--terra); color: white; border: none; padding: 14px 30px; border-radius: 15px; font-weight: 800; cursor: pointer; }
+        .hero-stats { display: flex; gap: 40px; margin-top: 60px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 40px; }
+        .stat-num { font-size: 32px; font-weight: 900; }
+        .stat-label { font-size: 11px; opacity: 0.5; text-transform: uppercase; letter-spacing: 1px; }
+        .venue-card { background: var(--c-bg-card); border-radius: 25px; padding: 20px; display: flex; align-items: center; gap: 20px; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.05); cursor: pointer; transition: 0.3s; }
+        @media(max-width:768px){ nav{padding:0 20px;} .nav-links{display:none;} .search-wrap{flex-direction:column; padding:20px;} .search-btn{width:100%;} .hero-stats{flex-direction:column; gap:20px;} }
+      `}} />
+
+      <nav>
+        <div className="nav-logo" onClick={() => {setStep('services'); window.scrollTo(0,0);}}>
+          <Logo />
+        </div>
+        <ul className="nav-links">
+          <li><button onClick={() => setStep('all_shops')}>{t[lang].nav.places}</button></li>
+          <li><Link href="/ozellikler">Özellikler</Link></li>
+          <li><Link href="/hakkimizda">Hakkımızda</Link></li>
+          <li><Link href="/iletisim">İletişim</Link></li>
+        </ul>
+        <div style={{display:'flex', alignItems:'center', gap:'15px'}}>
+          <button onClick={toggleTheme} style={{background:'none', border:'none', cursor:'pointer', color:'var(--c-text-main)'}}><Moon size={20}/></button>
+          {loggedInShop ? (
+            <Link href="/dashboard" style={{background:'var(--terra)', color:'white', padding:'10px 22px', borderRadius:'50px', textDecoration:'none', fontWeight:'800', fontSize:'12px'}}>PANEL</Link>
+          ) : (
+            <Link href="/isletme-giris" style={{background:'var(--terra)', color:'white', padding:'10px 22px', borderRadius:'50px', textDecoration:'none', fontWeight:'800', fontSize:'12px'}}>GİRİŞ</Link>
+          )}
+        </div>
+      </nav>
+
+      <main style={{paddingTop: '68px'}}>
+        {step === 'services' && (
+          <>
+            <section className="hero">
+              <h1 className="hero-title">Kıbrıs'ın En İyi<br/><span className="accent">Güzellik Uzmanlarından</span><br/>Randevu Al.</h1>
+              <p style={{maxWidth:'500px', opacity:0.7, margin:'0 auto'}}>{t[lang].home.subtitle}</p>
+              <form className="search-wrap" onSubmit={handleHeroSearch}>
+                <input type="text" placeholder="Mekan veya hizmet ara..." value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)} />
+                <button type="submit" className="search-btn">ARA</button>
+              </form>
+              <div className="hero-stats">
+                <div className="stat"><div className="stat-num">{approvedShops.length || 142}</div><div className="stat-label">İşletme</div></div>
+                <div className="stat"><div className="stat-num">3,850+</div><div className="stat-label">Müşteri</div></div>
+                <div className="stat"><div className="stat-num">%98</div><div className="stat-label">Memnuniyet</div></div>
+              </div>
+            </section>
+            <section style={{padding:'80px 20px', maxWidth:'1200px', margin:'0 auto'}}>
+              <h2 style={{fontSize:'32px', fontWeight:900, marginBottom:'40px'}}>Kategoriler</h2>
+              <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(160px, 1fr))', gap:'20px'}}>
+                {categories.map(c => (
+                  <div key={c.key} onClick={()=>{setFilterService(c.dbName); setStep('all_shops');}} style={{background:c.bg, padding:'35px', borderRadius:'30px', textAlign:'center', cursor:'pointer', color:'white'}}>
+                    <div style={{fontSize:'45px', marginBottom:'15px'}}>{c.emoji}</div>
+                    <div style={{fontWeight:800}}>{c.dbName}</div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </>
+        )}
+
+        {step === 'all_shops' && (
+          <div style={{maxWidth:'800px', margin:'100px auto', padding:'0 20px'}}>
+            <button onClick={()=>setStep('services')} style={{background:'none', border:'none', cursor:'pointer', fontWeight:800, color:'#888', marginBottom:'20px'}}>← GERİ DÖN</button>
+            <h2 style={{fontSize:'36px', fontWeight:900, marginBottom:'30px'}}>{t[lang].nav.places}</h2>
+            {sortedShops.map(shop => (
+              <div key={shop.id} className="venue-card" onClick={()=>{setSelectedShop(shop); setStep('shop_profile');}}>
+                <img src={shop.logo_url || BOOKCY_LOGO_BASE64} alt={shop.name} style={{width:'80px', height:'80px', borderRadius:'50%'}} />
+                <div style={{flex:1}}><div style={{fontSize:'20px', fontWeight:900}}>{shop.name}</div><div style={{opacity:0.6}}>{shop.location}</div></div>
+                <ArrowRight color="var(--terra)"/>
+              </div>
+            ))}
+          </div>
+        )}
+      </main>
+
+      <footer style={{background:'var(--fig)', color:'white', padding:'80px 48px', textAlign:'center'}}>
+        <Logo />
+        <p style={{opacity:0.4, fontSize:'13px', marginTop:'20px'}}>© 2026 BOOKCY KIBRIS. {t[lang].footer.copy}</p>
+      </footer>
+    </>
+  );
+}
 export default function Home() {
   const router = useRouter(); 
   
