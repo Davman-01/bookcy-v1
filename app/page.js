@@ -13,14 +13,9 @@ import {
   FilterX, CalendarOff, Music, Ticket, CalendarHeart, Map, Moon, Sun
 } from 'lucide-react';
 
-function Logo() {
-  return (
-    <div className="nav-logo">
-      <img src={BOOKCY_LOGO_BASE64} alt="Bookcy Logo" />
-    </div>
-  );
-}
-// --- VERCEL HATASINI ÇÖZEN VE EKSİK OLAN LİSTELER ---
+// --- SABİT TANIMLAMALAR (BURAYA EKLE) ---
+const BOOKCY_LOGO_BASE64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAABACAYAAACuN87O... (Logonun geri kalanı)";
+
 const allTimeSlots = [
   "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", 
   "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", 
@@ -28,6 +23,14 @@ const allTimeSlots = [
   "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30", 
   "00:00", "00:30", "01:00", "01:30", "02:00"
 ];
+
+function Logo() {
+  return (
+    <div className="nav-logo">
+      <img src={BOOKCY_LOGO_BASE64} alt="Bookcy Logo" style={{height:'34px', width:'auto'}} />
+    </div>
+  );
+}
 
 const defaultWorkingHours = [
   { day: 'Pazartesi', open: '09:00', close: '19:00', isClosed: false },
