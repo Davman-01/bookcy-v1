@@ -12,7 +12,15 @@ import {
   Grid, X, Gem, Zap, Check, ArrowRightCircle, Award, LayoutDashboard, PieChart, Store, 
   FilterX, CalendarOff, Music, Ticket, CalendarHeart, Map, Moon, Sun
 } from 'lucide-react';
+const LOGO_PATH = "/logo.png";
 
+function Logo() {
+  return (
+    <div className="nav-logo">
+      <img src={LOGO_PATH} alt="Bookcy Logo" style={{height:'36px', width:'auto'}} />
+    </div>
+  );
+}
 function parseDuration(durationStr) {
   if (!durationStr || durationStr === '0') return 30;
   const match = durationStr.match(/\d+/);
