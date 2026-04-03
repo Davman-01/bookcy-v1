@@ -13,8 +13,15 @@ import {
   FilterX, CalendarOff, Music, Ticket, CalendarHeart, Map, Moon, Sun
 } from 'lucide-react';
 
-// --- SABİT TANIMLAMALAR (BURAYA EKLE) ---
-const BOOKCY_LOGO_BASE64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAABACAYAAACuN87O... (Logonun geri kalanı)";
+function parseDuration(durationStr) {
+  if (!durationStr || durationStr === '0') return 30;
+  const match = durationStr.match(/\d+/);
+  return match ? parseInt(match[0]) : 30;
+}
+
+function getRequiredSlots(durationStr) {
+  return Math.ceil(parseDuration(durationStr) / 30);
+}
 
 const allTimeSlots = [
   "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", 
@@ -23,14 +30,6 @@ const allTimeSlots = [
   "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30", 
   "00:00", "00:30", "01:00", "01:30", "02:00"
 ];
-
-function Logo() {
-  return (
-    <div className="nav-logo">
-      <img src={BOOKCY_LOGO_BASE64} alt="Bookcy Logo" style={{height:'34px', width:'auto'}} />
-    </div>
-  );
-}
 
 const defaultWorkingHours = [
   { day: 'Pazartesi', open: '09:00', close: '19:00', isClosed: false },
@@ -42,215 +41,9 @@ const defaultWorkingHours = [
   { day: 'Pazar', open: '09:00', close: '19:00', isClosed: true },
 ];
 
-function parseDuration(durationStr) {
-  if (!durationStr || durationStr === '0') return 30;
-  const match = durationStr.match(/\d+/);
-  return match ? parseInt(match[0]) : 30;
-}
-
-function getRequiredSlots(durationStr) {
-  return Math.ceil(parseDuration(durationStr) / 30);
-}
-
-const megaMenuStructure = {
-  col1: ['profile', 'market', 'team'],
-  col2: ['booking', 'app'],
-  col3: ['marketing', 'calendar', 'crm'],
-  col4: ['boost', 'stats']
-};
-
-export default function Home() {
-  const router = useRouter(); 
-  const [theme, setTheme] = useState('light');
-  const [step, setStep] = useState('services'); 
-  const [shops, setShops] = useState([]);
-  const [lang, setLang] = useState('TR');
-  const [showFeaturesMenu, setShowFeaturesMenu] = useState(false);
-  const approvedShops = shops.filter(shop => shop.status === 'approved');
-  const [selectedShop, setSelectedShop] = useState(null);
-  const [bookingData, setBookingData] = useState({ date: new Date().toISOString().split('T')[0], time: '', selectedShopService: null, selectedStaff: null, selectedEvent: null });
-  const [formData, setFormData] = useState({ name: '', surname: '', phoneCode: '+90', phone: '', email: '' });
-  const [bookingPhase, setBookingPhase] = useState(1);
-  const [bookingEmailValid, setBookingEmailValid] = useState(null);
-  const [bookingPhoneValid, setBookingPhoneValid] = useState(null);
-  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
-  const [feedbackData, setFeedbackData] = useState({ q1: null, q2: null, q3: null, q4: null });
-  const [loggedInShop, setLoggedInShop] = useState(null);
-  const [filterRegion, setFilterRegion] = useState('All');
-  const [filterService, setFilterService] = useState('All');
-  const [filterSort, setFilterSort] = useState('High'); 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [appointments, setAppointments] = useState([]);
-  const [globalAppointments, setGlobalAppointments] = useState([]); 
-  const [closedSlots, setClosedSlots] = useState([]);
-  const [profileTab, setProfileTab] = useState('services'); 
-  const [lightboxImg, setLightboxImg] = useState(null);
-
-  const cyprusRegions = ["Girne", "Lefkoşa", "Mağusa", "İskele", "Güzelyurt", "Lefke"];
-
-  const t = {
-    TR: {
-      nav: { places: "Mekanlar", features: "Özellikler", contact: "İletişim", about: "Hakkımızda", addShop: "İşletme Ekle", login: "Giriş", logout: "Çıkış", dashboard: "Panel" },
-      home: { eyebrow: "Kıbrıs'ın #1 Güzellik Platformu", title1: "Kıbrıs'ın En İyi", title2: "Güzellik Uzmanlarından", title3: "Hemen Randevu", title4: "Al.", subtitle: "Kendine iyi bak, zamanın sana kalsın. Yakınındaki işletmeleri saniyeler içinde bul.", searchPlace: "Hizmet ara...", searchLoc: "Nerede?", searchBtn: "Ara", popTitle: "Popüler:", stats: {s1:"İşletme", s2:"Müşteri", s3:"İşlem", s4:"Memnuniyet"} },
-      cats: { catTitle: "Kategoriler", catSub: "Ne arıyorsun?", seeAll: "Tümü", barber: "Berber", hair: "Kuaför", nail: "Tırnak", club: "Bar", spa: "Spa" },
-      book: { details: "Rezervasyon Detayları", submit: "Onayla", btnBook: "Randevu Al →", shopClosed: "KAPALI" },
-      shops: { back: "Geri", empty: "Mekan bulunamadı." },
-      footer: { desc: "Kıbrıs'ın Randevu Platformu", copy: "Tüm hakları saklıdır.", terms: "Şartlar", privacy: "Gizlilik" }
-    }
-  };
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('bookcy_theme') || 'light';
-    setTheme(savedTheme);
-    fetchShops(); fetchGlobalAppointments();
-    const session = localStorage.getItem('bookcy_biz_session');
-    if(session) setLoggedInShop(JSON.parse(session));
-  }, []);
-
-  useEffect(() => {
-    if (theme === 'dark') { document.body.classList.add('dark'); document.body.style.backgroundColor = '#0B0710'; } 
-    else { document.body.classList.remove('dark'); document.body.style.backgroundColor = '#FAF7F2'; }
-  }, [theme]);
-
-  async function fetchShops() { const { data } = await supabase.from('shops').select('*'); if (data) setShops(data); }
-  async function fetchGlobalAppointments() { const { data } = await supabase.from('appointments').select('customer_phone'); if (data) setGlobalAppointments(data); }
-  async function fetchAppointments(shopId, date = null) { let query = supabase.from('appointments').select('*').eq('shop_id', shopId); if (date) query = query.eq('appointment_date', date); const { data } = await query; if (data) setAppointments(data); }
-  async function fetchClosedSlots(shopId, date = null) { let query = supabase.from('closed_slots').select('*').eq('shop_id', shopId); if (date) query = query.eq('date', date); const { data } = await query; if (data) setClosedSlots(data.map(item => item.slot)); }
-
-  useEffect(() => { if (selectedShop && bookingData.date) { fetchAppointments(selectedShop.id, bookingData.date); fetchClosedSlots(selectedShop.id, bookingData.date); } }, [selectedShop, bookingData.date]);
-
-  const toggleTheme = () => { const newTheme = theme === 'light' ? 'dark' : 'light'; setTheme(newTheme); localStorage.setItem('bookcy_theme', newTheme); };
-  const handleHeroSearch = (e) => { e.preventDefault(); setStep('all_shops'); window.scrollTo(0,0); };
-  const handleLogout = () => { localStorage.removeItem('bookcy_biz_session'); setLoggedInShop(null); };
-
-  const getDayNameFromDate = (dateString) => {
-    const d = new Date(dateString);
-    return ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'][d.getDay()];
-  };
-
-  const getCurrentAvailableSlots = () => {
-    if (!selectedShop || !bookingData.date) return allTimeSlots;
-    const dayName = getDayNameFromDate(bookingData.date);
-    const workingHours = Array.isArray(selectedShop.working_hours) ? selectedShop.working_hours : defaultWorkingHours;
-    const todayHours = workingHours.find(h => h.day === dayName);
-    if (todayHours && todayHours.isClosed) return [];
-    return todayHours ? allTimeSlots.filter(slot => slot >= todayHours.open && slot < todayHours.close) : allTimeSlots;
-  };
-
-  const sortedShops = approvedShops.filter(shop => {
-    const matchRegion = filterRegion === 'All' || (shop.location && shop.location.includes(filterRegion));
-    const matchSearch = shop.name.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchRegion && matchSearch;
-  });
-
-  const categories = [ 
-    { key: "barber", dbName: "Berber", bg: "linear-gradient(135deg,#1a1a2e,#2d1b4e)", emoji: "💈" }, 
-    { key: "hair", dbName: "Kuaför", bg: "linear-gradient(135deg,#f5c5a3,#e8622a)", emoji: "✂️" }, 
-    { key: "nail", dbName: "Tırnak & Güzellik", bg: "linear-gradient(135deg,#ffd6e7,#ff88b2)", emoji: "💅" }, 
-    { key: "spa", dbName: "Spa & Masaj", bg: "linear-gradient(135deg,#d4f5e9,#00c48c)", emoji: "💆" }, 
-    { key: "club", dbName: "Bar & Club", bg: "linear-gradient(135deg,#1a0a0a,#3d1515)", emoji: "🍸" } 
-  ];
-
-  return (
-    <>
-      <style dangerouslySetInnerHTML={{__html: `
-        :root { --fig: #2D1B4E; --terra: #E8622A; --c-bg-main: #FAF7F2; --c-bg-card: #FFFFFF; --c-text-main: #2D1B4E; --c-nav-bg: rgba(250,247,242,0.85); }
-        .dark { --c-bg-main: #0B0710; --c-bg-card: #150D1E; --c-text-main: #FFFFFF; --c-nav-bg: rgba(11,7,16,0.85); }
-        body { background: var(--c-bg-main); color: var(--c-text-main); font-family: 'DM Sans', sans-serif; margin:0; }
-        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 0 48px; height: 68px; display: flex; align-items: center; justify-content: space-between; background: var(--c-nav-bg); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .nav-logo { cursor: pointer; display: flex; align-items: center; }
-        .nav-logo img { height: 38px; width: auto; object-fit: contain; }
-        .nav-links { display: flex; align-items: center; gap: 30px; list-style: none; }
-        .nav-links button, .nav-links a { background: none; border: none; font-weight: 700; color: var(--c-text-main); cursor: pointer; text-decoration: none; font-size: 14px; }
-        .hero { background: var(--fig); min-height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; padding: 100px 20px; }
-        .hero-title { font-size: clamp(38px, 8vw, 82px); font-weight: 900; line-height: 1; margin-bottom: 20px; }
-        .hero-title .accent { color: var(--terra); }
-        .search-wrap { background: white; padding: 10px; border-radius: 20px; display: flex; align-items: center; width: 100%; max-width: 600px; margin-top: 30px; }
-        .search-wrap input { flex: 1; border: none; padding: 15px; outline: none; font-weight: 700; color: #333; }
-        .search-btn { background: var(--terra); color: white; border: none; padding: 14px 30px; border-radius: 15px; font-weight: 800; cursor: pointer; }
-        .hero-stats { display: flex; gap: 40px; margin-top: 60px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 40px; }
-        .stat-num { font-size: 32px; font-weight: 900; }
-        .stat-label { font-size: 11px; opacity: 0.5; text-transform: uppercase; letter-spacing: 1px; }
-        .venue-card { background: var(--c-bg-card); border-radius: 25px; padding: 20px; display: flex; align-items: center; gap: 20px; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.05); cursor: pointer; transition: 0.3s; }
-        @media(max-width:768px){ nav{padding:0 20px;} .nav-links{display:none;} .search-wrap{flex-direction:column; padding:20px;} .search-btn{width:100%;} .hero-stats{flex-direction:column; gap:20px;} }
-      `}} />
-
-      <nav>
-        <div className="nav-logo" onClick={() => {setStep('services'); window.scrollTo(0,0);}}>
-          <Logo />
-        </div>
-        <ul className="nav-links">
-          <li><button onClick={() => setStep('all_shops')}>{t[lang].nav.places}</button></li>
-          <li><Link href="/ozellikler">Özellikler</Link></li>
-          <li><Link href="/hakkimizda">Hakkımızda</Link></li>
-          <li><Link href="/iletisim">İletişim</Link></li>
-        </ul>
-        <div style={{display:'flex', alignItems:'center', gap:'15px'}}>
-          <button onClick={toggleTheme} style={{background:'none', border:'none', cursor:'pointer', color:'var(--c-text-main)'}}><Moon size={20}/></button>
-          {loggedInShop ? (
-            <Link href="/dashboard" style={{background:'var(--terra)', color:'white', padding:'10px 22px', borderRadius:'50px', textDecoration:'none', fontWeight:'800', fontSize:'12px'}}>PANEL</Link>
-          ) : (
-            <Link href="/isletme-giris" style={{background:'var(--terra)', color:'white', padding:'10px 22px', borderRadius:'50px', textDecoration:'none', fontWeight:'800', fontSize:'12px'}}>GİRİŞ</Link>
-          )}
-        </div>
-      </nav>
-
-      <main style={{paddingTop: '68px'}}>
-        {step === 'services' && (
-          <>
-            <section className="hero">
-              <h1 className="hero-title">Kıbrıs'ın En İyi<br/><span className="accent">Güzellik Uzmanlarından</span><br/>Randevu Al.</h1>
-              <p style={{maxWidth:'500px', opacity:0.7, margin:'0 auto'}}>{t[lang].home.subtitle}</p>
-              <form className="search-wrap" onSubmit={handleHeroSearch}>
-                <input type="text" placeholder="Mekan veya hizmet ara..." value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)} />
-                <button type="submit" className="search-btn">ARA</button>
-              </form>
-              <div className="hero-stats">
-                <div className="stat"><div className="stat-num">{approvedShops.length || 142}</div><div className="stat-label">İşletme</div></div>
-                <div className="stat"><div className="stat-num">3,850+</div><div className="stat-label">Müşteri</div></div>
-                <div className="stat"><div className="stat-num">%98</div><div className="stat-label">Memnuniyet</div></div>
-              </div>
-            </section>
-            <section style={{padding:'80px 20px', maxWidth:'1200px', margin:'0 auto'}}>
-              <h2 style={{fontSize:'32px', fontWeight:900, marginBottom:'40px'}}>Kategoriler</h2>
-              <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(160px, 1fr))', gap:'20px'}}>
-                {categories.map(c => (
-                  <div key={c.key} onClick={()=>{setFilterService(c.dbName); setStep('all_shops');}} style={{background:c.bg, padding:'35px', borderRadius:'30px', textAlign:'center', cursor:'pointer', color:'white'}}>
-                    <div style={{fontSize:'45px', marginBottom:'15px'}}>{c.emoji}</div>
-                    <div style={{fontWeight:800}}>{c.dbName}</div>
-                  </div>
-                ))}
-              </div>
-            </section>
-          </>
-        )}
-
-        {step === 'all_shops' && (
-          <div style={{maxWidth:'800px', margin:'100px auto', padding:'0 20px'}}>
-            <button onClick={()=>setStep('services')} style={{background:'none', border:'none', cursor:'pointer', fontWeight:800, color:'#888', marginBottom:'20px'}}>← GERİ DÖN</button>
-            <h2 style={{fontSize:'36px', fontWeight:900, marginBottom:'30px'}}>{t[lang].nav.places}</h2>
-            {sortedShops.map(shop => (
-              <div key={shop.id} className="venue-card" onClick={()=>{setSelectedShop(shop); setStep('shop_profile');}}>
-                <img src={shop.logo_url || BOOKCY_LOGO_BASE64} alt={shop.name} style={{width:'80px', height:'80px', borderRadius:'50%'}} />
-                <div style={{flex:1}}><div style={{fontSize:'20px', fontWeight:900}}>{shop.name}</div><div style={{opacity:0.6}}>{shop.location}</div></div>
-                <ArrowRight color="var(--terra)"/>
-              </div>
-            ))}
-          </div>
-        )}
-      </main>
-
-      <footer style={{background:'var(--fig)', color:'white', padding:'80px 48px', textAlign:'center'}}>
-        <Logo />
-        <p style={{opacity:0.4, fontSize:'13px', marginTop:'20px'}}>© 2026 BOOKCY KIBRIS. {t[lang].footer.copy}</p>
-      </footer>
-    </>
-  );
-}
 export default function Home() {
   const router = useRouter(); 
   
-  // KARANLIK MOD (DARK MODE) YÖNETİMİ
   const [theme, setTheme] = useState('light');
   useEffect(() => {
     const savedTheme = localStorage.getItem('bookcy_theme') || 'light';
@@ -292,7 +85,6 @@ export default function Home() {
   const [formData, setFormData] = useState({ name: '', surname: '', phoneCode: '+90', phone: '', email: '' });
   const [bookingPhase, setBookingPhase] = useState(1);
 
-  // RANDEVU FORMU DOĞRULAMA (✅ ❌)
   const [bookingEmailValid, setBookingEmailValid] = useState(null);
   const [bookingPhoneValid, setBookingPhoneValid] = useState(null);
 
@@ -338,30 +130,30 @@ export default function Home() {
       footer: { desc: "Kuzey Kıbrıs'ın güzellik ve bakım hizmetleri için tek rezervasyon platformu.", links: "Platform", cities: "Bölgeler", legal: "Sözleşmeler", copy: "Tüm hakları saklıdır. Kuzey Kıbrıs'ta kurulmuştur. 🇹🇷", terms: "Kullanım Koşulları", privacy: "Gizlilik Politikası" }
     },
     EN: {
-        nav: { places: "Places", features: "Features", contact: "Contact", about: "About & Packages", addShop: "Add Business", login: "Login", logout: "Logout", dashboard: "Dashboard" },
-        megaMenu: { col1Title: "Set up shop", col2Title: "Wow your clients", col3Title: "Run your business", col4Title: "Keep growing", btn: "Explore All Features" },
-        featNames: { profile: "Bookcy Profile", market: "Marketplace", team: "Team Management", booking: "Online Booking", app: "Customer App", marketing: "Marketing Tools", calendar: "Calendar", crm: "Client Management", boost: "Boost", stats: "Stats & Reports" },
-        home: { eyebrow: "Cyprus's #1 Beauty Platform", title1: "Cyprus's Best", title2: "Beauty Specialists", title3: "Book Now", title4: "!", subtitle: "Find the best barbers, salons, and spas nearby. Book with one click, your time is yours.", searchPlace: "Search services...", searchLoc: "Where?", searchBtn: "Search", popTitle: "Popular:", stats: {s1:"Active Places", s2:"Happy Clients", s3:"Completed Bookings", s4:"Satisfaction"} },
-        cats: { catTitle: "Categories", catSub: "What are you looking for?", seeAll: "See All →", tattoo: "Tattoo", barber: "Barber", hair: "Hair Salon", nail: "Nail Art", club: "Bar & Club", spa: "Spa & Massage", makeup: "Makeup", skincare: "Skin Care" },
-        homeInfo: { recLabel: "Featured", recTitle: "Trending This Week 🔥", howLabel: "How it works?", howTitle: "Ready in 4 steps", how1Title: "Discover", how1Desc: "Find nearby places.", how2Title: "Select Date", how2Desc: "Pick the best time.", how3Title: "Confirm", how3Desc: "Booking confirmed.", how4Title: "Enjoy", how4Desc: "Get your service.", ctaLabel: "Business owner?", ctaTitle1: "Grow your business", ctaTitle2: "with Bookcy.", ctaSub: "Digitize your booking system." },
-        filters: { title: "Search Results", search: "Search places...", region: "Location", service: "Categories", sortHigh: "Highest Rated", sortLow: "Lowest Rated", clear: "Clear", count: "Places Found" },
-        shops: { back: "GO BACK", empty: "No businesses found." },
-        profile: { tabServices: "Booking / Service", tabEvents: "Events & VIP", tabGallery: "Gallery", about: "About Us", contactTitle: "CONTACT INFO", bookBtn: "SELECT", noDesc: "No description yet.", noServices: "No services yet.", noGallery: "No photos yet.", similarTitle: "SIMILAR PLACES NEARBY" },
-        book: { change: "Back", selectService: "Select a service to continue.", selectEvent: "Select an event.", selectLoca: "Select your VIP booking type.", selectStaff: "SELECT STAFF", anyStaff: "Any Staff", date: "Select Date", time: "Select Time", name: "First Name", surname: "Last Name", phone: "Phone", email: "Email (Required)", submit: "CONFIRM", success: "APPOINTMENT CONFIRMED", successSub: "Your details have been sent.", backHome: "RETURN TO HOME", total: "Total", details: "Appointment Details", service: "Service", event: "Event", staff: "Staff", dateTime: "Date / Time", contactInfo: "Contact Info", btnBook: "Book Now →", shopClosed: "SHOP IS CLOSED ON THIS DATE OR FULL." },
-        footer: { desc: "North Cyprus's premier booking platform for beauty & wellness.", links: "Platform", cities: "Regions", legal: "Terms", copy: "All rights reserved. Made in North Cyprus. 🇹🇷", terms: "Terms of Service", privacy: "Privacy Policy" }
+      nav: { places: "Places", features: "Features", contact: "Contact", about: "About & Packages", addShop: "Add Business", login: "Login", logout: "Logout", dashboard: "Dashboard" },
+      megaMenu: { col1Title: "Set up shop", col2Title: "Wow your clients", col3Title: "Run your business", col4Title: "Keep growing", btn: "Explore All Features" },
+      featNames: { profile: "Bookcy Profile", market: "Marketplace", team: "Team Management", booking: "Online Booking", app: "Customer App", marketing: "Marketing Tools", calendar: "Calendar", crm: "Client Management", boost: "Boost", stats: "Stats & Reports" },
+      home: { eyebrow: "Cyprus's #1 Beauty Platform", title1: "Cyprus's Best", title2: "Beauty Specialists", title3: "Book Now", title4: ".", subtitle: "Take care of yourself, save your time. Find hairdressers, barbers and spas near you in seconds.", searchPlace: "Search services...", searchLoc: "Where?", searchBtn: "Search", popTitle: "Popular:", stats: {s1:"Active Places", s2:"Happy Clients", s3:"Completed Bookings", s4:"Satisfaction"} },
+      cats: { catTitle: "Categories", catSub: "What are you looking for?", seeAll: "See All →", tattoo: "Tattoo", barber: "Barber", hair: "Hair Salon", nail: "Nail Art", club: "Bar & Club", spa: "Spa & Massage", makeup: "Makeup", skincare: "Skin Care" },
+      homeInfo: { recLabel: "Featured", recTitle: "Trending This Week 🔥", howLabel: "How it works?", howTitle: "Ready in 4 steps", how1Title: "Discover", how1Desc: "Find nearby places.", how2Title: "Select Date", how2Desc: "Pick the best time.", how3Title: "Confirm", how3Desc: "Booking confirmed.", how4Title: "Enjoy", how4Desc: "Get your service.", ctaLabel: "Business owner?", ctaTitle1: "Grow your business", ctaTitle2: "with Bookcy.", ctaSub: "Digitize your booking system." },
+      filters: { title: "Search Results", search: "Search places...", region: "Location", service: "Categories", sortHigh: "Highest Rated", sortLow: "Lowest Rated", clear: "Clear", count: "Places Found" },
+      shops: { back: "GO BACK", empty: "No businesses found." },
+      profile: { tabServices: "Booking / Service", tabEvents: "Events & VIP", tabGallery: "Gallery", about: "About Us", contactTitle: "CONTACT INFO", bookBtn: "SELECT", noDesc: "No description yet.", noServices: "No services yet.", noGallery: "No photos yet.", similarTitle: "SIMILAR PLACES NEARBY" },
+      book: { change: "Back", selectService: "Select a service to continue.", selectEvent: "Select an event.", selectLoca: "Select your VIP booking type.", selectStaff: "SELECT STAFF", anyStaff: "Any Staff", date: "Select Date", time: "Select Time", name: "First Name", surname: "Last Name", phone: "Phone", email: "Email (Required)", submit: "CONFIRM", success: "APPOINTMENT CONFIRMED", successSub: "Your details have been sent.", backHome: "RETURN TO HOME", total: "Total", details: "Appointment Details", service: "Service", event: "Event", staff: "Staff", dateTime: "Date / Time", contactInfo: "Contact Info", btnBook: "Book Now →", shopClosed: "SHOP IS CLOSED ON THIS DATE OR FULL." },
+      footer: { desc: "North Cyprus's premier booking platform for beauty & wellness.", links: "Platform", cities: "Regions", legal: "Terms", copy: "All rights reserved. Made in North Cyprus. 🇹🇷", terms: "Terms of Service", privacy: "Privacy Policy" }
     },
     RU: {
-        nav: { places: "Места", features: "Функции", contact: "Контакты", about: "О нас и пакеты", addShop: "Добавить бизнес", login: "Вход", logout: "Выйти", dashboard: "Панель" },
-        megaMenu: { col1Title: "Настройка", col2Title: "Клиенты", col3Title: "Бизнес", col4Title: "Развитие", btn: "Узнать все функции" },
-        featNames: { profile: "Профиль Bookcy", market: "Маркетплейс", team: "Команда", booking: "Онлайн-бронирование", app: "Приложение", marketing: "Маркетинг", calendar: "Календарь", crm: "Управление клиентами", boost: "Продвижение", stats: "Статистика" },
-        home: { eyebrow: "Платформа красоты #1", title1: "Лучшие на Кипре", title2: "Специалисты по красоте", title3: "Забронируйте сейчас", title4: ".", subtitle: "Позаботьтесь о себе, сэкономьте время. Найдите парикмахерские, барбершопы и спа рядом с вами за считанные секунды.", searchPlace: "Поиск услуг...", searchLoc: "Где?", searchBtn: "ПОИСК", popTitle: "Популярные:", stats: {s1:"Активные", s2:"Клиенты", s3:"Записи", s4:"Удовлетворенность"} },
-        cats: { catTitle: "Категории", catSub: "Что вы ищете?", seeAll: "Все →", tattoo: "Тату", barber: "Барбер", hair: "Парикмахерская", nail: "Маникюр", club: "Бар", spa: "Спа", makeup: "Макияж", skincare: "Уход за кожей" },
-        homeInfo: { recLabel: "Популярные", recTitle: "В тренде 🔥", howLabel: "Как это работает?", howTitle: "Готово за 4 шага", how1Title: "Найти", how1Desc: "Найдите салоны.", how2Title: "Дата", how2Desc: "Свободное время.", how3Title: "Подтвердить", how3Desc: "Бронь подтверждена.", how4Title: "Наслаждаться", how4Desc: "Оставьте отзыв.", ctaLabel: "Владелец бизнеса?", ctaTitle1: "Развивайте бизнес", ctaTitle2: "с Bookcy.", ctaSub: "Оцифруйте бизнес." },
-        filters: { title: "Результаты", search: "Поиск...", region: "Где?", service: "Услуги", sortHigh: "С высоким рейтингом", sortLow: "С низким рейтингом", clear: "Очистить", count: "Найдено" },
-        shops: { back: "НАЗАD", empty: "Не найдено." },
-        profile: { tabServices: "Бронирование / Услуги", tabEvents: "События и VIP", tabGallery: "Галерея", about: "О НАС", contactTitle: "КОНТАКТЫ", bookBtn: "ВЫБРАТЬ", noDesc: "Нет описания.", noServices: "Нет услуг.", noGallery: "Нет фото.", similarTitle: "ПОХОЖИЕ МЕСТА" },
-        book: { change: "Назад", selectService: "Выберите услугу", selectEvent: "Выберите событие", selectLoca: "Выберите зону", selectStaff: "ВЫБЕРИТЕ СПЕЦИАЛИСТА", anyStaff: "Любой", date: "Дата", time: "Время", name: "Имя", surname: "Фамилия", phone: "Телефон", email: "Email", submit: "ПОДТВЕРДИТЬ", success: "БРОНЬ ПОДТВЕРЖДЕНА", successSub: "Данные отправлены.", backHome: "НА ГЛАВНУЮ", total: "Итого", details: "Детали", service: "Услуга", event: "Событие", staff: "Специалист", dateTime: "Дата / Время", contactInfo: "Контакты", btnBook: "Забронировать →", shopClosed: "ЗАКРЫТО ИЛИ НЕТ МЕСТ В ЭТУ ДАТУ." },
-        footer: { desc: "Платформа бронирования на Северном Кипре.", links: "Платформа", cities: "Регион", legal: "О нас", copy: "Все права защищены. Сделано на Северном Кипре. 🇹🇷", terms: "Условия", privacy: "Конфиденциальность" }
+      nav: { places: "Места", features: "Функции", contact: "Контакты", about: "О нас и пакеты", addShop: "Добавить бизнес", login: "Вход", logout: "Выйти", dashboard: "Панель" },
+      megaMenu: { col1Title: "Настройка", col2Title: "Клиенты", col3Title: "Бизнес", col4Title: "Развитие", btn: "Узнать все функции" },
+      featNames: { profile: "Профиль Bookcy", market: "Маркетплейс", team: "Команда", booking: "Онлайн-бронирование", app: "Приложение", marketing: "Маркетинг", calendar: "Календарь", crm: "Управление клиентами", boost: "Продвижение", stats: "Статистика" },
+      home: { eyebrow: "Платформа красоты #1", title1: "Лучшие на Кипре", title2: "Специалисты по красоте", title3: "Забронируйте сейчас", title4: ".", subtitle: "Позаботьтесь о себе, сэкономьте время. Найдите парикмахерские, барбершопы и спа рядом с вами за считанные секунды.", searchPlace: "Поиск услуг...", searchLoc: "Где?", searchBtn: "ПОИСК", popTitle: "Популярные:", stats: {s1:"Активные", s2:"Клиенты", s3:"Записи", s4:"Удовлетворенность"} },
+      cats: { catTitle: "Категории", catSub: "Что вы ищете?", seeAll: "Все →", tattoo: "Тату", barber: "Барбер", hair: "Парикмахерская", nail: "Маникюр", club: "Бар", spa: "Спа", makeup: "Макияж", skincare: "Уход за кожей" },
+      homeInfo: { recLabel: "Популярные", recTitle: "В тренде 🔥", howLabel: "Как это работает?", howTitle: "Готово за 4 шага", how1Title: "Найти", how1Desc: "Найдите салоны.", how2Title: "Дата", how2Desc: "Свободное время.", how3Title: "Подтвердить", how3Desc: "Бронь подтверждена.", how4Title: "Наслаждаться", how4Desc: "Оставьте отзыв.", ctaLabel: "Владелец бизнеса?", ctaTitle1: "Развивайте бизнес", ctaTitle2: "с Bookcy.", ctaSub: "Оцифруйте бизнес." },
+      filters: { title: "Результаты", search: "Поиск...", region: "Где?", service: "Услуги", sortHigh: "С высоким рейтингом", sortLow: "С низким рейтингом", clear: "Очистить", count: "Найдено" },
+      shops: { back: "НАЗАД", empty: "Не найдено." },
+      profile: { tabServices: "Бронирование / Услуги", tabEvents: "События и VIP", tabGallery: "Галерея", about: "О НАС", contactTitle: "КОНТАКТЫ", bookBtn: "ВЫБРАТЬ", noDesc: "Нет описания.", noServices: "Нет услуг.", noGallery: "Нет фото.", similarTitle: "ПОХОЖИЕ МЕСТА" },
+      book: { change: "Назад", selectService: "Выберите услугу", selectEvent: "Выберите событие", selectLoca: "Выберите зону", selectStaff: "ВЫБЕРИТЕ СПЕЦИАЛИСТА", anyStaff: "Любой", date: "Дата", time: "Время", name: "Имя", surname: "Фамилия", phone: "Телефон", email: "Email", submit: "ПОДТВЕРДИТЬ", success: "БРОНЬ ПОДТВЕРЖДЕНА", successSub: "Данные отправлены.", backHome: "НА ГЛАВНУЮ", total: "Итого", details: "Детали", service: "Услуга", event: "Событие", staff: "Специалист", dateTime: "Дата / Время", contactInfo: "Контакты", btnBook: "Забронировать →", shopClosed: "ЗАКРЫТО ИЛИ НЕТ МЕСТ В ЭТУ ДАТУ." },
+      footer: { desc: "Платформа бронирования на Северном Кипре.", links: "Платформа", cities: "Регион", legal: "О нас", copy: "Все права защищены. Сделано на Северном Кипре. 🇹🇷", terms: "Условия", privacy: "Конфиденциальность" }
     }
   };
 
@@ -518,6 +310,79 @@ export default function Home() {
     if (!error) {
         setStep('success'); 
         window.scrollTo(0,0);
+        
+        const customerEmailHtml = `
+          <div style="font-family: 'DM Sans', Arial, sans-serif; max-width: 600px; margin: 0 auto; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; background: #ffffff;">
+            <div style="background: #2D1B4E; padding: 32px 20px; text-align: center;">
+              <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 900;">BOOKCY<span style="color: #E8622A;">.</span></h1>
+              <p style="color: #F5C5A3; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-top: 8px;">Rezervasyon Onay Belgesi</p>
+            </div>
+            <div style="padding: 40px 32px;">
+              <h2 style="color: #2D1B4E; margin-top: 0; font-size: 22px;">Merhaba ${formData.name},</h2>
+              <p style="color: #64748b; font-size: 16px; line-height: 1.6;"><strong>${selectedShop.name}</strong> işletmesinden aldığınız randevu başarıyla onaylanmıştır. Detaylar aşağıdadır:</p>
+              <div style="background: #f8fafc; border-left: 4px solid #E8622A; padding: 20px; margin: 24px 0; border-radius: 0 8px 8px 0;">
+                <p style="margin: 0 0 10px 0; color: #334155; font-size: 15px;">📅 <strong>Tarih:</strong> ${finalDate}</p>
+                <p style="margin: 0 0 10px 0; color: #334155; font-size: 15px;">⏰ <strong>Saat:</strong> ${finalTime}</p>
+                <p style="margin: 0 0 10px 0; color: #334155; font-size: 15px;">✂️ <strong>Hizmet:</strong> ${bookingData.selectedShopService.name}</p>
+                ${!isClub ? `<p style="margin: 0 0 10px 0; color: #334155; font-size: 15px;">👤 <strong>Uzman:</strong> ${assignedStaffName}</p>` : ''}
+                <p style="margin: 0; color: #334155; font-size: 15px;">📍 <strong>Konum:</strong> ${selectedShop.address || selectedShop.location}</p>
+              </div>
+              <p style="color: #64748b; font-size: 14px;">Bizi tercih ettiğiniz için teşekkür ederiz!</p>
+            </div>
+          </div>
+        `;
+
+        try { 
+          await fetch('/api/email', { 
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify({ 
+              to: formData.email, 
+              subject: 'BOOKCY - Rezervasyon Onayı', 
+              html: customerEmailHtml, 
+              text: `Randevunuz onaylandı.` 
+            }) 
+          }); 
+        } catch(err) {} 
+        
+        const adminEmailHtml = `
+          <div style="font-family: 'DM Sans', Arial, sans-serif; max-width: 600px; margin: 0 auto; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; background: #ffffff;">
+            <div style="background: #E8622A; padding: 32px 20px; text-align: center;">
+              <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 900;">YENİ REZERVASYON!</h1>
+              <p style="color: #fff8f1; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-top: 8px;">Bookcy Sistem Bildirimi</p>
+            </div>
+            <div style="padding: 40px 32px;">
+              <h2 style="color: #2D1B4E; margin-top: 0; font-size: 22px;">Merhaba ${selectedShop.name},</h2>
+              <p style="color: #64748b; font-size: 16px; line-height: 1.6;">Platformumuz üzerinden yeni bir rezervasyon aldınız.</p>
+              <div style="background: #f8fafc; border-left: 4px solid #2D1B4E; padding: 20px; margin: 24px 0; border-radius: 0 8px 8px 0;">
+                <p style="margin: 0 0 10px 0; color: #334155; font-size: 15px;">👤 <strong>Müşteri:</strong> ${formData.name} ${formData.surname}</p>
+                <p style="margin: 0 0 10px 0; color: #334155; font-size: 15px;">📱 <strong>Telefon:</strong> ${fullPhone}</p>
+                <p style="margin: 0 0 10px 0; color: #334155; font-size: 15px;">📅 <strong>Tarih:</strong> ${finalDate}</p>
+                <p style="margin: 0 0 10px 0; color: #334155; font-size: 15px;">⏰ <strong>Saat:</strong> ${finalTime}</p>
+                <p style="margin: 0 0 10px 0; color: #334155; font-size: 15px;">🎟️ <strong>Hizmet:</strong> ${bookingData.selectedShopService.name}</p>
+                ${!isClub ? `<p style="margin: 0; color: #334155; font-size: 15px;">👨‍💼 <strong>Atanan Uzman:</strong> ${assignedStaffName}</p>` : ''}
+              </div>
+              <div style="text-align: center; margin-top: 30px;">
+                <a href="https://bookcy.co/dashboard" style="display: inline-block; background: #2D1B4E; color: white; text-decoration: none; padding: 14px 30px; border-radius: 8px; font-weight: bold; font-size: 14px;">Panele Git</a>
+              </div>
+            </div>
+          </div>
+        `;
+
+        if (selectedShop.admin_email) { 
+          try { 
+            await fetch('/api/email', { 
+              method: 'POST', 
+              headers: { 'Content-Type': 'application/json' }, 
+              body: JSON.stringify({ 
+                to: selectedShop.admin_email, 
+                subject: 'YENİ REZERVASYON! (Bookcy)', 
+                html: adminEmailHtml, 
+                text: `Yeni rezervasyon alındı.` 
+              }) 
+            }); 
+          } catch(err) {} 
+        }
     } else {
       alert("Rezervasyon alınırken bir hata oluştu!");
     }
@@ -539,7 +404,61 @@ export default function Home() {
         q4: feedbackData.q4,
         average_score: avg
     }]);
+
+    if (error) {
+      alert("Supabase Kayıt Hatası: " + error.message);
+      console.error(error);
+    }
+
+    const emailHtml = `
+      <div style="font-family: 'DM Sans', Arial, sans-serif; max-width: 600px; margin: 0 auto; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; background: #ffffff;">
+        <div style="background: #2D1B4E; padding: 32px 20px; text-align: center;">
+          <h1 style="color: white; margin: 0; font-size: 24px; font-weight: 900;">YENİ DEĞERLENDİRME</h1>
+        </div>
+        <div style="padding: 40px 32px;">
+          <h2 style="color: #E8622A; margin-top: 0; font-size: 28px; text-align: center;">Ortalama Puan: ${avg}/10</h2>
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; margin: 24px 0; border-radius: 12px;">
+            <p style="margin: 0 0 10px 0; color: #334155; font-size: 15px;"><strong>Platformu nasıl buldu:</strong> ${feedbackData.q1}</p>
+            <p style="margin: 0 0 10px 0; color: #334155; font-size: 15px;"><strong>Kullanımı kolay mı:</strong> ${feedbackData.q2}</p>
+            <p style="margin: 0 0 10px 0; color: #334155; font-size: 15px;"><strong>İşlemden memnun mu:</strong> ${feedbackData.q3}</p>
+            <p style="margin: 0; color: #334155; font-size: 15px;"><strong>Hızlı mıydı:</strong> ${feedbackData.q4}</p>
+          </div>
+        </div>
+      </div>
+    `;
+
+    try {
+      await fetch('/api/email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: 'noreplybookcy@gmail.com', 
+          subject: 'BOOKCY - YENİ PLATFORM DEĞERLENDİRMESİ 🔥',
+          html: emailHtml,
+          text: `Yeni değerlendirme geldi. Ortalama: ${avg}`
+        })
+      });
+    } catch(err) {}
   }
+
+  const isSearching = searchQuery.trim().length > 0 || filterRegion !== 'All';
+  const displayShops = approvedShops.filter(shop => {
+      const matchRegion = filterRegion === 'All' || (shop.location && shop.location.toLowerCase().includes(filterRegion.toLowerCase()));
+      const matchService = filterService === 'All' || shop.category === filterService;
+      const matchSearch = shop.name.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchRegion && matchService && matchSearch;
+  });
+
+  const sortedShops = [...displayShops].sort((a, b) => {
+      if (filterSort === 'High') {
+        if (a.package === 'Premium' && b.package !== 'Premium') return -1;
+        if (a.package !== 'Premium' && b.package === 'Premium') return 1;
+        return 0;
+      }
+      return 0;
+  });
+  
+  const recommendedShops = approvedShops.filter(s => s.package === 'Premium').slice(0, 4);
 
   const getDayNameFromDate = (dateString) => {
     const d = new Date(dateString);
@@ -564,6 +483,7 @@ export default function Home() {
   };
 
   const currentAvailableSlots = getCurrentAvailableSlots();
+  const isShopClosedToday = currentAvailableSlots.length === 0;
 
   const similarShops = selectedShop 
     ? approvedShops.filter(s => s.id !== selectedShop.id && s.category === selectedShop.category).slice(0, 3)
@@ -586,7 +506,6 @@ export default function Home() {
 
   return (
     <>
-      {/* GOOGLE SCHEMA.ORG YAPISAL VERİ (SEO) */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -657,7 +576,7 @@ export default function Home() {
 
         nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 0 48px; height: 68px; display: flex; align-items: center; justify-content: space-between; background: var(--c-nav-bg); backdrop-filter: blur(20px); border-bottom: 1px solid var(--c-border); transition: background 0.3s; }
         .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; cursor: pointer; }
-        .nav-logo img { height: 36px; width: auto; object-fit: contain; }
+        .nav-logo-icon { width: 36px; height: 36px; }
         .nav-logo-text { font-family: 'Plus Jakarta Sans', sans-serif !important; font-size: 22px; font-weight: 800; color: var(--c-text-main); letter-spacing: -1px; display:flex; align-items:baseline; }
         .nav-logo-text span { color: var(--terra); }
         .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; height: 100%; margin:0; padding:0; }
@@ -843,7 +762,16 @@ export default function Home() {
 
       <nav>
         <div className="nav-logo" onClick={() => {setStep('services'); window.scrollTo(0,0);}}>
-          <Logo />
+          <svg className="nav-logo-icon" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+            <rect width="36" height="36" rx="10" fill="#2D1B4E"/>
+            <circle cx="18" cy="10" r="4.5" fill="#F5C5A3"/>
+            <rect x="10" y="15.5" width="4" height="15" rx="2" fill="#F5C5A3"/>
+            <path d="M14 15.5 Q23 15.5 23 20 Q23 24.5 14 24.5" stroke="#F5C5A3" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
+            <path d="M14 24.5 Q25 24.5 25 29 Q25 33.5 14 33.5" stroke="#E8622A" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
+            <circle cx="28" cy="8" r="4.5" fill="#E8622A"/>
+            <polyline points="25.5,8 27.5,10 31,6" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+          </svg>
+          <span className="nav-logo-text">bookcy<span>.</span></span>
         </div>
 
         <ul className="nav-links">
@@ -876,7 +804,7 @@ export default function Home() {
                                   <div>
                                     <h4 className="font-black text-[11px] uppercase tracking-widest mb-6 text-[#E8622A]">{t[lang].megaMenu.col3Title}</h4>
                                     <ul className="space-y-5 font-bold text-slate-300 capitalize text-sm">
-                                      {megaMenuStructure.col3.map(key => <li key={key}><Link href="/ozellikler" className="hover:text-white cursor-pointer transition-colors flex items-center gap-2 text-decoration-none"><ChevronRight size={14} className="text-[#E8622A]"/> {t[lang].featNames[key]}</Link></li>)}
+                                      {megaMenuStructure.col3.map(key => <Link key={key} href="/ozellikler" className="hover:text-white cursor-pointer transition-colors flex items-center gap-2 text-decoration-none"><ChevronRight size={14} className="text-[#E8622A]"/> {t[lang].featNames[key]}</Link>)}
                                     </ul>
                                   </div>
                                   <div>
@@ -1119,7 +1047,6 @@ export default function Home() {
             </div>
         )}
 
-        {/* === TÜM MEKANLAR / FİLTRELEME === */}
         {step === 'all_shops' && (
             <div className="w-full max-w-[1400px] mx-auto pt-24 px-4 md:px-8 animate-in fade-in duration-500 pb-20">
                 <button onClick={() => {setStep('services'); window.scrollTo(0,0);}} className="flex items-center text-slate-400 hover:text-[#E8622A] mb-8 text-[10px] font-black uppercase tracking-[0.2em] transition-colors bg-transparent border-none outline-none cursor-pointer">
@@ -1228,7 +1155,6 @@ export default function Home() {
             </div>
         )}
 
-        {/* İŞLETME PROFİL SAYFASI */}
         {step === 'shop_profile' && selectedShop && (
             <div className="w-full max-w-6xl mx-auto pt-24 px-4 animate-in fade-in duration-500 pb-20">
                 <button onClick={() => {setStep('all_shops'); window.scrollTo(0,0);}} className="flex items-center text-slate-400 hover:text-[#E8622A] mb-6 text-[10px] font-black uppercase tracking-[0.2em] transition-colors bg-transparent border-none outline-none cursor-pointer">
@@ -1277,7 +1203,6 @@ export default function Home() {
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
                         <div className="lg:col-span-7">
                             
-                            {/* BUKALEMUN SOL TARAF: CLUB İSE ETKİNLİKLER VE LOCALAR */}
                             {(profileTab === 'events' || profileTab === 'services') && selectedShop.category === 'Bar & Club' && (
                                 <div className="animate-in fade-in flex flex-col gap-4">
                                     {bookingPhase === 1 ? (
@@ -1349,7 +1274,6 @@ export default function Home() {
                                 </div>
                             )}
 
-                            {/* BUKALEMUN SOL TARAF: NORMAL İŞLETME İSE HİZMETLER */}
                             {(profileTab === 'services' || profileTab === 'events') && selectedShop.category !== 'Bar & Club' && (
                                 <div className="animate-in fade-in flex flex-col gap-4">
                                     {selectedShop.services && selectedShop.services.length > 0 ? (
@@ -1631,7 +1555,6 @@ export default function Home() {
 
                     </div>
 
-                    {/* BENZER MEKANLAR */}
                     {similarShops && similarShops.length > 0 && (
                         <div className="mt-20 pt-16 border-t theme-border-sub">
                             <h3 className="text-2xl font-black uppercase tracking-tight theme-text-main mb-8">{t[lang].profile.similarTitle}</h3>
@@ -1659,7 +1582,6 @@ export default function Home() {
             </div>
         )}
 
-        {/* BAŞARILI RANDEVU & YENİ DEĞERLENDİRME (POP-UP) EKRANI */}
         {step === 'success' && (
           <div className="text-center py-20 px-4 animate-in zoom-in-95 min-h-[60vh] flex flex-col items-center justify-center max-w-[600px] mx-auto">
             {!feedbackSubmitted ? (
