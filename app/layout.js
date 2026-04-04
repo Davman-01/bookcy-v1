@@ -1,5 +1,4 @@
 import './globals.css';
-import CookieBanner from '@/components/CookieBanner';
 
 export const metadata = {
   metadataBase: new URL('https://www.bookcy.co'),
@@ -47,7 +46,7 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         {children}
-        <CookieBanner />
+        
       </body>
     </html>
   );
