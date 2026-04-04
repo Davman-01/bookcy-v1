@@ -1,8 +1,9 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
+import { SITE_CONFIG } from '@/lib/constants';
 
-// Parçaladığımız bileşenleri buraya çağırıyoruz
+// Bileşenleri çağırıyoruz
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import VenueCard from '@/components/VenueCard';
@@ -10,43 +11,36 @@ import BookingModal from '@/components/BookingModal';
 import Footer from '@/components/Footer';
 
 export default function Home() {
-  const [step, setStep] = useState('services'); // 'services' veya 'all_shops'
+  const [step, setStep] = useState('services');
   const [shops, setShops] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedShop, setSelectedShop] = useState(null);
 
-  // Supabase'den dükkanları çekiyoruz
   useEffect(() => {
     async function getShops() {
-      const { data, error } = await supabase
-        .from('shops')
-        .select('*')
-        .eq('status', 'approved');
-      
+      const { data } = await supabase.from('shops').select('*').eq('status', 'approved');
       if (data) setShops(data);
     }
     getShops();
   }, []);
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FAF7F2' }}>
-      {/* 1. ÜST MENÜ */}
+    <div style={{ minHeight: '100vh', background: SITE_CONFIG.colors.bg }}>
       <Navbar setStep={setStep} />
 
-      <main style={{ paddingTop: '68px' }}>
+      <main style={{ paddingTop: '72px' }}>
         {step === 'services' ? (
-          /* 2. KARŞILAMA EKRANI */
           <Hero 
             searchQuery={searchQuery} 
             setSearchQuery={setSearchQuery} 
             onSearch={() => setStep('all_shops')} 
           />
         ) : (
-          /* 3. MEKAN LİSTESİ */
-          <div style={{ maxWidth: '800px', margin: '50px auto', padding: '0 20px' }}>
-            <h2 style={{ fontWeight: 900, fontSize: '28px', marginBottom: '30px' }}>
-              Mekanlar ({shops.filter(s => s.name.toLowerCase().includes(searchQuery.toLowerCase())).length})
-            </h2>
+          <div style={{ maxWidth: '800px', margin: '60px auto', padding: '0 20px' }}>
+            <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'40px'}}>
+               <h2 style={{ fontWeight: 900, fontSize: '32px', color: SITE_CONFIG.colors.fig }}>Mekanlar</h2>
+               <button onClick={() => setStep('services')} style={{background:'none', border:'none', color: SITE_CONFIG.colors.terra, fontWeight:700, cursor:'pointer'}}>← Geri Dön</button>
+            </div>
             
             {shops
               .filter(s => s.name.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -61,7 +55,6 @@ export default function Home() {
         )}
       </main>
 
-      {/* 4. RANDEVU EKRANI (Açılır Pencere) */}
       {selectedShop && (
         <BookingModal 
           shop={selectedShop} 
@@ -69,7 +62,6 @@ export default function Home() {
         />
       )}
 
-      {/* 5. ALT KISIM (info@bookcy.co burada) */}
       <Footer />
     </div>
   );
