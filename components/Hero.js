@@ -1,42 +1,40 @@
-import { SITE_CONFIG } from '../lib/constants';
+import { Search, MapPin } from 'lucide-react';
+import { SITE_CONFIG, TRANSLATIONS } from '../lib/constants';
 
-export default function Hero({ searchQuery, setSearchQuery, onSearch }) {
+export default function Hero({ lang, searchQuery, setSearchQuery, filterRegion, setFilterRegion, onSearch }) {
+  const t = TRANSLATIONS[lang];
+
   return (
-    <section style={{
-      background: SITE_CONFIG.colors.fig, 
-      minHeight: '75vh', 
-      display: 'flex', 
-      flexDirection: 'column', 
-      alignItems: 'center', 
-      justifyContent: 'center', 
-      textAlign: 'center', 
-      color: 'white', 
-      padding: '0 20px',
-      margin: '0' // Boşlukları kapattık
-    }}>
-      <h1 style={{fontSize: 'clamp(35px, 6vw, 60px)', fontWeight: 900, marginBottom: '20px', lineHeight: 1.1}}>
-        Kıbrıs'ın En İyi <br/>
-        <span style={{color: SITE_CONFIG.colors.terra}}>Güzellik Uzmanları</span>
-      </h1>
-      
-      <div style={{
-        background: 'white', padding: '8px', borderRadius: '20px', 
-        display: 'flex', width: '100%', maxWidth: '600px', marginTop: '30px',
-        boxShadow: '0 15px 35px rgba(0,0,0,0.2)'
-      }}>
-        <input 
-          style={{flex: 1, border: 'none', padding: '15px 20px', outline: 'none', color: '#333', fontSize: '16px'}}
-          placeholder="Mekan veya hizmet ara..." 
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <button onClick={onSearch} style={{
-          background: SITE_CONFIG.colors.terra, color: 'white', 
-          border: 'none', padding: '12px 30px', borderRadius: '15px', 
-          fontWeight: 800, cursor: 'pointer'
-        }}>
-          ARA
-        </button>
+    <section className="hero">
+      <div className="orb orb-1"></div>
+      <div className="orb orb-2"></div>
+      <div className="hero-content">
+        <div className="hero-eyebrow">
+          <div className="hero-eyebrow-dot"></div>
+          {t.home.eyebrow}
+        </div>
+        <h1 className="hero-title">
+          {t.home.title1}<br/>
+          <span className="accent">{t.home.title2}</span><br/>
+          <span className="accent-2">{t.home.title3}</span> {t.home.title4}
+        </h1>
+        <p className="hero-sub">{t.home.subtitle}</p>
+        
+        <div className="search-wrap">
+          <div className="search-field">
+            <Search size={18} className="search-icon"/>
+            <input type="text" placeholder={t.home.searchPlace} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
+          </div>
+          <div className="search-divider"></div>
+          <div className="search-location">
+            <MapPin size={16} color="#94A3B8"/>
+            <select value={filterRegion} onChange={(e) => setFilterRegion(e.target.value)}>
+              <option value="All">{t.home.searchLoc}</option>
+              {SITE_CONFIG.regions.map(r => <option key={r} value={r}>{r}</option>)}
+            </select>
+          </div>
+          <button onClick={onSearch} className="search-btn">{t.home.searchBtn}</button>
+        </div>
       </div>
     </section>
   );
