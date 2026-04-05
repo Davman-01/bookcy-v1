@@ -1,119 +1,14 @@
-/* Globals.css - Bookcy Tasarım Omurgası */
-:root { 
-  --fig: #2D1B4E; 
-  --terra: #E8622A; 
-  --blush: #F5C5A3; 
-  --sand: #FAF7F2; 
-  --white: #FFFFFF;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
 }
 
-body { 
-  margin: 0; 
-  font-family: 'DM Sans', sans-serif; 
-  background: var(--sand); 
-  color: var(--fig);
-}
-
-/* Navbar ve Logo Ayarları */
-nav { 
-  position: fixed; top: 0; left: 0; right: 0; z-index: 1000; 
-  height: 68px; display: flex; align-items: center; justify-content: space-between; 
-  padding: 0 48px; background: rgba(250,247,242,0.85); backdrop-filter: blur(20px); 
-  border-bottom: 1px solid #E2E8F0; 
-}
-
-.nav-logo-icon {
-  width: 36px !important;
-  height: 36px !important;
-}
-
-.nav-links { 
-  display: flex; list-style: none; gap: 36px; align-items: center; margin: 0; padding: 0; 
-}
-
-.nav-links li a, .nav-links li button { 
-  text-decoration: none; color: var(--fig); font-weight: 600; font-size: 14px; 
-  opacity: 0.7; border: none; background: none; cursor: pointer; transition: opacity 0.2s;
-}
-
-.nav-links li a:hover, .nav-links li button:hover { opacity: 1; color: var(--terra); }
-
-/* Hero Alanı ve Arka Plan Efektleri (Orbs) */
-.hero { 
-  position: relative; min-height: 100vh; background: var(--fig); 
-  overflow: hidden; display: flex; flex-direction: column; 
-  align-items: center; justify-content: center; text-align: center; 
-  color: white; padding: 120px 24px; 
-}
-
-.hero-title { 
-  font-size: clamp(40px, 8vw, 86px); font-weight: 800; 
-  line-height: 1; letter-spacing: -3px; margin-bottom: 24px;
-}
-
-.hero-title .accent { color: var(--terra); }
-.hero-title .accent-2 { color: var(--blush); }
-
-.orb { 
-  position: absolute; border-radius: 50%; filter: blur(80px); 
-  opacity: 0.25; pointer-events: none; z-index: 1;
-}
-
-.orb-1 { width: 600px; height: 600px; background: var(--terra); top: -100px; right: -100px; }
-.orb-2 { width: 400px; height: 400px; background: var(--blush); bottom: 100px; left: -50px; }
-
-/* Arama Kutusu (Search Wrap) */
-.search-wrap { 
-  display: flex; align-items: center; background: white; 
-  border-radius: 20px; padding: 8px 8px 8px 24px; width: 100%; 
-  max-width: 680px; box-shadow: 0 24px 80px rgba(0,0,0,0.35); 
-  margin: 40px auto; position: relative; z-index: 10;
-}
-
-.search-field input { 
-  border: none; outline: none; width: 100%; padding: 10px; 
-  font-size: 15px; font-weight: 600; color: #333; 
-}
-
-.search-btn { 
-  background: var(--terra); color: white; border: none; 
-  padding: 14px 28px; border-radius: 14px; font-weight: 700; 
-  cursor: pointer; transition: transform 0.2s;
-}
-
-.search-btn:hover { transform: scale(1.03); }
-
-/* Kategoriler ve İstatistikler */
-.categories-grid { 
-  display: grid; grid-template-columns: repeat(8, 1fr); 
-  gap: 16px; max-width: 1200px; margin: 40px auto; 
-}
-
-.cat-card { 
-  display: flex; flex-direction: column; align-items: center; 
-  cursor: pointer; transition: transform 0.3s; 
-}
-
-.cat-card:hover { transform: translateY(-5px); }
-
-.cat-icon { 
-  width: 80px; height: 80px; border-radius: 20px; 
-  display: flex; align-items: center; justify-content: center; 
-  font-size: 32px; margin-bottom: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.stat-box { 
-  display: flex; gap: 40px; margin-top: 60px; 
-  border-top: 1px solid rgba(255,255,255,0.1); padding-top: 40px; 
-}
-
-/* Mobil Uyumluluk (Responsive) */
-@media (max-width: 900px) {
-  nav { padding: 0 20px; }
-  .nav-links { display: none; }
-  .categories-grid { grid-template-columns: repeat(4, 1fr); }
-  .stat-box { flex-direction: column; gap: 20px; }
-  .search-wrap { flex-direction: column; padding: 16px; gap: 10px; }
-  .search-field { width: 100%; padding: 0; }
-  .search-btn { width: 100%; }
+body {
+  margin: 0;
+  padding: 0;
 }
