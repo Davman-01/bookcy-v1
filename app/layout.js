@@ -9,9 +9,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="tr">
       <head>
+        {/* Fontların yüklenmesi senin tasarımın için çok kritik */}
         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&family=Plus+Jakarta+Sans:wght@800&display=swap" rel="stylesheet" />
       </head>
-      <body>
+      <body style={{ margin: 0 }}>
         {children}
       </body>
     </html>
